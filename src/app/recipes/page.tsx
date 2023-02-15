@@ -1,28 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { getTestRecipes } from "./testData";
 import { RECIPE_PLACEHOLDER } from "../utils/Utils";
+import { adminFirestore } from "@/firebase/firebaseAdmin";
+import { getServerSessionUser } from "../utils/NextAuthSession.utils";
 
 async function RecipeListPage() {
-    const recipes = await getTestRecipes();
+    const user = await getServerSessionUser();
+    const recipeDocuments = (
+        await adminFirestore
+            .collection("userContent")
+            .doc(user.id)
+            .collection("recipes")
+            .get()
+    ).docs;
+
     return (
         <main className="max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-auto auto-rows-[1fr] px-10 py-10">
-            {recipes.map((recipe) => (
+            {recipeDocuments.map((recipeDocument) => (
                 <Link
-                    href={`/recipes/${recipe.id}`}
-                    key={recipe.id}
+                    href={`/recipes/${recipeDocument.id}`}
+                    key={recipeDocument.id}
                     className="flex flex-col space-y-2 p-4 border-2 rounded-md min-w-fit"
                 >
                     <Image
-                        src={recipe.image || RECIPE_PLACEHOLDER}
-                        alt="test"
+                        src={recipeDocument.data().image || RECIPE_PLACEHOLDER}
+                        alt="recipe image"
                         width={400}
                         height={400}
                         className="mx-auto"
                     />
-                    <p>{recipe.name}</p>
-                    <p>{recipe.description}</p>
+                    <p>{recipeDocument.data().name}</p>
+                    <p>{recipeDocument.data().description}</p>
                 </Link>
             ))}
             <Link

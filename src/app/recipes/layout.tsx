@@ -1,6 +1,7 @@
 import Link from "next/link";
+import SignOutComponent from "../components/SignOutComponent";
 
-function RecipesLayout({ children }: { children: React.ReactNode }) {
+function RecipeListLayout({ children }: { children: React.ReactNode }) {
     return (
         <div>
             <header className="bg-black py-2">
@@ -11,9 +12,9 @@ function RecipesLayout({ children }: { children: React.ReactNode }) {
                     >
                         Food Recipe Manager
                     </Link>
-                    <Link href={"/"} className="text-white font-bold mx-2">
-                        Logout
-                    </Link>
+                    <div className="flex items-center">
+                        <SignOutComponent className="text-white font-bold mx-2" />
+                    </div>
                 </nav>
             </header>
             {children}
@@ -21,4 +22,4 @@ function RecipesLayout({ children }: { children: React.ReactNode }) {
     );
 }
 
-export default RecipesLayout;
+export default RecipeListLayout;
