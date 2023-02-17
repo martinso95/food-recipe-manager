@@ -3,7 +3,7 @@ import { getProviders } from "next-auth/react";
 import SignInComponent from "./components/SignInComponent";
 import Image from "next/image";
 import SignOutComponent from "./components/SignOutComponent";
-import { getServerSession } from "./utils/NextAuthSession.utils";
+import { getServerSession } from "@/utils/NextAuthSession.utils";
 
 async function Home() {
     const session = await getServerSession();

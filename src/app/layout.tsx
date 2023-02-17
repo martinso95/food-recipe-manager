@@ -1,6 +1,6 @@
 import "./globals.css";
-import { getServerSession } from "./utils/NextAuthSession.utils";
-import Providers from "./utils/Providers";
+import { getServerSession } from "@/utils/NextAuthSession.utils";
+import Providers from "./Providers";
 
 export default async function RootLayout({
     children,

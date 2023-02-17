@@ -8,9 +8,12 @@ const adminApp =
                   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
                   privateKey: process.env.FIREBASE_PRIVATE_KEY,
               }),
+              storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
           })
         : admin.app();
 
 const adminFirestore = adminApp.firestore();
 
-export { adminFirestore };
+const adminStorageBucket = adminApp.storage().bucket();
+
+export { adminFirestore, adminStorageBucket };

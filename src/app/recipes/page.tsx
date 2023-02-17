@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { RECIPE_PLACEHOLDER } from "../utils/Utils";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
-import { getServerSessionUser } from "../utils/NextAuthSession.utils";
+import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
+import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 
 async function RecipeListPage() {
     const user = await getServerSessionUser();

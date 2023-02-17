@@ -1,5 +1,5 @@
-import { getServerSessionUser } from "@/app/utils/NextAuthSession.utils";
-import { RECIPE_PLACEHOLDER } from "@/app/utils/Utils";
+import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
+import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { RecipeInterface } from "@/types/typings";
 import Image from "next/image";
