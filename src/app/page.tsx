@@ -17,9 +17,9 @@ async function Home() {
                         <h1 className="text-6xl font-bold my-auto">
                             Welcome {session.user?.name}
                         </h1>
-                        {session.user?.image && (
+                        {session.user.image && (
                             <Image
-                                src={session.user?.image}
+                                src={session.user.image}
                                 alt="Profile picture"
                                 width={100}
                                 height={100}

@@ -96,7 +96,7 @@ function AddRecipeForm() {
                         src={preview}
                         width={400}
                         height={400}
-                        alt="Recipe Image"
+                        alt="Recipe image"
                         onClick={handleImageClick}
                     />
                 ) : (

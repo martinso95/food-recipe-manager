@@ -2,7 +2,7 @@ import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { RecipeInterface } from "@/types/typings";
-import Image from "next/image";
+import ImageWithFallback from "@/app/components/ImageWithFallback";
 
 type Props = {
     params: { recipeId: string };
@@ -27,9 +27,10 @@ async function RecipePage({ params: { recipeId } }: Props) {
 
     return (
         <main className="flex flex-col space-y-3">
-            <Image
-                src={image || RECIPE_PLACEHOLDER}
-                alt="test"
+            <ImageWithFallback
+                src={image}
+                alt="Recipe image"
+                fallback={RECIPE_PLACEHOLDER}
                 width={400}
                 height={400}
             />

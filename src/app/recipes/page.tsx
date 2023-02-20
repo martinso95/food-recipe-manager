@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
+import ImageWithFallback from "../components/ImageWithFallback";
 
 async function RecipeListPage() {
     const user = await getServerSessionUser();
@@ -23,11 +23,12 @@ async function RecipeListPage() {
                     key={recipeDocument.id}
                     className="flex flex-col space-y-2 p-4 border-2 rounded-md min-w-fit"
                 >
-                    <Image
-                        src={recipeDocument.data().image || RECIPE_PLACEHOLDER}
-                        alt="recipe image"
+                    <ImageWithFallback
+                        src={recipeDocument.data().image}
+                        alt="Recipe image"
                         width={400}
                         height={400}
+                        fallback={RECIPE_PLACEHOLDER}
                         className="mx-auto"
                     />
                     <p>{recipeDocument.data().name}</p>
