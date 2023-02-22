@@ -24,7 +24,7 @@ async function RecipeListPage() {
                     className="flex flex-col space-y-2 p-4 border-2 rounded-md min-w-fit"
                 >
                     <ImageWithFallback
-                        src={recipeDocument.data().image}
+                        src={recipeDocument.data().image?.url}
                         alt="Recipe image"
                         width={400}
                         height={400}

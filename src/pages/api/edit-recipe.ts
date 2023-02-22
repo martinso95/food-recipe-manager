@@ -25,71 +25,99 @@ export default async function handler(
     }
 
     const {
-        recipe: { name, description, ingredients, instructions },
-        image,
+        recipeId,
+        name,
+        description,
+        ingredients,
+        instructions,
+        oldImage,
+        newImage,
     } = req.body;
+
     if (
         name == null ||
+        name === "" ||
         description == null ||
+        description === "" ||
         ingredients == null ||
-        instructions == null
+        ingredients === "" ||
+        instructions == null ||
+        instructions === ""
     ) {
         res.status(400).json({ body: "Bad request" });
+        return;
     }
 
-    const uuid = randomUUID();
+    // Delete old image if it is being replaced by a new one.
+    if (newImage != null && oldImage != null) {
+        const oldFile = adminStorageBucket.file(oldImage.name);
+        await oldFile.delete().catch(() => {
+            res.status(400).json({
+                body: "Server error: Could not delete old image.",
+            });
+            return;
+        });
+    }
 
-    const imageName =
-        image != null
-            ? `${FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER}/${uuid}.${getImageFileExtension(
-                  image.type
+    const newImageId = randomUUID();
+
+    const newImageName =
+        newImage != null
+            ? `${FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER}/${newImageId}.${getImageFileExtension(
+                  newImage.type
               )}`
             : "";
 
-    const imageUrl =
-        image != null
+    const newImageUrl =
+        newImage != null
             ? getFirebaseStorageImageURL(
                   adminStorageBucket.name,
-                  imageName,
-                  uuid
+                  newImageName,
+                  newImageId
               )
             : "";
-    console.log(uuid);
+
     try {
         await adminFirestore
             .collection("userContent")
             .doc(session.user.id)
             .collection("recipes")
-            .doc(uuid)
-            .set({
+            .doc(recipeId)
+            .update({
                 name: name,
                 description: description,
                 ingredients: ingredients,
                 instructions: instructions,
-                image: image != null ? imageUrl : null,
+                image:
+                    newImage != null
+                        ? {
+                              id: newImageId,
+                              url: newImageUrl,
+                              name: newImageName,
+                          }
+                        : oldImage != null
+                        ? oldImage
+                        : null,
             });
     } catch (error) {
         res.status(400).json({ body: `Server error: ${error}` });
+        return;
     }
 
-    if (image != null && image.data != null && image.type != null) {
-        const file = adminStorageBucket.file(imageName);
+    if (newImage != null && newImage.data != null && newImage.type != null) {
+        const newFile = adminStorageBucket.file(newImageName);
 
-        await file
-            .save(toBufferImage(image.data), {
+        await newFile
+            .save(toBufferImage(newImage.data), {
                 resumable: false,
                 metadata: {
                     metadata: {
-                        firebaseStorageDownloadTokens: uuid,
+                        firebaseStorageDownloadTokens: newImageId,
                     },
                 },
             })
-            .then(() => {
-                console.log("Recipe image added to the storage.");
-            })
             .catch(() => {
-                console.error("File save failed!");
-                return null;
+                console.error("Image could not be saved.");
             });
     }
 

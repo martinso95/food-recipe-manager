@@ -5,10 +5,15 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { RecipeInterface } from "@/types/typings";
-import { toBase64Image } from "@/utils/Utils";
+import {
+    INITIAL_RECIPE_STATE,
+    isRecipeValid,
+    toBase64Image,
+} from "@/utils/Utils";
 
 function AddRecipeForm() {
     const router = useRouter();
+    const [recipe, setRecipe] = useState<RecipeInterface>(INITIAL_RECIPE_STATE);
     const [preview, setPreview] = useState<string>();
     const [image, setImage] = useState<File>();
     const imageInputRef = useRef<HTMLInputElement>(null);
@@ -26,27 +31,24 @@ function AddRecipeForm() {
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const { name, description, ingredients, instructions } = recipe;
+        if (!isRecipeValid(recipe)) {
+            alert("Recipe fields invalid.");
+            return;
+        }
 
-        const target = e.target as typeof e.target & {
-            elements: {
-                name: { value: string };
-                description: { value: string };
-                ingredients: { value: string };
-                instructions: { value: string };
-            };
+        const requestBody: any = {
+            name,
+            description,
+            ingredients,
+            instructions,
         };
-        const { name, description, ingredients, instructions } =
-            target.elements;
-        const recipe: RecipeInterface = {
-            name: name.value,
-            description: description.value,
-            ingredients: ingredients.value,
-            instructions: instructions.value,
-        };
-
-        const requestBody: any = { recipe: recipe };
 
         if (image) {
             try {
@@ -57,10 +59,11 @@ function AddRecipeForm() {
                 };
             } catch (error) {
                 console.error("Could not process image.");
+                return;
             }
         }
 
-        const response = await fetch("/api/save-recipe", {
+        const response = await fetch("/api/add-recipe", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -109,13 +112,33 @@ function AddRecipeForm() {
                 )}
             </div>
             <label>Name</label>
-            <input type="text" name="name" className="border-2" />
+            <input
+                type="text"
+                name="name"
+                onChange={handleInputChange}
+                className="border-2"
+            />
             <label>Description</label>
-            <input type="text" name="description" className="border-2" />
+            <input
+                type="text"
+                name="description"
+                onChange={handleInputChange}
+                className="border-2"
+            />
             <label>Ingredients</label>
-            <input type="text" name="ingredients" className="border-2" />
+            <input
+                type="text"
+                name="ingredients"
+                onChange={handleInputChange}
+                className="border-2"
+            />
             <label>Instructions</label>
-            <input type="text" name="instructions" className="border-2" />
+            <input
+                type="text"
+                name="instructions"
+                onChange={handleInputChange}
+                className="border-2"
+            />
 
             <button
                 type="submit"

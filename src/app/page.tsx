@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getProviders } from "next-auth/react";
-import SignInComponent from "./components/SignInComponent";
+import SignInComponent from "./SignInComponent";
 import Image from "next/image";
 import SignOutComponent from "./components/SignOutComponent";
 import { getServerSession } from "@/utils/NextAuthSession.utils";

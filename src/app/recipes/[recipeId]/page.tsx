@@ -1,8 +1,7 @@
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
-import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { RecipeInterface } from "@/types/typings";
-import ImageWithFallback from "@/app/components/ImageWithFallback";
+import RecipeContainer from "./RecipeContainer";
 
 type Props = {
     params: { recipeId: string };
@@ -10,13 +9,7 @@ type Props = {
 
 async function RecipePage({ params: { recipeId } }: Props) {
     const user = await getServerSessionUser();
-    const {
-        name,
-        description,
-        image,
-        ingredients,
-        instructions,
-    }: RecipeInterface = (
+    const recipe: RecipeInterface = (
         await adminFirestore
             .collection("userContent")
             .doc(user.id)
@@ -27,20 +20,7 @@ async function RecipePage({ params: { recipeId } }: Props) {
 
     return (
         <main className="flex flex-col space-y-3">
-            <ImageWithFallback
-                src={image}
-                alt="Recipe image"
-                fallback={RECIPE_PLACEHOLDER}
-                width={400}
-                height={400}
-            />
-            <h1>Name: {name}</h1>
-            <h2>Description: {description}</h2>
-
-            <p>Ingredients:</p>
-            {ingredients}
-            <p>Instructions:</p>
-            <p>{instructions}</p>
+            <RecipeContainer recipeId={recipeId} recipe={recipe} />
         </main>
     );
 }

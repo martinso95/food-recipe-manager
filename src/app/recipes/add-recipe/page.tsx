@@ -1,4 +1,4 @@
-import AddRecipeForm from "@/app/components/AddRecipeForm";
+import AddRecipeForm from "./AddRecipeForm";
 
 async function AddReipePage() {
     return (

@@ -1,32 +1,21 @@
 "use client";
 
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import React, { useState } from "react";
 
-type Props = {
+type Props = Omit<ImageProps, "src"> & {
     src: string | undefined;
-    alt: string;
     fallback: string;
-    width: number;
-    height: number;
     className?: string;
 };
 
-function ImageWithFallback({
-    src,
-    alt,
-    fallback,
-    width,
-    height,
-    className,
-}: Props) {
+function ImageWithFallback({ src, alt, fallback, className, ...rest }: Props) {
     const [error, setError] = useState(src == null);
     return (
         <Image
+            {...rest}
             src={!error && src != null ? src : fallback}
             alt={alt}
-            width={width}
-            height={height}
             onError={() => setError(true)}
             className={className}
         />
