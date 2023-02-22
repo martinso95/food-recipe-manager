@@ -68,7 +68,9 @@ function AddRecipeForm() {
             body: JSON.stringify(requestBody),
         });
         if (response.ok) {
+            // Force refresh after push, so that the new recipe appears in the list.
             router.push("/recipes");
+            router.refresh();
         } else {
             console.error(
                 "Something went wrong!",
