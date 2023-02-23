@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import { RecipeInterface } from "@/types/typings";
+import { Recipe, RecipeRequestBody } from "@/types/typings";
 import {
     INITIAL_RECIPE_STATE,
     isRecipeValid,
@@ -13,7 +13,7 @@ import {
 
 function AddRecipeForm() {
     const router = useRouter();
-    const [recipe, setRecipe] = useState<RecipeInterface>(INITIAL_RECIPE_STATE);
+    const [recipe, setRecipe] = useState<Recipe>(INITIAL_RECIPE_STATE);
     const [preview, setPreview] = useState<string>();
     const [image, setImage] = useState<File>();
     const imageInputRef = useRef<HTMLInputElement>(null);
@@ -37,15 +37,18 @@ function AddRecipeForm() {
 
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const { name, description, ingredients, instructions } = recipe;
+        const { name, description, time, servings, ingredients, instructions } =
+            recipe;
         if (!isRecipeValid(recipe)) {
             alert("Recipe fields invalid.");
             return;
         }
 
-        const requestBody: any = {
+        const requestBody: RecipeRequestBody = {
             name,
             description,
+            time,
+            servings,
             ingredients,
             instructions,
         };
@@ -53,7 +56,7 @@ function AddRecipeForm() {
         if (image) {
             try {
                 const base64Image = await toBase64Image(image);
-                requestBody.image = {
+                requestBody.newImage = {
                     data: base64Image,
                     type: image.type,
                 };
@@ -122,6 +125,20 @@ function AddRecipeForm() {
             <input
                 type="text"
                 name="description"
+                onChange={handleInputChange}
+                className="border-2"
+            />
+            <label>Time</label>
+            <input
+                type="text"
+                name="time"
+                onChange={handleInputChange}
+                className="border-2"
+            />
+            <label>Servings</label>
+            <input
+                type="number"
+                name="servings"
                 onChange={handleInputChange}
                 className="border-2"
             />

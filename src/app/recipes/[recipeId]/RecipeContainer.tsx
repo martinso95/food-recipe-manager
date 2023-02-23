@@ -1,13 +1,13 @@
 "use client";
 
-import { RecipeInterface } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 import { useState } from "react";
 import EditRecipeForm from "./RecipePageEditMode";
 import RecipePageViewMode from "./RecipePageViewMode";
 
 type Props = {
     recipeId: string;
-    recipe: RecipeInterface;
+    recipe: Recipe;
 };
 
 function RecipeContainer({ recipeId, recipe }: Props) {

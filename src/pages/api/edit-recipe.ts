@@ -1,4 +1,5 @@
 import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
+import { Recipe, RecipeImage, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
     getFirebaseStorageImageURL,
@@ -28,13 +29,17 @@ export default async function handler(
         recipeId,
         name,
         description,
+        time,
+        servings,
         ingredients,
         instructions,
         oldImage,
         newImage,
-    } = req.body;
+    }: RecipeRequestBody = req.body;
 
     if (
+        recipeId == null ||
+        recipeId === "" ||
         name == null ||
         name === "" ||
         description == null ||
@@ -77,6 +82,17 @@ export default async function handler(
               )
             : "";
 
+    const newImageObject: RecipeImage | undefined =
+        newImage != null
+            ? {
+                  id: newImageId,
+                  url: newImageUrl,
+                  name: newImageName,
+              }
+            : oldImage != null
+            ? oldImage
+            : undefined;
+
     try {
         await adminFirestore
             .collection("userContent")
@@ -86,18 +102,11 @@ export default async function handler(
             .update({
                 name: name,
                 description: description,
+                time: time,
+                servings: servings,
                 ingredients: ingredients,
                 instructions: instructions,
-                image:
-                    newImage != null
-                        ? {
-                              id: newImageId,
-                              url: newImageUrl,
-                              name: newImageName,
-                          }
-                        : oldImage != null
-                        ? oldImage
-                        : null,
+                image: newImageObject != null ? newImageObject : undefined,
             });
     } catch (error) {
         res.status(400).json({ body: `Server error: ${error}` });

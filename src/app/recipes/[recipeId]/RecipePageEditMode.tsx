@@ -1,14 +1,18 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { RecipeInterface } from "@/types/typings";
-import { RECIPE_PLACEHOLDER, toBase64Image } from "@/utils/Utils";
+import { Recipe, RecipeRequestBody } from "@/types/typings";
+import {
+    isRecipeValid,
+    RECIPE_PLACEHOLDER,
+    toBase64Image,
+} from "@/utils/Utils";
 import ImageWithFallback from "@/app/components/ImageWithFallback";
 import { useRouter } from "next/navigation";
 
 type Props = {
     recipeId: string;
-    recipe: RecipeInterface;
+    recipe: Recipe;
     onSave: () => void;
 };
 
@@ -19,7 +23,7 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
     );
     const [newImage, setNewImage] = useState<File>();
     const imageInputRef = useRef<HTMLInputElement>(null);
-    const [newRecipe, setNewRecipe] = useState<RecipeInterface>(recipe);
+    const [newRecipe, setNewRecipe] = useState<Recipe>(recipe);
 
     const handleImageClick = () => {
         if (imageInputRef.current != null) {
@@ -40,14 +44,23 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
 
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const requestBody: any = {
+
+        if (!isRecipeValid(newRecipe)) {
+            alert("Recipe fields invalid.");
+            return;
+        }
+
+        const requestBody: RecipeRequestBody = {
             recipeId: recipeId,
             name: newRecipe.name,
             description: newRecipe.description,
+            time: newRecipe.time,
+            servings: newRecipe.servings,
             ingredients: newRecipe.ingredients,
             instructions: newRecipe.instructions,
-            oldImage: recipe.image ?? null,
+            oldImage: recipe.image != null ? recipe.image : undefined,
         };
+
         if (newImage) {
             try {
                 const base64Image = await toBase64Image(newImage);
@@ -112,6 +125,22 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 type="text"
                 name="description"
                 value={newRecipe.description}
+                onChange={handleInputChange}
+                className="border-2"
+            />
+            <label>Time</label>
+            <input
+                type="text"
+                name="time"
+                value={newRecipe.time}
+                onChange={handleInputChange}
+                className="border-2"
+            />
+            <label>Servings</label>
+            <input
+                type="number"
+                name="servings"
+                value={newRecipe.servings}
                 onChange={handleInputChange}
                 className="border-2"
             />

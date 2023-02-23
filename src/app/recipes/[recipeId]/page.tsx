@@ -1,6 +1,6 @@
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
-import { RecipeInterface } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 import RecipeContainer from "./RecipeContainer";
 
 type Props = {
@@ -9,14 +9,14 @@ type Props = {
 
 async function RecipePage({ params: { recipeId } }: Props) {
     const user = await getServerSessionUser();
-    const recipe: RecipeInterface = (
+    const recipe: Recipe = (
         await adminFirestore
             .collection("userContent")
             .doc(user.id)
             .collection("recipes")
             .doc(recipeId)
             .get()
-    ).data() as RecipeInterface;
+    ).data() as Recipe;
 
     return (
         <main className="flex flex-col space-y-3">

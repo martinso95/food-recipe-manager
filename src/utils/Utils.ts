@@ -1,4 +1,4 @@
-import { RecipeInterface } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
@@ -20,7 +20,7 @@ export function getImageFileExtension(imageFileType: string) {
  * @param image Image of File type. Can for example come from browser input.
  * @returns base64Image of type string.
  */
-export const toBase64Image = (image: File): Promise<string | undefined> =>
+export const toBase64Image = (image: File): Promise<string> =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -67,14 +67,14 @@ export const getFirebaseStorageImageURL = (
     "?alt=media&token=" +
     token;
 
-export const INITIAL_RECIPE_STATE: RecipeInterface = {
+export const INITIAL_RECIPE_STATE: Recipe = {
     name: "",
     description: "",
     instructions: "",
     ingredients: "",
 };
 
-export const isRecipeValid = (recipe: RecipeInterface) => {
+export const isRecipeValid = (recipe: Recipe) => {
     const { name, description, ingredients, instructions } = recipe;
     return (
         name !== "" &&

@@ -1,11 +1,19 @@
 import ImageWithFallback from "@/app/components/ImageWithFallback";
-import { RecipeInterface } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 
-type Props = { recipe: RecipeInterface };
+type Props = { recipe: Recipe };
 
 function RecipePageViewMode({ recipe }: Props) {
-    const { name, description, ingredients, instructions, image } = recipe;
+    const {
+        name,
+        description,
+        time,
+        servings,
+        ingredients,
+        instructions,
+        image,
+    } = recipe;
 
     return (
         <div>
@@ -18,6 +26,8 @@ function RecipePageViewMode({ recipe }: Props) {
             />
             <h1>Name: {name}</h1>
             <h2>Description: {description}</h2>
+            <p>Time: {time}</p>
+            <p>Servings: {servings}</p>
             <p>Ingredients:</p>
             {ingredients}
             <p>Instructions:</p>

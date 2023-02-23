@@ -14,6 +14,11 @@ const adminApp =
 
 const adminFirestore = adminApp.firestore();
 
+// Configure settings once only.
+try {
+    adminFirestore.settings({ ignoreUndefinedProperties: true });
+} catch {}
+
 const adminStorageBucket = adminApp.storage().bucket();
 
 export { adminFirestore, adminStorageBucket };

@@ -1,4 +1,5 @@
 import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
+import { Recipe, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
     getFirebaseStorageImageURL,
@@ -24,7 +25,15 @@ export default async function handler(
         return;
     }
 
-    const { name, description, ingredients, instructions, image } = req.body;
+    const {
+        name,
+        description,
+        time,
+        servings,
+        ingredients,
+        instructions,
+        newImage: image,
+    }: RecipeRequestBody = req.body;
 
     if (
         name == null ||
@@ -58,28 +67,33 @@ export default async function handler(
               )
             : "";
 
+    const newRecipeObject: Recipe = {
+        name,
+        description,
+        time,
+        servings,
+        ingredients,
+        instructions,
+        image:
+            image != null
+                ? {
+                      id: imageId,
+                      url: imageUrl,
+                      name: imageName,
+                  }
+                : undefined,
+    };
+
     try {
         await adminFirestore
             .collection("userContent")
             .doc(session.user.id)
             .collection("recipes")
             .doc(recipeId)
-            .set({
-                name: name,
-                description: description,
-                ingredients: ingredients,
-                instructions: instructions,
-                image:
-                    image != null
-                        ? {
-                              id: imageId,
-                              url: imageUrl,
-                              name: imageName,
-                          }
-                        : null,
-            });
+            .set(newRecipeObject);
     } catch (error) {
         res.status(400).json({ body: `Server error: ${error}` });
+        return;
     }
 
     if (image != null && image.data != null && image.type != null) {
