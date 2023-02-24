@@ -1,6 +1,7 @@
 import ImageWithFallback from "@/app/components/ImageWithFallback";
 import { Recipe } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
+import IngredientsViewer from "./IngredientsViewer";
 
 type Props = { recipe: Recipe };
 
@@ -29,11 +30,7 @@ function RecipePageViewMode({ recipe }: Props) {
             <p>Time: {time}</p>
             <p>Servings: {servings}</p>
             <p>Ingredients:</p>
-            <ul>
-                {ingredients.map(({ id, amount, unit, name }) => (
-                    <li key={id}>{`${amount} ${unit} ${name}`.trim()}</li>
-                ))}
-            </ul>
+            <IngredientsViewer ingredients={ingredients} />
             <p>Instructions:</p>
             <p>{instructions}</p>
         </div>

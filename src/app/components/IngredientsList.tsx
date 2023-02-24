@@ -3,6 +3,7 @@
 import { RecipeIngredient } from "@/types/typings";
 import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { isIngredientValid } from "@/utils/Utils";
 
 const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
     id: "",
@@ -32,8 +33,9 @@ function IngredientsList({
     };
 
     const handleAddIngredient = () => {
-        if (newIngredient.name === "") {
-            alert("Ingredient name cannot be empty.");
+        const { isValid, message } = isIngredientValid(newIngredient);
+        if (!isValid) {
+            alert(message);
             return;
         }
         onAddIngredient(newIngredient);
@@ -78,7 +80,7 @@ function IngredientsList({
                         key={id}
                         className="flex flex-row  space-x-2 items-center"
                     >
-                        <p>{`${amount} ${unit} ${name}`.trim()}</p>
+                        <p>{`${amount ?? ""} ${unit ?? ""} ${name}`.trim()}</p>
                         <button
                             type="button"
                             onClick={() => onRemoveIngredient(id)}

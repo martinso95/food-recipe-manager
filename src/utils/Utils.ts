@@ -1,4 +1,4 @@
-import { Recipe } from "@/types/typings";
+import { Recipe, RecipeIngredient } from "@/types/typings";
 
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
@@ -82,4 +82,34 @@ export const isRecipeValid = (recipe: Recipe) => {
         ingredients.length > 0 &&
         instructions !== ""
     );
+};
+
+export const isIngredientValid = (ingredient: RecipeIngredient) => {
+    const { amount, unit, name } = ingredient;
+    if (name === "") {
+        return { isValid: false, message: "Ingredient is missing a name." };
+    }
+
+    if (
+        amount != null &&
+        amount.toString() !== "" &&
+        (unit == null || unit === "")
+    ) {
+        return {
+            isValid: false,
+            message: "Ingredient unit is needed if amount is specified",
+        };
+    }
+
+    if (
+        unit != null &&
+        unit.toString() !== "" &&
+        (amount == null || amount.toString() === "")
+    ) {
+        return {
+            isValid: false,
+            message: "Ingredient amount is needed if unit is specified.",
+        };
+    }
+    return { isValid: true, message: "Success." };
 };

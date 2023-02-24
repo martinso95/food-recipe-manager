@@ -2,8 +2,8 @@
 
 import { Recipe } from "@/types/typings";
 import { useState } from "react";
-import EditRecipeForm from "./RecipePageEditMode";
-import RecipePageViewMode from "./RecipePageViewMode";
+import EditRecipeForm from "./(edit-mode)/RecipePageEditMode";
+import RecipePageViewMode from "./(view-mode)/RecipePageViewMode";
 
 type Props = {
     recipeId: string;
