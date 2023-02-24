@@ -71,7 +71,7 @@ export const INITIAL_RECIPE_STATE: Recipe = {
     name: "",
     description: "",
     instructions: "",
-    ingredients: "",
+    ingredients: [],
 };
 
 export const isRecipeValid = (recipe: Recipe) => {
@@ -79,7 +79,7 @@ export const isRecipeValid = (recipe: Recipe) => {
     return (
         name !== "" &&
         description !== "" &&
-        ingredients !== "" &&
+        ingredients.length > 0 &&
         instructions !== ""
     );
 };

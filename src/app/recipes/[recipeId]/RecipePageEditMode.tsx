@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Recipe, RecipeRequestBody } from "@/types/typings";
+import { Recipe, RecipeIngredient, RecipeRequestBody } from "@/types/typings";
 import {
     isRecipeValid,
     RECIPE_PLACEHOLDER,
@@ -9,6 +9,7 @@ import {
 } from "@/utils/Utils";
 import ImageWithFallback from "@/app/components/ImageWithFallback";
 import { useRouter } from "next/navigation";
+import IngredientsList from "@/app/components/IngredientsList";
 
 type Props = {
     recipeId: string;
@@ -40,6 +41,23 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleAddIngredient = (ingredient: RecipeIngredient) => {
+        const id = crypto.randomUUID();
+        setNewRecipe((prev) => ({
+            ...prev,
+            ingredients: [...prev.ingredients, { ...ingredient, id }],
+        }));
+    };
+
+    const handleRemoveIngredient = (ingredientId: string) => {
+        setNewRecipe((prev) => ({
+            ...prev,
+            ingredients: prev.ingredients.filter(
+                ({ id }) => id !== ingredientId
+            ),
+        }));
     };
 
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -144,14 +162,13 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 onChange={handleInputChange}
                 className="border-2"
             />
-            <label>Ingredients</label>
-            <input
-                type="text"
-                name="ingredients"
-                value={newRecipe.ingredients}
-                onChange={handleInputChange}
-                className="border-2"
-            />
+            <div className="col-span-2">
+                <IngredientsList
+                    ingredients={newRecipe.ingredients}
+                    onAddIngredient={handleAddIngredient}
+                    onRemoveIngredient={handleRemoveIngredient}
+                />
+            </div>
             <label>Instructions</label>
             <input
                 type="text"

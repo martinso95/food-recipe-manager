@@ -41,7 +41,7 @@ export default async function handler(
         description == null ||
         description === "" ||
         ingredients == null ||
-        ingredients === "" ||
+        ingredients.length === 0 ||
         instructions == null ||
         instructions === ""
     ) {

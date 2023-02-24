@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import { Recipe, RecipeRequestBody } from "@/types/typings";
+import { Recipe, RecipeIngredient, RecipeRequestBody } from "@/types/typings";
 import {
     INITIAL_RECIPE_STATE,
     isRecipeValid,
     toBase64Image,
 } from "@/utils/Utils";
+import IngredientsList from "@/app/components/IngredientsList";
 
 function AddRecipeForm() {
     const router = useRouter();
@@ -35,10 +36,28 @@ function AddRecipeForm() {
         setRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
+    const handleAddIngredient = (ingredient: RecipeIngredient) => {
+        const id = crypto.randomUUID();
+        setRecipe((prev) => ({
+            ...prev,
+            ingredients: [...prev.ingredients, { ...ingredient, id }],
+        }));
+    };
+
+    const handleRemoveIngredient = (ingredientId: string) => {
+        setRecipe((prev) => ({
+            ...prev,
+            ingredients: prev.ingredients.filter(
+                ({ id }) => id !== ingredientId
+            ),
+        }));
+    };
+
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { name, description, time, servings, ingredients, instructions } =
             recipe;
+
         if (!isRecipeValid(recipe)) {
             alert("Recipe fields invalid.");
             return;
@@ -142,13 +161,13 @@ function AddRecipeForm() {
                 onChange={handleInputChange}
                 className="border-2"
             />
-            <label>Ingredients</label>
-            <input
-                type="text"
-                name="ingredients"
-                onChange={handleInputChange}
-                className="border-2"
-            />
+            <div className="col-span-2">
+                <IngredientsList
+                    ingredients={recipe.ingredients}
+                    onAddIngredient={handleAddIngredient}
+                    onRemoveIngredient={handleRemoveIngredient}
+                />
+            </div>
             <label>Instructions</label>
             <input
                 type="text"

@@ -29,7 +29,11 @@ function RecipePageViewMode({ recipe }: Props) {
             <p>Time: {time}</p>
             <p>Servings: {servings}</p>
             <p>Ingredients:</p>
-            {ingredients}
+            <ul>
+                {ingredients.map(({ id, amount, unit, name }) => (
+                    <li key={id}>{`${amount} ${unit} ${name}`.trim()}</li>
+                ))}
+            </ul>
             <p>Instructions:</p>
             <p>{instructions}</p>
         </div>
