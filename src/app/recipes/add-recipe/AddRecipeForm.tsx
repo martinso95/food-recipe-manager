@@ -4,13 +4,20 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
-import { Recipe, RecipeIngredient, RecipeRequestBody } from "@/types/typings";
+import {
+    Recipe,
+    RecipeIngredient,
+    RecipeInstruction,
+    RecipeRequestBody,
+} from "@/types/typings";
 import {
     INITIAL_RECIPE_STATE,
     isRecipeValid,
+    removeEmptyInstructions,
     toBase64Image,
 } from "@/utils/Utils";
-import IngredientsList from "@/app/components/IngredientsList";
+import IngredientsEditor from "@/app/components/IngredientsEditor";
+import InstructionsEditor from "@/app/components/InstructionsEditor";
 
 function AddRecipeForm() {
     const router = useRouter();
@@ -37,10 +44,9 @@ function AddRecipeForm() {
     };
 
     const handleAddIngredient = (ingredient: RecipeIngredient) => {
-        const id = crypto.randomUUID();
         setRecipe((prev) => ({
             ...prev,
-            ingredients: [...prev.ingredients, { ...ingredient, id }],
+            ingredients: [...prev.ingredients, ingredient],
         }));
     };
 
@@ -50,6 +56,13 @@ function AddRecipeForm() {
             ingredients: prev.ingredients.filter(
                 ({ id }) => id !== ingredientId
             ),
+        }));
+    };
+
+    const handleInstructionsChange = (instructions: RecipeInstruction[]) => {
+        setRecipe((prev) => ({
+            ...prev,
+            instructions,
         }));
     };
 
@@ -69,7 +82,7 @@ function AddRecipeForm() {
             time,
             servings,
             ingredients,
-            instructions,
+            instructions: removeEmptyInstructions(instructions),
         };
 
         if (image) {
@@ -162,24 +175,20 @@ function AddRecipeForm() {
                 className="border-2"
             />
             <div className="col-span-2">
-                <IngredientsList
+                <IngredientsEditor
                     ingredients={recipe.ingredients}
                     onAddIngredient={handleAddIngredient}
                     onRemoveIngredient={handleRemoveIngredient}
                 />
             </div>
-            <label>Instructions</label>
-            <input
-                type="text"
-                name="instructions"
-                onChange={handleInputChange}
-                className="border-2"
-            />
+            <div className="col-span-2">
+                <InstructionsEditor
+                    instructions={recipe.instructions}
+                    onInstructionsChange={handleInstructionsChange}
+                />
+            </div>
 
-            <button
-                type="submit"
-                className="col-span-2 border-2 w-fit px-5 justify-self-center"
-            >
+            <button type="submit" className="col-span-2 border-2 w-fit px-5">
                 Save
             </button>
         </form>

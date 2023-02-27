@@ -1,5 +1,5 @@
 import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
-import { Recipe, RecipeImage, RecipeRequestBody } from "@/types/typings";
+import { RecipeImage, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
     getFirebaseStorageImageURL,
@@ -47,7 +47,7 @@ export default async function handler(
         ingredients == null ||
         ingredients.length === 0 ||
         instructions == null ||
-        instructions === ""
+        instructions.length === 0
     ) {
         res.status(400).json({ body: "Bad request" });
         return;

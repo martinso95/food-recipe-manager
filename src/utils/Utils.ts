@@ -1,4 +1,4 @@
-import { Recipe, RecipeIngredient } from "@/types/typings";
+import { Recipe, RecipeIngredient, RecipeInstruction } from "@/types/typings";
 
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
@@ -70,8 +70,8 @@ export const getFirebaseStorageImageURL = (
 export const INITIAL_RECIPE_STATE: Recipe = {
     name: "",
     description: "",
-    instructions: "",
     ingredients: [],
+    instructions: [],
 };
 
 export const isRecipeValid = (recipe: Recipe) => {
@@ -80,7 +80,7 @@ export const isRecipeValid = (recipe: Recipe) => {
         name !== "" &&
         description !== "" &&
         ingredients.length > 0 &&
-        instructions !== ""
+        removeEmptyInstructions(instructions).length > 0
     );
 };
 
@@ -113,3 +113,6 @@ export const isIngredientValid = (ingredient: RecipeIngredient) => {
     }
     return { isValid: true, message: "Success." };
 };
+
+export const removeEmptyInstructions = (instructions: RecipeInstruction[]) =>
+    instructions.filter((instruction) => instruction.description !== "");

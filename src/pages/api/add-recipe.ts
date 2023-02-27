@@ -43,7 +43,7 @@ export default async function handler(
         ingredients == null ||
         ingredients.length === 0 ||
         instructions == null ||
-        instructions === ""
+        instructions.length === 0
     ) {
         res.status(400).json({ body: "Bad request" });
         return;

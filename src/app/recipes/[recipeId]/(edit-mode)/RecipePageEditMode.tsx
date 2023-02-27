@@ -1,15 +1,22 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Recipe, RecipeIngredient, RecipeRequestBody } from "@/types/typings";
+import {
+    Recipe,
+    RecipeIngredient,
+    RecipeInstruction,
+    RecipeRequestBody,
+} from "@/types/typings";
 import {
     isRecipeValid,
     RECIPE_PLACEHOLDER,
+    removeEmptyInstructions,
     toBase64Image,
 } from "@/utils/Utils";
 import ImageWithFallback from "@/app/components/ImageWithFallback";
 import { useRouter } from "next/navigation";
-import IngredientsList from "@/app/components/IngredientsList";
+import IngredientsEditor from "@/app/components/IngredientsEditor";
+import InstructionsEditor from "@/app/components/InstructionsEditor";
 
 type Props = {
     recipeId: string;
@@ -44,10 +51,9 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
     };
 
     const handleAddIngredient = (ingredient: RecipeIngredient) => {
-        const id = crypto.randomUUID();
         setNewRecipe((prev) => ({
             ...prev,
-            ingredients: [...prev.ingredients, { ...ingredient, id }],
+            ingredients: [...prev.ingredients, ingredient],
         }));
     };
 
@@ -58,6 +64,10 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 ({ id }) => id !== ingredientId
             ),
         }));
+    };
+
+    const handleInstructionsChange = (instructions: RecipeInstruction[]) => {
+        setNewRecipe((prev) => ({ ...prev, instructions }));
     };
 
     const handleSaveRecipe = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,7 +85,7 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
             time: newRecipe.time,
             servings: newRecipe.servings,
             ingredients: newRecipe.ingredients,
-            instructions: newRecipe.instructions,
+            instructions: removeEmptyInstructions(newRecipe.instructions),
             oldImage: recipe.image != null ? recipe.image : undefined,
         };
 
@@ -163,20 +173,18 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 className="border-2"
             />
             <div className="col-span-2">
-                <IngredientsList
+                <IngredientsEditor
                     ingredients={newRecipe.ingredients}
                     onAddIngredient={handleAddIngredient}
                     onRemoveIngredient={handleRemoveIngredient}
                 />
             </div>
-            <label>Instructions</label>
-            <input
-                type="text"
-                name="instructions"
-                value={newRecipe.instructions}
-                onChange={handleInputChange}
-                className="border-2"
-            />
+            <div className="col-span-2">
+                <InstructionsEditor
+                    instructions={newRecipe.instructions}
+                    onInstructionsChange={handleInstructionsChange}
+                />
+            </div>
 
             <button
                 type="submit"

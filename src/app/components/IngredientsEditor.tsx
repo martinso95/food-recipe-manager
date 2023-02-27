@@ -16,7 +16,7 @@ type Props = {
     onRemoveIngredient: (ingredientId: string) => void;
 };
 
-function IngredientsList({
+function IngredientsEditor({
     ingredients,
     onAddIngredient,
     onRemoveIngredient,
@@ -38,7 +38,8 @@ function IngredientsList({
             alert(message);
             return;
         }
-        onAddIngredient(newIngredient);
+        const id = crypto.randomUUID();
+        onAddIngredient({ ...newIngredient, id });
         setNewIngredient(NEW_INGREDIENT_INITIAL_VALUE);
     };
 
@@ -70,20 +71,22 @@ function IngredientsList({
                     onChange={handleInputChange}
                     className="border-2"
                 />
-                <button type="button" onClick={handleAddIngredient}>
+                <button
+                    type="button"
+                    onClick={handleAddIngredient}
+                    className="border-2 w-fit px-5"
+                >
                     Add
                 </button>
             </div>
             <ul>
                 {ingredients.map(({ id, amount, unit, name }) => (
-                    <li
-                        key={id}
-                        className="flex flex-row  space-x-2 items-center"
-                    >
+                    <li key={id} className="flex flex-row  space-x-2">
                         <p>{`${amount ?? ""} ${unit ?? ""} ${name}`.trim()}</p>
                         <button
                             type="button"
                             onClick={() => onRemoveIngredient(id)}
+                            className="border-2 w-fit px-5"
                         >
                             <TrashIcon className="h-4 w-4" />
                         </button>
@@ -94,4 +97,4 @@ function IngredientsList({
     );
 }
 
-export default IngredientsList;
+export default IngredientsEditor;

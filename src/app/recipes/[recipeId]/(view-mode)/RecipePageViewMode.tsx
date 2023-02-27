@@ -2,6 +2,7 @@ import ImageWithFallback from "@/app/components/ImageWithFallback";
 import { Recipe } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import IngredientsViewer from "./IngredientsViewer";
+import InstructionsViewer from "./InstructionsViewer";
 
 type Props = { recipe: Recipe };
 
@@ -32,7 +33,7 @@ function RecipePageViewMode({ recipe }: Props) {
             <p>Ingredients:</p>
             <IngredientsViewer ingredients={ingredients} />
             <p>Instructions:</p>
-            <p>{instructions}</p>
+            <InstructionsViewer instructions={instructions} />
         </div>
     );
 }

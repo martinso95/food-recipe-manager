@@ -11,6 +11,11 @@ export interface RecipeIngredient {
     name: string;
 }
 
+export interface RecipeInstruction {
+    id: string;
+    description: string;
+}
+
 // Used as the main type for recipes in the app and in the database.
 export interface Recipe {
     name: string;
@@ -18,7 +23,7 @@ export interface Recipe {
     servings?: number;
     time?: string;
     ingredients: RecipeIngredient[];
-    instructions: string;
+    instructions: RecipeInstruction[];
     image?: RecipeImage;
 }
 
@@ -30,7 +35,7 @@ export interface RecipeRequestBody {
     servings?: number;
     time?: string;
     ingredients: RecipeIngredient[];
-    instructions: string;
+    instructions: RecipeInstruction[];
     oldImage?: RecipeImage;
     newImage?: { data: string; type: string };
 }

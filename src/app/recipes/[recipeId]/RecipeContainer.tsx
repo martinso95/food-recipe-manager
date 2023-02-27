@@ -24,7 +24,10 @@ function RecipeContainer({ recipeId, recipe }: Props) {
             ) : (
                 <RecipePageViewMode recipe={recipe} />
             )}
-            <button onClick={() => setEditMode(!editMode)}>
+            <button
+                onClick={() => setEditMode(!editMode)}
+                className="border-2 w-fit px-5"
+            >
                 {editMode ? "Cancel" : "Edit"}
             </button>
         </>
