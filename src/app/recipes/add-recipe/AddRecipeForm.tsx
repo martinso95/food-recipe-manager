@@ -39,6 +39,11 @@ function AddRecipeForm() {
         }
     };
 
+    const handleRemoveImage = () => {
+        setPreview(undefined);
+        setImage(undefined);
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -123,7 +128,7 @@ function AddRecipeForm() {
             onSubmit={handleSaveRecipe}
             className="grid grid-cols-[max-content,1fr] gap-5"
         >
-            <div className="col-span-2 border w-fit p-5 justify-self-center">
+            <div className="col-span-2 flex flex-col border w-fit p-5 justify-self-center items-center">
                 <input
                     ref={imageInputRef}
                     type="file"
@@ -144,6 +149,14 @@ function AddRecipeForm() {
                         onClick={handleImageClick}
                         className="w-96 h-96"
                     />
+                )}
+                {preview && (
+                    <button
+                        onClick={handleRemoveImage}
+                        className="border-2 w-fit px-5"
+                    >
+                        Remove image
+                    </button>
                 )}
             </div>
             <label>Name</label>

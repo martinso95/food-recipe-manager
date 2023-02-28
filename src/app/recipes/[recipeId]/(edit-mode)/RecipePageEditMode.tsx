@@ -46,6 +46,11 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
         }
     };
 
+    const handleRemoveImage = () => {
+        setPreview(undefined);
+        setNewImage(undefined);
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -86,7 +91,7 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
             servings: newRecipe.servings,
             ingredients: newRecipe.ingredients,
             instructions: removeEmptyInstructions(newRecipe.instructions),
-            oldImage: recipe.image != null ? recipe.image : undefined,
+            oldImage: recipe.image,
         };
 
         if (newImage) {
@@ -100,6 +105,8 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 alert("Could not process image.");
                 return;
             }
+        } else if (recipe.image != null && preview == null) {
+            requestBody.removeImage = true;
         }
 
         const response = await fetch("/api/edit-recipe", {
@@ -123,7 +130,7 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
             onSubmit={handleSaveRecipe}
             className="grid grid-cols-[max-content,1fr] gap-5"
         >
-            <div className="col-span-2 border w-fit p-5 justify-self-center">
+            <div className="col-span-2 flex flex-col border w-fit p-5 justify-self-center items-center">
                 <input
                     ref={imageInputRef}
                     type="file"
@@ -139,6 +146,14 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                     height={400}
                     onClick={handleImageClick}
                 />
+                {preview && (
+                    <button
+                        onClick={handleRemoveImage}
+                        className="border-2 w-fit px-5"
+                    >
+                        Remove image
+                    </button>
+                )}
             </div>
             <label>Name</label>
             <input
@@ -186,10 +201,7 @@ function RecipePageEditMode({ recipeId, recipe, onSave }: Props) {
                 />
             </div>
 
-            <button
-                type="submit"
-                className="border-2 w-fit px-5 justify-self-center"
-            >
+            <button type="submit" className="border-2 w-fit px-5">
                 Save
             </button>
         </form>

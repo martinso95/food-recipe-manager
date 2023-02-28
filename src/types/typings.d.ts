@@ -38,4 +38,5 @@ export interface RecipeRequestBody {
     instructions: RecipeInstruction[];
     oldImage?: RecipeImage;
     newImage?: { data: string; type: string };
+    removeImage?: boolean;
 }

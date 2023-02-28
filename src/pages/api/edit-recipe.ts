@@ -1,5 +1,5 @@
 import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
-import { RecipeImage, RecipeRequestBody } from "@/types/typings";
+import { Recipe, RecipeImage, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
     getFirebaseStorageImageURL,
@@ -35,6 +35,7 @@ export default async function handler(
         instructions,
         oldImage,
         newImage,
+        removeImage,
     }: RecipeRequestBody = req.body;
 
     if (
@@ -53,8 +54,8 @@ export default async function handler(
         return;
     }
 
-    // Delete old image if it is being replaced by a new one.
-    if (newImage != null && oldImage != null) {
+    // Delete old image if it is being replaced by a new one, or if the user wants it removed.
+    if (oldImage != null && (newImage != null || removeImage)) {
         const oldFile = adminStorageBucket.file(oldImage.name);
         await oldFile.delete().catch(() => {
             res.status(400).json({
@@ -89,9 +90,17 @@ export default async function handler(
                   url: newImageUrl,
                   name: newImageName,
               }
-            : oldImage != null
-            ? oldImage
-            : undefined;
+            : oldImage;
+
+    const newRecipeObject: Recipe = {
+        name: name,
+        description: description,
+        time: time,
+        servings: servings,
+        ingredients: ingredients,
+        instructions: instructions,
+        image: removeImage ? undefined : newImageObject,
+    };
 
     try {
         await adminFirestore
@@ -99,15 +108,7 @@ export default async function handler(
             .doc(session.user.id)
             .collection("recipes")
             .doc(recipeId)
-            .update({
-                name: name,
-                description: description,
-                time: time,
-                servings: servings,
-                ingredients: ingredients,
-                instructions: instructions,
-                image: newImageObject != null ? newImageObject : undefined,
-            });
+            .set(newRecipeObject);
     } catch (error) {
         res.status(400).json({ body: `Server error: ${error}` });
         return;
