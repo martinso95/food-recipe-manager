@@ -3,7 +3,7 @@
 import { RecipeIngredient } from "@/types/typings";
 import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { isIngredientValid } from "@/utils/Utils";
+import { isIngredientValid } from "./RecipeForm.utils";
 
 const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
     id: "",
@@ -11,12 +11,14 @@ const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
 };
 
 type Props = {
+    className?: string;
     ingredients: RecipeIngredient[];
     onAddIngredient: (ingredient: RecipeIngredient) => void;
     onRemoveIngredient: (ingredientId: string) => void;
 };
 
 function IngredientsEditor({
+    className,
     ingredients,
     onAddIngredient,
     onRemoveIngredient,
@@ -44,7 +46,7 @@ function IngredientsEditor({
     };
 
     return (
-        <div className="flex flex-col">
+        <div className={`${className} flex flex-col`}>
             <p>Ingredients:</p>
             <div className="flex flex-row">
                 <label>Amount</label>

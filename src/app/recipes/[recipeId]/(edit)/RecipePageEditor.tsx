@@ -1,26 +1,25 @@
 "use client";
 
+import { Recipe } from "@/types/typings";
 import { useRouter } from "next/navigation";
+import {
+    editRecipe,
+    isRecipeValid,
+    sanitizeRecipe,
+} from "@/app/components/RecipeForm/RecipeForm.utils";
+import RecipeForm from "@/app/components/RecipeForm/RecipeForm";
 import {
     useRecipeForm,
     useRecipeFormImage,
 } from "@/app/components/RecipeForm/RecipeForm.hooks";
-import RecipeForm from "@/app/components/RecipeForm/RecipeForm";
-import {
-    addNewRecipe,
-    isRecipeValid,
-    sanitizeRecipe,
-} from "@/app/components/RecipeForm/RecipeForm.utils";
-import { Recipe } from "@/types/typings";
 
-export const INITIAL_RECIPE: Recipe = {
-    name: "",
-    description: "",
-    ingredients: [],
-    instructions: [{ id: crypto.randomUUID(), description: "" }],
+type Props = {
+    recipeId: string;
+    recipe: Recipe;
+    onSave: () => void;
 };
 
-function AddRecipeForm() {
+function RecipePageEditor({ recipeId, recipe: originalRecipe, onSave }: Props) {
     const router = useRouter();
     const {
         recipe,
@@ -28,23 +27,22 @@ function AddRecipeForm() {
         handleAddIngredient,
         handleRemoveIngredient,
         handleInstructionsChange,
-    } = useRecipeForm(INITIAL_RECIPE);
+    } = useRecipeForm(originalRecipe);
 
     const { imagePreview, imageFile, handleAddImage, handleRemoveImage } =
-        useRecipeFormImage();
+        useRecipeFormImage(originalRecipe.image?.url);
 
     const handleAddNewRecipe = () => {
-        const recipeToAdd = sanitizeRecipe(recipe);
+        const recipeToEdit = sanitizeRecipe(recipe);
 
-        if (!isRecipeValid(recipeToAdd)) {
+        if (!isRecipeValid(recipeToEdit)) {
             alert("Recipe fields invalid.");
             return;
         }
 
-        addNewRecipe(recipeToAdd, imageFile)
+        editRecipe(recipeId, recipeToEdit, imageFile, imagePreview)
             .then(() => {
-                // Force refresh after push, so that the new recipe appears in the list.
-                router.push("/recipes");
+                onSave();
                 router.refresh();
             })
             .catch((error) => {
@@ -67,4 +65,4 @@ function AddRecipeForm() {
     );
 }
 
-export default AddRecipeForm;
+export default RecipePageEditor;

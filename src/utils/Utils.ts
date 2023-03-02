@@ -1,5 +1,3 @@
-import { Recipe, RecipeIngredient, RecipeInstruction } from "@/types/typings";
-
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
 export const FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER = "recipeImages";
@@ -66,53 +64,3 @@ export const getFirebaseStorageImageURL = (
     encodeURIComponent(fileName) +
     "?alt=media&token=" +
     token;
-
-export const INITIAL_RECIPE_STATE: Recipe = {
-    name: "",
-    description: "",
-    ingredients: [],
-    instructions: [],
-};
-
-export const isRecipeValid = (recipe: Recipe) => {
-    const { name, description, ingredients, instructions } = recipe;
-    return (
-        name !== "" &&
-        description !== "" &&
-        ingredients.length > 0 &&
-        removeEmptyInstructions(instructions).length > 0
-    );
-};
-
-export const isIngredientValid = (ingredient: RecipeIngredient) => {
-    const { amount, unit, name } = ingredient;
-    if (name === "") {
-        return { isValid: false, message: "Ingredient is missing a name." };
-    }
-
-    if (
-        amount != null &&
-        amount.toString() !== "" &&
-        (unit == null || unit === "")
-    ) {
-        return {
-            isValid: false,
-            message: "Ingredient unit is needed if amount is specified",
-        };
-    }
-
-    if (
-        unit != null &&
-        unit.toString() !== "" &&
-        (amount == null || amount.toString() === "")
-    ) {
-        return {
-            isValid: false,
-            message: "Ingredient amount is needed if unit is specified.",
-        };
-    }
-    return { isValid: true, message: "Success." };
-};
-
-export const removeEmptyInstructions = (instructions: RecipeInstruction[]) =>
-    instructions.filter((instruction) => instruction.description !== "");

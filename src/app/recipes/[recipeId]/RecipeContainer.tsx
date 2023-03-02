@@ -2,8 +2,8 @@
 
 import { Recipe } from "@/types/typings";
 import { useState } from "react";
-import EditRecipeForm from "./(edit-mode)/RecipePageEditMode";
-import RecipePageViewMode from "./(view-mode)/RecipePageViewMode";
+import RecipePageEditor from "./(edit)/RecipePageEditor";
+import RecipePageViewer from "./(view)/RecipePageViewer";
 
 type Props = {
     recipeId: string;
@@ -16,13 +16,13 @@ function RecipeContainer({ recipeId, recipe }: Props) {
     return (
         <>
             {editMode ? (
-                <EditRecipeForm
+                <RecipePageEditor
                     recipeId={recipeId}
                     recipe={recipe}
                     onSave={() => setEditMode(false)}
                 />
             ) : (
-                <RecipePageViewMode recipe={recipe} />
+                <RecipePageViewer recipe={recipe} />
             )}
             <button
                 onClick={() => setEditMode(!editMode)}

@@ -1,11 +1,18 @@
+"use client";
+
 import { RecipeInstruction } from "@/types/typings";
 
 type Props = {
+    className?: string;
     instructions: RecipeInstruction[];
     onInstructionsChange: (instructions: RecipeInstruction[]) => void;
 };
 
-function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
+function InstructionsEditor({
+    className,
+    instructions,
+    onInstructionsChange,
+}: Props) {
     const handleTextAreaChange = (
         e: React.ChangeEvent<HTMLTextAreaElement>
     ) => {
@@ -33,7 +40,7 @@ function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className={`${className} flex flex-col`}>
             <p>Instructions:</p>
             <ol>
                 {instructions.map(({ id, description }, index) => (

@@ -6,7 +6,7 @@ import InstructionsViewer from "./InstructionsViewer";
 
 type Props = { recipe: Recipe };
 
-function RecipePageViewMode({ recipe }: Props) {
+function RecipePageViewer({ recipe }: Props) {
     const {
         name,
         description,
@@ -38,4 +38,4 @@ function RecipePageViewMode({ recipe }: Props) {
     );
 }
 
-export default RecipePageViewMode;
+export default RecipePageViewer;
