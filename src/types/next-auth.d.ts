@@ -1,10 +1,8 @@
-import { DefaultUser } from "next-auth";
+import { User } from "./typings";
 
 declare module "next-auth" {
     // Add id to session user.
     interface Session {
-        user: DefaultUser & {
-            id: string;
-        };
+        user: User;
     }
 }

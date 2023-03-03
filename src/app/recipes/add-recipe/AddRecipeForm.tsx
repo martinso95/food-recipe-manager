@@ -12,6 +12,7 @@ import {
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
 import { Recipe } from "@/types/typings";
+import { RECIPES } from "@/utils/routes";
 
 export const INITIAL_RECIPE: Recipe = {
     name: "",
@@ -44,7 +45,7 @@ function AddRecipeForm() {
         addNewRecipe(recipeToAdd, imageFile)
             .then(() => {
                 // Force refresh after push, so that the new recipe appears in the list.
-                router.push("/recipes");
+                router.push(RECIPES);
                 router.refresh();
             })
             .catch((error) => {

@@ -19,7 +19,7 @@ async function RecipePage({ params: { recipeId } }: Props) {
     ).data() as Recipe;
 
     return (
-        <main className="m-8">
+        <main className="p-8">
             <RecipeContainer recipeId={recipeId} recipe={recipe} />
         </main>
     );

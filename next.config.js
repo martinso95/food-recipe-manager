@@ -16,6 +16,11 @@ const nextConfig = {
         "@heroicons/react/24/solid": {
             transform: "@heroicons/react/24/solid/{{member}}",
         },
+        "flowbite-react": {
+            transform:
+                "flowbite-react/lib/esm/components/{{member}}/{{member}}",
+            skipDefaultConversion: true,
+        },
     },
 };
 

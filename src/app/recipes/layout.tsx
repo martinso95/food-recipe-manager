@@ -1,22 +1,13 @@
-import Link from "next/link";
-import SignOutComponent from "../components/SignOutComponent";
+import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
+import NavBar from "../components/NavBar";
 
-function RecipeListLayout({ children }: { children: React.ReactNode }) {
+async function RecipeListLayout({ children }: { children: React.ReactNode }) {
+    const user = await getServerSessionUser();
+
     return (
-        <div>
-            <header className="bg-black py-2">
-                <nav className="flex justify-between items-center">
-                    <Link
-                        href={"/recipes"}
-                        className="text-2xl text-white font-bold mx-2"
-                    >
-                        Food Recipe Manager
-                    </Link>
-                    <div className="flex items-center">
-                        <SignOutComponent className="text-white font-bold mx-2" />
-                    </div>
-                </nav>
-            </header>
+        // 60px is the height of the NavBar.
+        <div className="flex flex-col space-y-[60px]">
+            <NavBar user={user} />
             {children}
         </div>
     );

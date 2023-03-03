@@ -4,6 +4,7 @@ import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import ImageWithFallback from "../components/ImageWithFallback";
+import { ADD_RECIPE, RECIPES } from "@/utils/routes";
 
 async function RecipeListPage() {
     const user = await getServerSessionUser();
@@ -19,7 +20,7 @@ async function RecipeListPage() {
         <main className="max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mx-auto auto-rows-[1fr] px-10 py-10">
             {recipeDocuments.map((recipeDocument) => (
                 <Link
-                    href={`/recipes/${recipeDocument.id}`}
+                    href={`${RECIPES}/${recipeDocument.id}`}
                     key={recipeDocument.id}
                     className="flex flex-col space-y-2 p-4 border-2 rounded-md min-w-fit"
                 >
@@ -36,7 +37,7 @@ async function RecipeListPage() {
                 </Link>
             ))}
             <Link
-                href="/recipes/add-recipe"
+                href={ADD_RECIPE}
                 className="fixed right-6 bottom-6 bg-black rounded-full hover:bg-gray-800 border-white border-2"
             >
                 <PlusIcon className="h-14 w-14 text-white" />

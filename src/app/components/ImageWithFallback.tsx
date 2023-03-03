@@ -4,7 +4,7 @@ import Image, { ImageProps } from "next/image";
 import React, { useState } from "react";
 
 type Props = Omit<ImageProps, "src"> & {
-    src: string | undefined;
+    src: string | undefined | null;
     fallback: string;
     className?: string;
 };

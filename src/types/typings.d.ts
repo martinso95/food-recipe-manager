@@ -1,3 +1,9 @@
+import { DefaultUser } from "next-auth";
+
+export interface User extends DefaultUser {
+    id: string;
+}
+
 export interface RecipeImage {
     id: string;
     url: string;

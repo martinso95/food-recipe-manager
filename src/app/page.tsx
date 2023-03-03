@@ -2,8 +2,9 @@ import Link from "next/link";
 import { getProviders } from "next-auth/react";
 import SignInComponent from "./SignInComponent";
 import Image from "next/image";
-import SignOutComponent from "./components/SignOutComponent";
 import { getServerSession } from "@/utils/NextAuthSession.utils";
+import SignOutComponent from "./components/SignOutComponent";
+import { RECIPES } from "@/utils/routes";
 
 async function Home() {
     const session = await getServerSession();
@@ -28,7 +29,7 @@ async function Home() {
                         )}
                     </div>
                     <Link
-                        href="/recipes"
+                        href={RECIPES}
                         className="text-4xl bg-blue-600 w-fit flex items-center justify-center py-4 px-4 rounded-lg text-white font-bold"
                     >
                         Go to My recipes
