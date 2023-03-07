@@ -1,9 +1,18 @@
+import { randomUUID } from "crypto";
+import { Recipe } from "@/types/typings";
 import AddRecipeForm from "./AddRecipeForm";
+
+const INITIAL_RECIPE: Recipe = {
+    name: "",
+    description: "",
+    ingredients: [],
+    instructions: [{ id: randomUUID(), description: "" }],
+};
 
 async function AddReipePage() {
     return (
-        <main className="max-w-7xl px-10 py-10">
-            <AddRecipeForm />
+        <main className="page">
+            <AddRecipeForm initialRecipe={INITIAL_RECIPE} />
         </main>
     );
 }

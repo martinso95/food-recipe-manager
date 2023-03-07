@@ -7,20 +7,24 @@ import {
     isRecipeValid,
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
-import RecipeForm from "@/app/components/RecipeForm/RecipeForm";
+import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
 import {
     useRecipeForm,
     useRecipeFormImage,
 } from "@/app/components/RecipeForm/RecipeForm.hooks";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import Spinner from "@/app/components/Spinner";
 
 type Props = {
     recipeId: string;
     recipe: Recipe;
-    onSave: () => void;
+    onExit: () => void;
 };
 
-function RecipePageEditor({ recipeId, recipe: originalRecipe, onSave }: Props) {
+function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
     const router = useRouter();
+    const [saveIsLoading, setSaveIsLoading] = useState(false);
     const {
         recipe,
         handleInputChange,
@@ -32,36 +36,60 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onSave }: Props) {
     const { imagePreview, imageFile, handleAddImage, handleRemoveImage } =
         useRecipeFormImage(originalRecipe.image?.url);
 
-    const handleAddNewRecipe = () => {
+    const handleEditRecipe = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         const recipeToEdit = sanitizeRecipe(recipe);
 
         if (!isRecipeValid(recipeToEdit)) {
             alert("Recipe fields invalid.");
             return;
         }
+        setSaveIsLoading(true);
 
         editRecipe(recipeId, recipeToEdit, imageFile, imagePreview)
             .then(() => {
-                onSave();
+                onExit();
                 router.refresh();
             })
             .catch((error) => {
+                setSaveIsLoading(false);
                 alert(error);
             });
     };
 
     return (
-        <RecipeForm
-            recipe={recipe}
-            handleInputChange={handleInputChange}
-            handleAddIngredient={handleAddIngredient}
-            handleRemoveIngredient={handleRemoveIngredient}
-            handleInstructionsChange={handleInstructionsChange}
-            imagePreview={imagePreview}
-            handleAddImage={handleAddImage}
-            handleRemoveImage={handleRemoveImage}
-            handleSaveRecipe={handleAddNewRecipe}
-        />
+        <form onSubmit={handleEditRecipe}>
+            <RecipeFormInputs
+                recipe={recipe}
+                handleInputChange={handleInputChange}
+                handleAddIngredient={handleAddIngredient}
+                handleRemoveIngredient={handleRemoveIngredient}
+                handleInstructionsChange={handleInstructionsChange}
+                imagePreview={imagePreview}
+                handleAddImage={handleAddImage}
+                handleRemoveImage={handleRemoveImage}
+            />
+            <button
+                type="submit"
+                disabled={saveIsLoading}
+                className="speed-dial-button bottom-28"
+            >
+                {saveIsLoading ? (
+                    <Spinner width="8" height="8" />
+                ) : (
+                    <CheckIcon className="h-8 w-8 text-white" />
+                )}
+            </button>
+            <button
+                type="button"
+                disabled={saveIsLoading}
+                onClick={onExit}
+                className="speed-dial-button"
+            >
+                <XMarkIcon className="h-8 w-8 text-white" />
+            </button>
+        </form>
     );
 }
 

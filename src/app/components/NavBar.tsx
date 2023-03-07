@@ -18,13 +18,13 @@ function NavBar({ user }: Props) {
     const pathname = usePathname();
 
     return (
-        <Navbar fluid={true} className="fixed top-0 left-0 w-full">
-            <Navbar.Brand href={RECIPES}>
+        <Navbar rounded fluid className="container mx-auto sticky top-0 z-50">
+            <Navbar.Brand href={RECIPES} className="flex-wrap">
                 <Image
                     src={RECIPE_PLACEHOLDER}
                     alt="Food Recipe Manager Logo"
-                    width={36}
-                    height={36}
+                    width={40}
+                    height={40}
                     className="mr-3"
                 />
                 <span className="self-center whitespace-nowrap text-xl font-semibold text-white">

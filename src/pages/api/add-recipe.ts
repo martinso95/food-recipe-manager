@@ -113,5 +113,8 @@ export default async function handler(
             });
     }
 
-    res.status(200).send("Recipe added to the databse.");
+    res.status(200).json({
+        recipeId: recipeId,
+        message: "Recipe added to the databse.",
+    });
 }

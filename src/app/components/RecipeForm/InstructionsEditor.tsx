@@ -3,16 +3,11 @@
 import { RecipeInstruction } from "@/types/typings";
 
 type Props = {
-    className?: string;
     instructions: RecipeInstruction[];
     onInstructionsChange: (instructions: RecipeInstruction[]) => void;
 };
 
-function InstructionsEditor({
-    className,
-    instructions,
-    onInstructionsChange,
-}: Props) {
+function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
     const handleTextAreaChange = (
         e: React.ChangeEvent<HTMLTextAreaElement>
     ) => {
@@ -40,18 +35,21 @@ function InstructionsEditor({
     };
 
     return (
-        <div className={`${className} flex flex-col`}>
-            <p>Instructions:</p>
-            <ol>
+        <div className={"flex flex-col"}>
+            <p className="label mb-1">Instructions</p>
+            <ol className="space-y-6">
                 {instructions.map(({ id, description }, index) => (
                     <li key={id}>
-                        <p>Step {index + 1}</p>
+                        <label htmlFor={id} className="label mb-1 font-light">
+                            Step {index + 1}
+                        </label>
                         <textarea
+                            id={id}
                             name={id}
                             value={description}
                             onChange={handleTextAreaChange}
                             rows={8}
-                            className="border-2 w-full resize-none"
+                            className="textarea"
                         />
                     </li>
                 ))}
@@ -59,9 +57,9 @@ function InstructionsEditor({
             <button
                 type="button"
                 onClick={handleAddNewInstruction}
-                className="border-2 w-fit px-5"
+                className="button mt-4"
             >
-                Add new instruction
+                Add instructions
             </button>
         </div>
     );

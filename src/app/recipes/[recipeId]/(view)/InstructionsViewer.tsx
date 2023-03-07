@@ -5,11 +5,11 @@ type Props = {
 };
 function InstructionsViewer({ instructions }: Props) {
     return (
-        <ol>
+        <ol className="space-y-6">
             {instructions.map(({ id, description }, index) => (
                 <li key={id}>
-                    <p className="font-bold">Step {index + 1}</p>
-                    <p className="whitespace-pre-line">{description}</p>
+                    <p className="label mb-1 font-light">Step {index + 1}</p>
+                    <p className="textarea-view">{description}</p>
                 </li>
             ))}
         </ol>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Recipe } from "@/types/typings";
+import { PencilIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import RecipePageEditor from "./(edit)/RecipePageEditor";
 import RecipePageViewer from "./(view)/RecipePageViewer";
@@ -19,17 +20,19 @@ function RecipeContainer({ recipeId, recipe }: Props) {
                 <RecipePageEditor
                     recipeId={recipeId}
                     recipe={recipe}
-                    onSave={() => setEditMode(false)}
+                    onExit={() => setEditMode(false)}
                 />
             ) : (
                 <RecipePageViewer recipe={recipe} />
             )}
-            <button
-                onClick={() => setEditMode(!editMode)}
-                className="border-2 w-fit px-5"
-            >
-                {editMode ? "Cancel" : "Edit"}
-            </button>
+            {!editMode && (
+                <button
+                    onClick={() => setEditMode(!editMode)}
+                    className="speed-dial-button"
+                >
+                    <PencilIcon className="h-8 w-8" />
+                </button>
+            )}
         </>
     );
 }

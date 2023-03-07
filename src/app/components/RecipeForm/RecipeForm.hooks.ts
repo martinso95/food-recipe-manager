@@ -32,7 +32,9 @@ export const useRecipeFormImage = (initialImage?: string) => {
 export const useRecipeForm = (initialRecipe: Recipe) => {
     const [recipe, setRecipe] = useState<Recipe>(initialRecipe);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         setRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 

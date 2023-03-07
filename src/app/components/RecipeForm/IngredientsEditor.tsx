@@ -2,7 +2,7 @@
 
 import { RecipeIngredient } from "@/types/typings";
 import { useState } from "react";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { isIngredientValid } from "./RecipeForm.utils";
 
 const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
@@ -11,14 +11,12 @@ const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
 };
 
 type Props = {
-    className?: string;
     ingredients: RecipeIngredient[];
     onAddIngredient: (ingredient: RecipeIngredient) => void;
     onRemoveIngredient: (ingredientId: string) => void;
 };
 
 function IngredientsEditor({
-    className,
     ingredients,
     onAddIngredient,
     onRemoveIngredient,
@@ -46,51 +44,76 @@ function IngredientsEditor({
     };
 
     return (
-        <div className={`${className} flex flex-col`}>
-            <p>Ingredients:</p>
-            <div className="flex flex-row">
-                <label>Amount</label>
+        <div className={"flex flex-col"}>
+            <p className="label mb-1">Ingredients</p>
+            <div className="grid grid-flow-col grid-cols-13 gap-x-1">
+                <label
+                    htmlFor="amount"
+                    className="label mb-0 font-light col-span-3"
+                >
+                    Amount
+                </label>
                 <input
                     type="number"
+                    id="amount"
                     name="amount"
                     value={newIngredient.amount || ""}
                     onChange={handleInputChange}
-                    className="border-2"
+                    className="input col-span-3 text-right"
                 />
-                <label>Unit</label>
+                <label
+                    htmlFor="unit"
+                    className="label mb-0 font-light col-span-2"
+                >
+                    Unit
+                </label>
                 <input
                     type="text"
+                    id="unit"
                     name="unit"
                     value={newIngredient.unit || ""}
                     onChange={handleInputChange}
-                    className="border-2"
+                    className="input col-span-2"
                 />
-                <label>Name</label>
+                <label
+                    htmlFor="name"
+                    className="label mb-0 font-light col-span-6"
+                >
+                    Name
+                </label>
                 <input
                     type="text"
+                    id="name"
                     name="name"
                     value={newIngredient.name}
                     onChange={handleInputChange}
-                    className="border-2"
+                    className="input col-span-6"
                 />
                 <button
                     type="button"
                     onClick={handleAddIngredient}
-                    className="border-2 w-fit px-5"
+                    className="button row-span-2 self-end col-span-2 px-0 flex justify-center"
                 >
-                    Add
+                    <PlusIcon className="h-6 w-6" />
                 </button>
             </div>
-            <ul>
+            <ul className="mt-2 space-y-2">
                 {ingredients.map(({ id, amount, unit, name }) => (
-                    <li key={id} className="flex flex-row  space-x-2">
-                        <p>{`${amount ?? ""} ${unit ?? ""} ${name}`.trim()}</p>
+                    <li
+                        key={id}
+                        className="grid grid-cols-13 gap-x-1 items-center"
+                    >
+                        <p className="label font-light col-span-3 text-right">
+                            {amount}
+                        </p>
+                        <p className="label font-light col-span-2">{unit}</p>
+                        <p className="label font-light col-span-6">{name}</p>
                         <button
                             type="button"
                             onClick={() => onRemoveIngredient(id)}
-                            className="border-2 w-fit px-5"
+                            className="button col-span-2 px-0 flex justify-center"
                         >
-                            <TrashIcon className="h-4 w-4" />
+                            <TrashIcon className="h-6 w-6" />
                         </button>
                     </li>
                 ))}

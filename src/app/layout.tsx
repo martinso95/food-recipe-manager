@@ -12,7 +12,7 @@ export default async function RootLayout({
     return (
         <html lang="en" className="dark">
             <head />
-            <body>
+            <body className="bg-gray-600">
                 <Providers session={session}>{children}</Providers>
             </body>
         </html>

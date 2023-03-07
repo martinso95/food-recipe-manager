@@ -3,7 +3,7 @@ export default function Head() {
         <>
             <title>Food Recipe Manager</title>
             <meta
-                content="width=device-width, initial-scale=1"
+                content="width=device-width, initial-scale=1, minimum-scale=1"
                 name="viewport"
             />
             <meta name="description" content="Food, Recipes" />

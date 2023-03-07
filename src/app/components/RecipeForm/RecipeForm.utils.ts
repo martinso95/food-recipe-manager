@@ -11,11 +11,9 @@ import { toBase64Image } from "@/utils/Utils";
  * This applies to fields that are optional, and if those fields are empty, we do not need to store them in the database.
  */
 export const sanitizeRecipe = (recipe: Recipe): Recipe => {
-    const { name, description, time, servings, ingredients, instructions } =
-        recipe;
+    const { time, servings, ingredients, instructions } = recipe;
     return {
-        name: name,
-        description: description,
+        ...recipe,
         time: time === "" ? undefined : time,
         servings: servings?.toString() === "" ? undefined : servings,
         ingredients: ingredients.map((ingredient) => {
@@ -75,7 +73,7 @@ export const isIngredientValid = (ingredient: RecipeIngredient) => {
 export const addNewRecipe = async (
     recipe: Recipe,
     imageFile: File | undefined
-) => {
+): Promise<string> => {
     const { name, description, time, servings, ingredients, instructions } =
         recipe;
 
@@ -109,7 +107,13 @@ export const addNewRecipe = async (
     });
 
     if (response.ok) {
-        return Promise.resolve();
+        const recipeId: string = await response
+            .json()
+            .then((result) => result.recipeId)
+            .catch(() => {
+                return Promise.reject("Could not get new recipe.");
+            });
+        return Promise.resolve(recipeId);
     } else {
         return Promise.reject("Could not add recipe.");
     }

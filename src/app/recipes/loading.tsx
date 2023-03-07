@@ -1,3 +1,3 @@
 export default function RecipeListLoading() {
-    return "Loading recipes...";
+    return <div className="page">Loading recipes...</div>;
 }

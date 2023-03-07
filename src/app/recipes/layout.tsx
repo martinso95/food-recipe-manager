@@ -5,8 +5,7 @@ async function RecipeListLayout({ children }: { children: React.ReactNode }) {
     const user = await getServerSessionUser();
 
     return (
-        // 60px is the height of the NavBar.
-        <div className="flex flex-col space-y-[60px]">
+        <div className="flex flex-col">
             <NavBar user={user} />
             {children}
         </div>

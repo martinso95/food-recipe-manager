@@ -1,70 +1,92 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
     useRecipeForm,
     useRecipeFormImage,
 } from "@/app/components/RecipeForm/RecipeForm.hooks";
-import RecipeForm from "@/app/components/RecipeForm/RecipeForm";
+import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
 import {
     addNewRecipe,
     isRecipeValid,
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
-import { Recipe } from "@/types/typings";
 import { RECIPES } from "@/utils/routes";
+import Spinner from "@/app/components/Spinner";
+import { Recipe } from "@/types/typings";
 
-export const INITIAL_RECIPE: Recipe = {
-    name: "",
-    description: "",
-    ingredients: [],
-    instructions: [{ id: crypto.randomUUID(), description: "" }],
+type Props = {
+    initialRecipe: Recipe;
 };
-
-function AddRecipeForm() {
+function AddRecipeForm({ initialRecipe }: Props) {
     const router = useRouter();
+    const [saveIsLoading, setSaveIsLoading] = useState(false);
     const {
         recipe,
         handleInputChange,
         handleAddIngredient,
         handleRemoveIngredient,
         handleInstructionsChange,
-    } = useRecipeForm(INITIAL_RECIPE);
+    } = useRecipeForm(initialRecipe);
 
     const { imagePreview, imageFile, handleAddImage, handleRemoveImage } =
         useRecipeFormImage();
 
-    const handleAddNewRecipe = () => {
+    const handleAddNewRecipe = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
         const recipeToAdd = sanitizeRecipe(recipe);
 
         if (!isRecipeValid(recipeToAdd)) {
             alert("Recipe fields invalid.");
             return;
         }
+        setSaveIsLoading(true);
 
         addNewRecipe(recipeToAdd, imageFile)
-            .then(() => {
-                // Force refresh after push, so that the new recipe appears in the list.
-                router.push(RECIPES);
-                router.refresh();
+            .then((recipeId) => {
+                router.push(`${RECIPES}/${recipeId}`);
             })
             .catch((error) => {
+                setSaveIsLoading(false);
                 alert(error);
             });
     };
 
     return (
-        <RecipeForm
-            recipe={recipe}
-            handleInputChange={handleInputChange}
-            handleAddIngredient={handleAddIngredient}
-            handleRemoveIngredient={handleRemoveIngredient}
-            handleInstructionsChange={handleInstructionsChange}
-            imagePreview={imagePreview}
-            handleAddImage={handleAddImage}
-            handleRemoveImage={handleRemoveImage}
-            handleSaveRecipe={handleAddNewRecipe}
-        />
+        <form onSubmit={handleAddNewRecipe}>
+            <RecipeFormInputs
+                recipe={recipe}
+                handleInputChange={handleInputChange}
+                handleAddIngredient={handleAddIngredient}
+                handleRemoveIngredient={handleRemoveIngredient}
+                handleInstructionsChange={handleInstructionsChange}
+                imagePreview={imagePreview}
+                handleAddImage={handleAddImage}
+                handleRemoveImage={handleRemoveImage}
+            />
+            <button
+                type="submit"
+                disabled={saveIsLoading}
+                className="speed-dial-button bottom-28"
+            >
+                {saveIsLoading ? (
+                    <Spinner width="8" height="8" />
+                ) : (
+                    <CheckIcon className="h-8 w-8" />
+                )}
+            </button>
+            <button
+                type="button"
+                disabled={saveIsLoading}
+                onClick={() => router.push(RECIPES)}
+                className="speed-dial-button"
+            >
+                <XMarkIcon className="h-8 w-8" />
+            </button>
+        </form>
     );
 }
 
