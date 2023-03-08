@@ -32,6 +32,18 @@ export const nextAuthConfig: AuthOptions = {
             }
             return session;
         },
+        signIn({ account, user, profile, credentials }) {
+            if (
+                account &&
+                account.provider === "google" &&
+                profile &&
+                profile.email
+            ) {
+                return profile.email === process.env.USER_WITH_ACCESS;
+            } else {
+                return false;
+            }
+        },
     },
 };
 
