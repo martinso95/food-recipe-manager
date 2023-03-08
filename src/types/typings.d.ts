@@ -33,7 +33,7 @@ export interface Recipe {
     image?: RecipeImage;
 }
 
-// Used for passing recipe through API. It specifically can contain id and image data.
+// Used for passing recipe through API, for adding/editing recipe. It specifically can contain id and image data.
 export interface RecipeRequestBody {
     recipeId?: string;
     name: string;
@@ -45,4 +45,10 @@ export interface RecipeRequestBody {
     oldImage?: RecipeImage;
     newImage?: { data: string; type: string };
     removeImage?: boolean;
+}
+
+// Used for deleting recipe through API.
+export interface RecipeRequestDeleteBody {
+    recipeId: string;
+    image?: RecipeImage;
 }

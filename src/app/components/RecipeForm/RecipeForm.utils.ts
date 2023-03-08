@@ -1,8 +1,10 @@
 import {
     Recipe,
+    RecipeImage,
     RecipeIngredient,
     RecipeInstruction,
     RecipeRequestBody,
+    RecipeRequestDeleteBody,
 } from "@/types/typings";
 import { toBase64Image } from "@/utils/Utils";
 
@@ -165,5 +167,32 @@ export const editRecipe = async (
         return Promise.resolve();
     } else {
         return Promise.reject("Could not edit recipe.");
+    }
+};
+
+export const deleteRecipe = async (
+    recipeId: string | undefined,
+    image: RecipeImage | undefined
+) => {
+    if (recipeId == null) {
+        return Promise.reject("Recipe id is missing.");
+    }
+    const requestBody: RecipeRequestDeleteBody = {
+        recipeId,
+        image,
+    };
+
+    const response = await fetch("/api/delete-recipe", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+    });
+
+    if (response.ok) {
+        return Promise.resolve();
+    } else {
+        return Promise.reject("Could not delete recipe.");
     }
 };

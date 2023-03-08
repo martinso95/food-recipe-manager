@@ -3,6 +3,7 @@
 import { Recipe } from "@/types/typings";
 import { useRouter } from "next/navigation";
 import {
+    deleteRecipe,
     editRecipe,
     isRecipeValid,
     sanitizeRecipe,
@@ -12,9 +13,10 @@ import {
     useRecipeForm,
     useRecipeFormImage,
 } from "@/app/components/RecipeForm/RecipeForm.hooks";
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Spinner from "@/app/components/Spinner";
+import { RECIPES } from "@/utils/routes";
 
 type Props = {
     recipeId: string;
@@ -25,6 +27,7 @@ type Props = {
 function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
     const router = useRouter();
     const [saveIsLoading, setSaveIsLoading] = useState(false);
+    const [deleteIsLoading, setDeleteIsLoading] = useState(false);
     const {
         recipe,
         handleInputChange,
@@ -58,6 +61,20 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
             });
     };
 
+    const handleDeleteRecipe = () => {
+        setDeleteIsLoading(true);
+
+        deleteRecipe(recipeId, originalRecipe.image)
+            .then(() => {
+                onExit();
+                router.replace(RECIPES);
+            })
+            .catch((error) => {
+                setDeleteIsLoading(false);
+                alert(error);
+            });
+    };
+
     return (
         <form onSubmit={handleEditRecipe}>
             <RecipeFormInputs
@@ -71,9 +88,21 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
                 handleRemoveImage={handleRemoveImage}
             />
             <button
+                type="button"
+                disabled={saveIsLoading || deleteIsLoading}
+                onClick={handleDeleteRecipe}
+                className="speed-dial-button bottom-[12.5rem]"
+            >
+                {deleteIsLoading ? (
+                    <Spinner width="8" height="8" />
+                ) : (
+                    <TrashIcon className="h-8 w-8 text-white" />
+                )}
+            </button>
+            <button
                 type="submit"
-                disabled={saveIsLoading}
-                className="speed-dial-button bottom-28"
+                disabled={saveIsLoading || deleteIsLoading}
+                className="speed-dial-button bottom-[7rem]"
             >
                 {saveIsLoading ? (
                     <Spinner width="8" height="8" />
@@ -83,7 +112,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
             </button>
             <button
                 type="button"
-                disabled={saveIsLoading}
+                disabled={saveIsLoading || deleteIsLoading}
                 onClick={onExit}
                 className="speed-dial-button"
             >
