@@ -1,3 +1,5 @@
+import { RecipeIngredient } from "@/types/typings";
+
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
 export const FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER = "recipeImages";
@@ -64,3 +66,10 @@ export const getFirebaseStorageImageURL = (
     encodeURIComponent(fileName) +
     "?alt=media&token=" +
     token;
+
+export const sortIngredientsAlphabetically = (
+    ingredients: RecipeIngredient[]
+) =>
+    [...ingredients].sort((a, b) =>
+        Intl.Collator("en").compare(a.name, b.name)
+    );

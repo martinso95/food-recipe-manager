@@ -1,6 +1,7 @@
 "use client";
 
 import { RecipeIngredient } from "@/types/typings";
+import { sortIngredientsAlphabetically } from "@/utils/Utils";
 import { useState } from "react";
 
 type Props = {
@@ -22,45 +23,47 @@ function IngredientsViewer({ ingredients }: Props) {
     };
 
     return (
-        <ul className="max-w-full md:max-w-3xl mt-2 grid grid-cols-1 auto-rows-[1fr]">
-            {ingredients.map(({ id, amount, unit, name }) => {
-                const hasAmountAndUnit = amount != null && unit != null;
-                return (
-                    <li
-                        key={id}
-                        className="grid grid-cols-8 md:grid-cols-16 gap-x-1 items-center"
-                    >
-                        {hasAmountAndUnit ? (
-                            <>
-                                <input
-                                    type="number"
-                                    name={id}
-                                    value={parseFloat(
-                                        (amount * multiplier).toFixed(4)
-                                    )}
-                                    onChange={handleInputChange}
-                                    className="input text-right col-span-2"
-                                />
-                                <p className="label font-light text-left col-span-1">
-                                    {unit}
-                                </p>
-                            </>
-                        ) : (
-                            <p className="label font-light text-left col-span-1 col-start-3">
-                                -
-                            </p>
-                        )}
-                        <p
-                            className={`label font-light text-left col-span-5 md:col-span-13 ${
-                                !hasAmountAndUnit && "col-start-4"
-                            }`}
+        <ol className="max-w-full md:max-w-3xl mt-2 grid grid-cols-1 auto-rows-[1fr]">
+            {sortIngredientsAlphabetically(ingredients).map(
+                ({ id, amount, unit, name }) => {
+                    const hasAmountAndUnit = amount != null && unit != null;
+                    return (
+                        <li
+                            key={id}
+                            className="grid grid-cols-8 md:grid-cols-16 gap-x-1 items-center"
                         >
-                            {name}
-                        </p>
-                    </li>
-                );
-            })}
-        </ul>
+                            {hasAmountAndUnit ? (
+                                <>
+                                    <input
+                                        type="number"
+                                        name={id}
+                                        value={parseFloat(
+                                            (amount * multiplier).toFixed(4)
+                                        )}
+                                        onChange={handleInputChange}
+                                        className="input text-right col-span-2"
+                                    />
+                                    <p className="label font-light text-left col-span-1">
+                                        {unit}
+                                    </p>
+                                </>
+                            ) : (
+                                <p className="label font-light text-left col-span-1 col-start-3">
+                                    -
+                                </p>
+                            )}
+                            <p
+                                className={`label font-light text-left col-span-5 md:col-span-13 ${
+                                    !hasAmountAndUnit && "col-start-4"
+                                }`}
+                            >
+                                {name}
+                            </p>
+                        </li>
+                    );
+                }
+            )}
+        </ol>
     );
 }
 

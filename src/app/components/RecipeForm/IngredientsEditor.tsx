@@ -4,6 +4,7 @@ import { RecipeIngredient } from "@/types/typings";
 import { useState } from "react";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { isIngredientValid } from "./RecipeForm.utils";
+import { sortIngredientsAlphabetically } from "@/utils/Utils";
 
 const NEW_INGREDIENT_INITIAL_VALUE: RecipeIngredient = {
     id: "",
@@ -98,25 +99,31 @@ function IngredientsEditor({
                 </button>
             </div>
             <ul className="mt-2 space-y-2">
-                {ingredients.map(({ id, amount, unit, name }) => (
-                    <li
-                        key={id}
-                        className="grid grid-cols-13 gap-x-1 items-center"
-                    >
-                        <p className="label font-light col-span-3 text-right">
-                            {amount}
-                        </p>
-                        <p className="label font-light col-span-2">{unit}</p>
-                        <p className="label font-light col-span-6">{name}</p>
-                        <button
-                            type="button"
-                            onClick={() => onRemoveIngredient(id)}
-                            className="button col-span-2 px-0 flex justify-center"
+                {sortIngredientsAlphabetically(ingredients).map(
+                    ({ id, amount, unit, name }) => (
+                        <li
+                            key={id}
+                            className="grid grid-cols-13 gap-x-1 items-center"
                         >
-                            <TrashIcon className="h-6 w-6" />
-                        </button>
-                    </li>
-                ))}
+                            <p className="label font-light col-span-3 text-right">
+                                {amount}
+                            </p>
+                            <p className="label font-light col-span-2">
+                                {unit}
+                            </p>
+                            <p className="label font-light col-span-6">
+                                {name}
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => onRemoveIngredient(id)}
+                                className="button col-span-2 px-0 flex justify-center"
+                            >
+                                <TrashIcon className="h-6 w-6" />
+                            </button>
+                        </li>
+                    )
+                )}
             </ul>
         </div>
     );
