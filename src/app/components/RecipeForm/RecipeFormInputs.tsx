@@ -74,7 +74,7 @@ function RecipeFormInputs({
                     <>
                         <PhotoIcon
                             onClick={handleImageClick}
-                            className="w-full h-full cursor-pointer"
+                            className="w-full h-full cursor-pointer text-gray-200"
                         />
                         <button
                             type="button"
