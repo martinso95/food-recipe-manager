@@ -13,7 +13,7 @@ type Props = {
     user: User;
 };
 
-function NavBar({ user }: Props) {
+function UserNavBar({ user }: Props) {
     const { name, email, image } = user;
     const pathname = usePathname();
 
@@ -60,12 +60,7 @@ function NavBar({ user }: Props) {
                             {email ?? "Email unabailable"}
                         </span>
                     </Dropdown.Header>
-                    <Dropdown.Item
-                        onClick={() => {
-                            console.log("sign out");
-                            signOut();
-                        }}
-                    >
+                    <Dropdown.Item onClick={() => signOut()}>
                         Sign out
                     </Dropdown.Item>
                 </Dropdown>
@@ -80,4 +75,4 @@ function NavBar({ user }: Props) {
     );
 }
 
-export default NavBar;
+export default UserNavBar;

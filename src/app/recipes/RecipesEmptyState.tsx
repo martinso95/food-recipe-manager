@@ -3,7 +3,7 @@ import Link from "next/link";
 
 function RecipesEmptyState() {
     return (
-        <div className="flex flex-col space-y-6 items-center mt-20">
+        <div className="flex flex-col space-y-6 items-center mt-10 sm:mt-20">
             <h1 className="text-4xl text-white font-bold text-center">
                 You have not added any recipes yet
             </h1>
