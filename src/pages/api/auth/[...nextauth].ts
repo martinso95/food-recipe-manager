@@ -32,14 +32,17 @@ export const nextAuthConfig: AuthOptions = {
             }
             return session;
         },
-        signIn({ account, user, profile, credentials }) {
+        signIn({ account, profile }) {
+            const allowedUsers: string[] = JSON.parse(
+                process.env.GOOGLE_USERS_WITH_ACCESS!
+            );
             if (
                 account &&
                 account.provider === "google" &&
                 profile &&
                 profile.email
             ) {
-                return profile.email === process.env.USER_WITH_ACCESS;
+                return allowedUsers.includes(profile.email);
             } else {
                 return false;
             }
