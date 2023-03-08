@@ -5,9 +5,14 @@ import { RecipeInstruction } from "@/types/typings";
 type Props = {
     instructions: RecipeInstruction[];
     onInstructionsChange: (instructions: RecipeInstruction[]) => void;
+    hasFormError: boolean;
 };
 
-function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
+function InstructionsEditor({
+    instructions,
+    onInstructionsChange,
+    hasFormError,
+}: Props) {
     const handleTextAreaChange = (
         e: React.ChangeEvent<HTMLTextAreaElement>
     ) => {
@@ -36,7 +41,10 @@ function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
 
     return (
         <div className={"flex flex-col"}>
-            <p className="label mb-1">Instructions</p>
+            <p className="label mb-1">
+                Instructions
+                <span className="ml-1 text-red-500">*</span>
+            </p>
             <ol className="space-y-6">
                 {instructions.map(({ id, description }, index) => (
                     <li key={id}>
@@ -54,10 +62,17 @@ function InstructionsEditor({ instructions, onInstructionsChange }: Props) {
                     </li>
                 ))}
             </ol>
+            {hasFormError ? (
+                <p className="text-sm text-red-500 font-semibold">
+                    Please add instructions.
+                </p>
+            ) : (
+                <div className="h-5 w-full" />
+            )}
             <button
                 type="button"
                 onClick={handleAddNewInstruction}
-                className="button mt-4"
+                className="button mt-2"
             >
                 Add instructions
             </button>

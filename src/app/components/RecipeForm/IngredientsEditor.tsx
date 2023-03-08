@@ -15,12 +15,14 @@ type Props = {
     ingredients: RecipeIngredient[];
     onAddIngredient: (ingredient: RecipeIngredient) => void;
     onRemoveIngredient: (ingredientId: string) => void;
+    hasFormError: boolean;
 };
 
 function IngredientsEditor({
     ingredients,
     onAddIngredient,
     onRemoveIngredient,
+    hasFormError,
 }: Props) {
     const [newIngredient, setNewIngredient] = useState<RecipeIngredient>(
         NEW_INGREDIENT_INITIAL_VALUE
@@ -46,7 +48,10 @@ function IngredientsEditor({
 
     return (
         <div className={"flex flex-col"}>
-            <p className="label mb-1">Ingredients</p>
+            <p className="label mb-1">
+                Ingredients
+                <span className="ml-1 text-red-500">*</span>
+            </p>
             <div className="grid grid-flow-col grid-cols-13 gap-x-1">
                 <label
                     htmlFor="amount"
@@ -81,6 +86,7 @@ function IngredientsEditor({
                     className="label mb-0 font-light col-span-6"
                 >
                     Name
+                    <span className="ml-1 text-red-500">*</span>
                 </label>
                 <input
                     type="text"
@@ -125,6 +131,13 @@ function IngredientsEditor({
                     )
                 )}
             </ul>
+            {hasFormError ? (
+                <p className="text-sm text-red-500 font-semibold">
+                    Please add ingredients.
+                </p>
+            ) : (
+                <div className="h-5 w-full" />
+            )}
         </div>
     );
 }

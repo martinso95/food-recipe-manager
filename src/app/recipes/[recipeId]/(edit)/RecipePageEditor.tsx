@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
     deleteRecipe,
     editRecipe,
+    getFormErrors,
     isRecipeValid,
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
@@ -30,6 +31,8 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
     const [deleteIsLoading, setDeleteIsLoading] = useState(false);
     const {
         recipe,
+        formErrors,
+        setFormErrors,
         handleInputChange,
         handleAddIngredient,
         handleRemoveIngredient,
@@ -45,6 +48,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
         const recipeToEdit = sanitizeRecipe(recipe);
 
         if (!isRecipeValid(recipeToEdit)) {
+            setFormErrors(getFormErrors(recipeToEdit));
             alert("Recipe fields invalid.");
             return;
         }
@@ -76,9 +80,10 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
     };
 
     return (
-        <form onSubmit={handleEditRecipe}>
+        <form onSubmit={handleEditRecipe} noValidate>
             <RecipeFormInputs
                 recipe={recipe}
+                formErrors={formErrors}
                 handleInputChange={handleInputChange}
                 handleAddIngredient={handleAddIngredient}
                 handleRemoveIngredient={handleRemoveIngredient}

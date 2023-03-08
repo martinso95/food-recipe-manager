@@ -1,6 +1,11 @@
 "use client";
 
-import { Recipe, RecipeIngredient, RecipeInstruction } from "@/types/typings";
+import {
+    Recipe,
+    RecipeFormErrors,
+    RecipeIngredient,
+    RecipeInstruction,
+} from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
@@ -10,6 +15,7 @@ import InstructionsEditor from "./InstructionsEditor";
 
 type Props = {
     recipe: Recipe;
+    formErrors: RecipeFormErrors;
     handleInputChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
@@ -23,6 +29,7 @@ type Props = {
 
 function RecipeFormInputs({
     recipe,
+    formErrors,
     handleInputChange,
     handleAddIngredient,
     handleRemoveIngredient,
@@ -40,7 +47,7 @@ function RecipeFormInputs({
     };
 
     return (
-        <div className="flex flex-col space-y-6">
+        <div className="flex flex-col space-y-1">
             <div className="flex flex-col items-center mx-auto w-full md:w-[95%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%] h-[35vh] md:h-[45vh] lg:h-[55vh]">
                 <input
                     ref={imageInputRef}
@@ -89,28 +96,46 @@ function RecipeFormInputs({
             <div>
                 <label htmlFor="name" className="label mb-1">
                     Name
+                    <span className="ml-1 text-red-500">*</span>
                 </label>
                 <input
                     type="text"
                     id="name"
                     name="name"
+                    required
                     value={recipe.name}
                     onChange={handleInputChange}
                     className="input"
                 />
+                {formErrors["name"] === true ? (
+                    <p className="text-sm text-red-500 font-semibold">
+                        Please add name.
+                    </p>
+                ) : (
+                    <div className="h-5 w-full" />
+                )}
             </div>
             <div>
                 <label htmlFor="description" className="label mb-1">
                     Description
+                    <span className="ml-1 text-red-500">*</span>
                 </label>
                 <textarea
                     id="description"
                     name="description"
+                    required
                     value={recipe.description}
                     onChange={handleInputChange}
                     rows={4}
                     className="textarea"
                 />
+                {formErrors["description"] === true ? (
+                    <p className="text-sm text-red-500 font-semibold">
+                        Please add description.
+                    </p>
+                ) : (
+                    <div className="h-5 w-full" />
+                )}
             </div>
             <div>
                 <label htmlFor="time" className="label mb-1">
@@ -124,6 +149,7 @@ function RecipeFormInputs({
                     onChange={handleInputChange}
                     className="input"
                 />
+                <div className="h-5 w-full" />
             </div>
             <div>
                 <label htmlFor="servings" className="label mb-1">
@@ -137,15 +163,18 @@ function RecipeFormInputs({
                     onChange={handleInputChange}
                     className="input"
                 />
+                <div className="h-5 w-full" />
             </div>
             <IngredientsEditor
                 ingredients={recipe.ingredients}
                 onAddIngredient={handleAddIngredient}
                 onRemoveIngredient={handleRemoveIngredient}
+                hasFormError={formErrors["ingredients"] === true}
             />
             <InstructionsEditor
                 instructions={recipe.instructions}
                 onInstructionsChange={handleInstructionsChange}
+                hasFormError={formErrors["instructions"] === true}
             />
         </div>
     );

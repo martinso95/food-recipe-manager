@@ -1,6 +1,11 @@
 "use client";
 
-import { Recipe, RecipeIngredient, RecipeInstruction } from "@/types/typings";
+import {
+    Recipe,
+    RecipeFormErrors,
+    RecipeIngredient,
+    RecipeInstruction,
+} from "@/types/typings";
 import { useState } from "react";
 
 export const useRecipeFormImage = (initialImage?: string) => {
@@ -31,6 +36,12 @@ export const useRecipeFormImage = (initialImage?: string) => {
 
 export const useRecipeForm = (initialRecipe: Recipe) => {
     const [recipe, setRecipe] = useState<Recipe>(initialRecipe);
+    const [formErrors, setFormErrors] = useState<RecipeFormErrors>({
+        name: false,
+        description: false,
+        ingredients: false,
+        instructions: false,
+    });
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,6 +74,8 @@ export const useRecipeForm = (initialRecipe: Recipe) => {
 
     return {
         recipe,
+        formErrors,
+        setFormErrors,
         handleInputChange,
         handleAddIngredient,
         handleRemoveIngredient,

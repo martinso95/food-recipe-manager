@@ -1,5 +1,6 @@
 import {
     Recipe,
+    RecipeFormErrors,
     RecipeImage,
     RecipeIngredient,
     RecipeInstruction,
@@ -40,6 +41,16 @@ export const isRecipeValid = (recipe: Recipe) => {
         ingredients.length > 0 &&
         instructions.length > 0
     );
+};
+
+export const getFormErrors = (recipe: Recipe): RecipeFormErrors => {
+    const { name, description, ingredients, instructions } = recipe;
+    return {
+        name: name === "",
+        description: description === "",
+        ingredients: ingredients.length === 0,
+        instructions: instructions.length === 0,
+    };
 };
 
 export const isIngredientValid = (ingredient: RecipeIngredient) => {

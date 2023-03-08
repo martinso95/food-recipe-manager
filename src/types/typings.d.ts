@@ -1,5 +1,12 @@
 import { DefaultUser } from "next-auth";
 
+export interface RecipeFormErrors {
+    name: boolean;
+    description: boolean;
+    ingredients: boolean;
+    instructions: boolean;
+}
+
 export interface User extends DefaultUser {
     id: string;
 }

@@ -10,6 +10,7 @@ import {
 import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
 import {
     addNewRecipe,
+    getFormErrors,
     isRecipeValid,
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
@@ -25,6 +26,8 @@ function AddRecipeForm({ initialRecipe }: Props) {
     const [saveIsLoading, setSaveIsLoading] = useState(false);
     const {
         recipe,
+        formErrors,
+        setFormErrors,
         handleInputChange,
         handleAddIngredient,
         handleRemoveIngredient,
@@ -40,6 +43,7 @@ function AddRecipeForm({ initialRecipe }: Props) {
         const recipeToAdd = sanitizeRecipe(recipe);
 
         if (!isRecipeValid(recipeToAdd)) {
+            setFormErrors(getFormErrors(recipeToAdd));
             alert("Recipe fields invalid.");
             return;
         }
@@ -56,9 +60,10 @@ function AddRecipeForm({ initialRecipe }: Props) {
     };
 
     return (
-        <form onSubmit={handleAddNewRecipe}>
+        <form onSubmit={handleAddNewRecipe} noValidate>
             <RecipeFormInputs
                 recipe={recipe}
+                formErrors={formErrors}
                 handleInputChange={handleInputChange}
                 handleAddIngredient={handleAddIngredient}
                 handleRemoveIngredient={handleRemoveIngredient}
