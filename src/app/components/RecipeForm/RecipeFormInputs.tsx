@@ -41,7 +41,7 @@ function RecipeFormInputs({
 
     return (
         <div className="flex flex-col space-y-6">
-            <div className="flex flex-col items-center w-full h-[30vh] md:h-[40vh] lg:h-[50vh]">
+            <div className="flex flex-col items-center mx-auto w-full md:w-[95%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%] h-[35vh] md:h-[45vh] lg:h-[55vh]">
                 <input
                     ref={imageInputRef}
                     type="file"
@@ -59,7 +59,7 @@ function RecipeFormInputs({
                                 fill={true}
                                 sizes="100vw, 100vw, 100vw"
                                 onClick={handleImageClick}
-                                className="object-cover"
+                                className="object-cover rounded-lg"
                             />
                         </div>
                         <button

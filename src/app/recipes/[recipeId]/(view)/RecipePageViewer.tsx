@@ -20,14 +20,14 @@ function RecipePageViewer({ recipe }: Props) {
 
     return (
         <div className="flex flex-col space-y-6">
-            <div className="relative w-full h-[30vh] md:h-[40vh] lg:h-[50vh]">
+            <div className="relative mx-auto w-full md:w-[95%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%] h-[35vh] md:h-[45vh] lg:h-[55vh]">
                 <ImageWithFallback
                     src={image?.url}
                     alt="Recipe image"
                     fallback={RECIPE_PLACEHOLDER}
                     fill={true}
                     sizes="100vw, 100vw, 100vw"
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                 />
             </div>
             <h1 className="text-4xl font-bold text-white">{name}</h1>
