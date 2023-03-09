@@ -54,6 +54,7 @@ function InstructionsEditor({
                         <textarea
                             id={id}
                             name={id}
+                            maxLength={1000}
                             value={description}
                             onChange={handleTextAreaChange}
                             rows={8}

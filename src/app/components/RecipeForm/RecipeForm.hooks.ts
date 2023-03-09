@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import {
     Recipe,
     RecipeFormErrors,
     RecipeIngredient,
     RecipeInstruction,
 } from "@/types/typings";
-import { useState } from "react";
+import { MAX_IMAGE_SIZE } from "@/utils/Utils";
 
 export const useRecipeFormImage = (initialImage?: string) => {
     const [imagePreview, setImagePreview] = useState<string | undefined>(
@@ -15,10 +16,17 @@ export const useRecipeFormImage = (initialImage?: string) => {
     const [imageFile, setImageFile] = useState<File>();
 
     const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
-            setImagePreview(URL.createObjectURL(e.target.files[0]));
-            setImageFile(e.target.files[0]);
+        const imageFile = e.target.files?.[0];
+        if (imageFile) {
+            if (imageFile.size > MAX_IMAGE_SIZE) {
+                alert("Image too large. Max size 5MB.");
+                return;
+            }
+            setImagePreview(URL.createObjectURL(imageFile));
+            setImageFile(imageFile);
         }
+        // This allows for adding the same image again in case it was removed.
+        e.target.value = "";
     };
 
     const handleRemoveImage = () => {

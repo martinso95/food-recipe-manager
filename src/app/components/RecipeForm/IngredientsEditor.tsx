@@ -1,8 +1,8 @@
 "use client";
 
-import { RecipeIngredient } from "@/types/typings";
 import { useState } from "react";
 import { TrashIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { RecipeIngredient } from "@/types/typings";
 import { isIngredientValid } from "./RecipeForm.utils";
 import { sortIngredientsAlphabetically } from "@/utils/Utils";
 
@@ -92,6 +92,7 @@ function IngredientsEditor({
                     type="text"
                     id="name"
                     name="name"
+                    maxLength={50}
                     value={newIngredient.name}
                     onChange={handleInputChange}
                     className="input col-span-6"

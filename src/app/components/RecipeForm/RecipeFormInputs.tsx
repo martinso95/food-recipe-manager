@@ -103,6 +103,7 @@ function RecipeFormInputs({
                     id="name"
                     name="name"
                     required
+                    maxLength={100}
                     value={recipe.name}
                     onChange={handleInputChange}
                     className="input"
@@ -124,6 +125,7 @@ function RecipeFormInputs({
                     id="description"
                     name="description"
                     required
+                    maxLength={500}
                     value={recipe.description}
                     onChange={handleInputChange}
                     rows={4}
