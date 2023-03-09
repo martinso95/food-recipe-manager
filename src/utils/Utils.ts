@@ -10,7 +10,7 @@ export const MAX_IMAGE_SIZE = 5242880;
 // The image data that is passed into the body is what requires most of the space.
 // Allow for a bigger body size than the actual image, to make room for some added space due to conversion.
 // Rough example: An image of size 5MB might end up taking up 7MB when passed in the body.
-export const MAX_BODY_SIZE = 5242880 * 2;
+export const MAX_BODY_SIZE = 10485760;
 
 /**
  *

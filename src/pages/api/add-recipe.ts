@@ -14,7 +14,7 @@ import {
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: MAX_BODY_SIZE,
+            sizeLimit: "10485760", // MAX_BODY_SIZE, ~10MB
         },
     },
 };

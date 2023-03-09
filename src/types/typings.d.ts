@@ -40,6 +40,17 @@ export interface Recipe {
     image?: RecipeImage;
 }
 
+// Used for rendering recipes in a list card form.
+// Additions:
+// blur data url image. Improves image viewing experience.
+// recipe id. For easier rendering of the list.
+export interface RecipeListCard extends Omit<Recipe, "image"> {
+    image?: RecipeImage & {
+        blurData?: string;
+    };
+    recipeId?: string;
+}
+
 // Used for passing recipe through API, for adding/editing recipe. It specifically can contain id and image data.
 export interface RecipeRequestBody {
     recipeId?: string;

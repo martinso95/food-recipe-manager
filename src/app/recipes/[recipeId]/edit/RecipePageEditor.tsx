@@ -22,10 +22,9 @@ import { RECIPES } from "@/utils/routes";
 type Props = {
     recipeId: string;
     recipe: Recipe;
-    onExit: () => void;
 };
 
-function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
+function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
     const router = useRouter();
     const [saveIsLoading, setSaveIsLoading] = useState(false);
     const [deleteIsLoading, setDeleteIsLoading] = useState(false);
@@ -56,7 +55,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
 
         editRecipe(recipeId, recipeToEdit, imageFile, imagePreview)
             .then(() => {
-                onExit();
+                router.replace(`${RECIPES}/${recipeId}`);
                 router.refresh();
             })
             .catch((error) => {
@@ -70,7 +69,6 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
 
         deleteRecipe(recipeId, originalRecipe.image)
             .then(() => {
-                onExit();
                 router.replace(RECIPES);
             })
             .catch((error) => {
@@ -118,7 +116,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe, onExit }: Props) {
             <button
                 type="button"
                 disabled={saveIsLoading || deleteIsLoading}
-                onClick={onExit}
+                onClick={() => router.push(`${RECIPES}/${recipeId}`)}
                 className="speed-dial-button"
             >
                 <XMarkIcon className="h-8 w-8 text-white" />

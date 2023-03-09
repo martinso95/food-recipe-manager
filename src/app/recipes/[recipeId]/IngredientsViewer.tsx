@@ -1,8 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { RecipeIngredient } from "@/types/typings";
 import { sortIngredientsAlphabetically } from "@/utils/Utils";
-import { useState } from "react";
 
 type Props = {
     ingredients: RecipeIngredient[];
