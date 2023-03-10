@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Navbar } from "flowbite-react";
-import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
+import { APP_LOGO } from "@/utils/Utils";
 import { RECIPES } from "@/utils/routes";
 
 function PublicNavBar() {
@@ -10,7 +10,7 @@ function PublicNavBar() {
         <Navbar rounded fluid className="container mx-auto sticky top-0 z-50">
             <Navbar.Brand href={RECIPES} className="flex-wrap">
                 <Image
-                    src={RECIPE_PLACEHOLDER}
+                    src={APP_LOGO}
                     alt="Food Recipe Manager Logo"
                     width={40}
                     height={40}

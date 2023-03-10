@@ -5,7 +5,7 @@ import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { Dropdown, Navbar } from "flowbite-react";
 import { User } from "@/types/typings";
-import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
+import { APP_LOGO, AVATAR_PLACEHOLDER } from "@/utils/Utils";
 import ImageWithFallback from "./ImageWithFallback";
 import { RECIPES } from "@/utils/routes";
 
@@ -21,7 +21,7 @@ function UserNavBar({ user }: Props) {
         <Navbar rounded fluid className="container mx-auto sticky top-0 z-50">
             <Navbar.Brand href={RECIPES} className="flex-wrap">
                 <Image
-                    src={RECIPE_PLACEHOLDER}
+                    src={APP_LOGO}
                     alt="Food Recipe Manager Logo"
                     width={40}
                     height={40}
@@ -38,7 +38,7 @@ function UserNavBar({ user }: Props) {
                     label={
                         <ImageWithFallback
                             src={image}
-                            fallback={RECIPE_PLACEHOLDER}
+                            fallback={AVATAR_PLACEHOLDER}
                             alt="User photo"
                             width={32}
                             height={32}
