@@ -13,8 +13,12 @@
 }
 
 @layer components {
+    .navbar {
+        @apply container mx-auto sticky top-0 z-50 min-w-[20rem];
+    }
+
     .page {
-        @apply container mb-16 mx-auto p-6;
+        @apply container mb-16 mx-auto p-6 min-w-[20rem];
     }
 
     .button {

@@ -25,11 +25,6 @@ async function RecipePage({ params: { recipeId } }: Props) {
             .get()
     ).data() as Recipe;
 
-    const blurDataURL =
-        recipe.image?.url != null
-            ? (await getPlaiceholder(recipe.image?.url)).base64
-            : undefined;
-
     const {
         name,
         description,
@@ -40,17 +35,20 @@ async function RecipePage({ params: { recipeId } }: Props) {
         image,
     } = recipe;
 
+    const plaiceholderData =
+        image?.url != null ? await getPlaiceholder(image?.url) : undefined;
+
     return (
         <main className="page flex flex-col space-y-6">
             <div className="relative mx-auto w-full md:w-[95%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%] h-[35vh] md:h-[45vh] lg:h-[55vh]">
                 <ImageWithFallback
-                    src={image?.url}
+                    src={plaiceholderData?.img.src}
                     alt="Recipe image"
                     fallback={RECIPE_PLACEHOLDER}
                     fill={true}
                     sizes="100vw, 100vw, 100vw"
-                    placeholder={blurDataURL != null ? "blur" : undefined}
-                    blurDataURL={blurDataURL}
+                    placeholder={plaiceholderData != null ? "blur" : undefined}
+                    blurDataURL={plaiceholderData?.base64}
                     className="object-cover rounded-lg"
                 />
             </div>

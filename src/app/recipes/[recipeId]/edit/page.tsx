@@ -7,7 +7,7 @@ type Props = {
     params: { recipeId: string };
 };
 
-async function RecipePageEdit({ params: { recipeId } }: Props) {
+async function EditRecipePage({ params: { recipeId } }: Props) {
     const user = await getServerSessionUser();
     const recipe: Recipe = (
         await adminFirestore
@@ -25,4 +25,4 @@ async function RecipePageEdit({ params: { recipeId } }: Props) {
     );
 }
 
-export default RecipePageEdit;
+export default EditRecipePage;

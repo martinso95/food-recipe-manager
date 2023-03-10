@@ -9,7 +9,7 @@ const INITIAL_RECIPE: Recipe = {
     instructions: [{ id: randomUUID(), description: "" }],
 };
 
-async function AddReipePage() {
+function AddReipePage() {
     return (
         <main className="page">
             <AddRecipeForm initialRecipe={INITIAL_RECIPE} />

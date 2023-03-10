@@ -18,7 +18,7 @@ function UserNavBar({ user }: Props) {
     const pathname = usePathname();
 
     return (
-        <Navbar rounded fluid className="container mx-auto sticky top-0 z-50">
+        <Navbar rounded fluid className="navbar">
             <Navbar.Brand href={RECIPES} className="flex-wrap">
                 <Image
                     src={APP_LOGO}

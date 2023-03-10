@@ -1,5 +1,9 @@
 import { RecipeIngredient } from "@/types/typings";
 
+export const APP_LOGO = "/app-logo.png";
+
+export const AVATAR_PLACEHOLDER = "/avatar-placeholder.png";
+
 export const RECIPE_PLACEHOLDER = "/recipe-placeholder.png";
 
 export const FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER = "recipeImages";

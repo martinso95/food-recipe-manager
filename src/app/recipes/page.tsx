@@ -27,9 +27,11 @@ async function RecipeListPage() {
                 recipeId: recipeDocument.id,
             };
             if (recipe.image != null) {
+                const { img, base64 } = await getPlaiceholder(recipe.image.url);
                 recipeListCard.image = {
                     ...recipe.image,
-                    blurData: (await getPlaiceholder(recipe.image.url)).base64,
+                    url: img.src,
+                    blurData: base64,
                 };
             }
             return recipeListCard;
@@ -47,13 +49,13 @@ async function RecipeListPage() {
                             <Link
                                 href={`${RECIPES}/${recipeId}`}
                                 key={recipeId}
-                                className="flex flex-col mx-auto bg-gray-800 border border-gray-500 rounded-lg shadow min-w-[14rem] w-full"
+                                className="flex flex-col mx-auto bg-gray-800 border border-gray-500 rounded-lg shadow min-w-[14rem] w-full max-w-[30rem] h-full"
                             >
                                 <ImageWithFallback
                                     src={image?.url}
                                     alt="Recipe image"
-                                    width={400}
-                                    height={400}
+                                    width={600}
+                                    height={600}
                                     fallback={RECIPE_PLACEHOLDER}
                                     placeholder={
                                         image != null ? "blur" : undefined
@@ -63,7 +65,7 @@ async function RecipeListPage() {
                                             ? image.blurData
                                             : undefined
                                     }
-                                    className="mb-2 rounded-t-lg object-cover h-1/2"
+                                    className="mb-2 object-cover rounded-t-lg mx-auto h-1/2"
                                 />
                                 <h5
                                     title={name}

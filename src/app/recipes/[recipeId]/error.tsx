@@ -1,6 +1,6 @@
 "use client";
 
-export default function RecipeError() {
+export default function RecipePageError() {
     return (
         <div>
             <h1>Error: Recipe not found.</h1>
