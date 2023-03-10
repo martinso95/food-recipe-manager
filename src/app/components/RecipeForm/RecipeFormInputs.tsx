@@ -52,7 +52,7 @@ function RecipeFormInputs({
                 <input
                     ref={imageInputRef}
                     type="file"
-                    accept="image/*" // TODO: Handle file types restrictions properly in the backend.
+                    accept="image/*"
                     onChange={handleAddImage}
                     className="hidden"
                 />
@@ -159,6 +159,7 @@ function RecipeFormInputs({
                 </label>
                 <input
                     type="number"
+                    inputMode="decimal"
                     id="servings"
                     name="servings"
                     value={recipe.servings || ""}

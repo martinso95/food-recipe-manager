@@ -63,6 +63,11 @@ export default async function handler(
         return;
     }
 
+    if (newImage != null && !newImage.type.startsWith("image/")) {
+        res.status(400).json({ body: "Bad request: Only images allowed." });
+        return;
+    }
+
     const bodySize = req.headers["content-length"];
     if (Number(bodySize) > MAX_BODY_SIZE) {
         res.status(400).json({ body: "Bad request: Body too large." });
