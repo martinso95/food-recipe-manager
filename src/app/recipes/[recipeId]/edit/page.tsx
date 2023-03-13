@@ -1,4 +1,5 @@
 import { adminFirestore } from "@/firebase/firebaseAdmin";
+import { notFound } from "next/navigation";
 import { Recipe } from "@/types/typings";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import RecipePageEditor from "./RecipePageEditor";
@@ -17,6 +18,10 @@ async function EditRecipePage({ params: { recipeId } }: Props) {
             .doc(recipeId)
             .get()
     ).data() as Recipe;
+
+    if (recipe == null) {
+        notFound();
+    }
 
     return (
         <main className="page">

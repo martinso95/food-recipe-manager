@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { ClockIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { getPlaiceholder } from "plaiceholder";
@@ -24,6 +25,10 @@ async function RecipePage({ params: { recipeId } }: Props) {
             .doc(recipeId)
             .get()
     ).data() as Recipe;
+
+    if (recipe == null) {
+        notFound();
+    }
 
     const {
         name,

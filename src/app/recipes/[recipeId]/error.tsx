@@ -1,9 +1,12 @@
 "use client";
 
-export default function RecipePageError() {
+export default function RecipePageError({ reset }: { reset: () => void }) {
     return (
-        <div>
-            <h1>Error: Recipe not found.</h1>
+        <div className="page space-y-6">
+            <h1 className="pageTitle">Something went wrong</h1>
+            <button onClick={() => reset()} className="button">
+                Try again
+            </button>
         </div>
     );
 }
