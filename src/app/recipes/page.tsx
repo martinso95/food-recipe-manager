@@ -2,28 +2,40 @@ import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { getPlaiceholder } from "plaiceholder";
-import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
-import ImageWithFallback from "../components/ImageWithFallback";
-import { ADD_RECIPE, RECIPES } from "@/utils/routes";
+import { ADD_RECIPE } from "@/utils/routes";
 import RecipesEmptyState from "./RecipesEmptyState";
-import { Recipe, RecipeListCard } from "@/types/typings";
+import { Recipe, RecipeListCardProps } from "@/types/typings";
+import RecipeListCard from "./RecipeListCard";
+import RecipeListPagination from "./RecipeListPagination";
 
-async function RecipeListPage() {
+type Props = {
+    searchParams?: { [key: string]: string | undefined };
+};
+async function RecipeListPage({ searchParams }: Props) {
     const user = await getServerSessionUser();
+
+    console.log(searchParams);
+
+    const recipesCollection = adminFirestore
+        .collection("userContent")
+        .doc(user.id)
+        .collection("recipes");
+
+    const totalRecipes = (await recipesCollection.count().get()).data().count;
+
     const recipeDocuments = (
-        await adminFirestore
-            .collection("userContent")
-            .doc(user.id)
-            .collection("recipes")
+        await recipesCollection
             .orderBy("nameLowerCase")
+            .limit(2)
+            // .startAt("a6b3e5f8-f35b-4d14-9b52-6c81eb535a41")
             .get()
     ).docs;
 
-    const recipeList: RecipeListCard[] = await Promise.all(
+    const recipeList: RecipeListCardProps[] = await Promise.all(
         recipeDocuments.map(async (recipeDocument) => {
             const recipe: Recipe = recipeDocument.data() as Recipe;
-            const recipeListCard: RecipeListCard = {
+            const recipeListCard: RecipeListCardProps = {
                 ...recipe,
                 recipeId: recipeDocument.id,
             };
@@ -40,50 +52,21 @@ async function RecipeListPage() {
     );
 
     return (
-        <main className="page">
+        <main className="page flex flex-col justify-center items-center space-y-6">
             {recipeDocuments.length === 0 ? (
                 <RecipesEmptyState />
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">
-                    {recipeList.map(
-                        ({ recipeId, image, name, description, time }) => (
-                            <Link
-                                href={`${RECIPES}/${recipeId}`}
-                                key={recipeId}
-                                className="flex flex-col mx-auto bg-gray-800 border border-gray-500 rounded-lg shadow min-w-[14rem] w-full max-w-[30rem] h-full"
-                            >
-                                <ImageWithFallback
-                                    src={image?.url}
-                                    alt="Recipe image"
-                                    width={600}
-                                    height={600}
-                                    fallback={RECIPE_PLACEHOLDER}
-                                    placeholder={
-                                        image != null ? "blur" : undefined
-                                    }
-                                    blurDataURL={
-                                        image != null
-                                            ? image.blurData
-                                            : undefined
-                                    }
-                                    className="mb-2 object-cover rounded-t-lg mx-auto h-1/2 shrink-0"
-                                />
-                                <h5
-                                    title={name}
-                                    className="mb-2 mx-5 text-xl font-bold text-white line-clamp-2 shrink-0"
-                                >
-                                    {name}
-                                </h5>
-                                <p className="mb-2 mx-5 font-normal text-gray-400 line-clamp-4 shrink-0">
-                                    {description}
-                                </p>
-                                <p className="mb-4 mt-auto mx-5 font-bold text-sm text-gray-300 line-clamp-1 shrink-0">
-                                    {time}
-                                </p>
-                            </Link>
-                        )
-                    )}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">
+                        {recipeList.map((recipe) => (
+                            <RecipeListCard
+                                key={recipe.recipeId}
+                                recipe={recipe}
+                            />
+                        ))}
+                    </div>
+                    <RecipeListPagination firstRecipeId="" lastRecipeId="" />
+                </>
             )}
             <Link
                 href={ADD_RECIPE}

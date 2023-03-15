@@ -45,7 +45,7 @@ export interface Recipe {
 // Additions:
 // blur data url image. Improves image viewing experience.
 // recipe id. For easier rendering of the list.
-export interface RecipeListCard extends Omit<Recipe, "image"> {
+export interface RecipeListCardProps extends Omit<Recipe, "image"> {
     image?: RecipeImage & {
         blurData?: string;
     };
