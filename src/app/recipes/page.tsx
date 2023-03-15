@@ -9,28 +9,165 @@ import { Recipe, RecipeListCardProps } from "@/types/typings";
 import RecipeListCard from "./RecipeListCard";
 import RecipeListPagination from "./RecipeListPagination";
 
+const PAGE_LIMIT = 2;
+type PaginationData = {
+    items: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[];
+    firstItem: string;
+    lastItem: string;
+    previousDisabled: boolean;
+    nextDisabled: boolean;
+};
+
+const getInitialPaginationItems = async (
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
+): Promise<PaginationData> => {
+    const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
+        (
+            await recipesCollection
+                .orderBy("orderValue")
+                .limit(PAGE_LIMIT + 1)
+                .get()
+        ).docs;
+    const nextDisabled = recipeDocuments.length <= PAGE_LIMIT;
+    if (recipeDocuments.length === PAGE_LIMIT + 1) {
+        recipeDocuments.splice(-1);
+    }
+
+    const firstRecipeDocument = recipeDocuments[0].data().orderValue;
+    const lastRecipeDocument =
+        recipeDocuments[recipeDocuments.length - 1].data().orderValue;
+
+    console.log("what is first:", recipeDocuments[0].data().name);
+    console.log(
+        "what is last:",
+        recipeDocuments[recipeDocuments.length - 1].data().name
+    );
+    console.log("items:", recipeDocuments.map((x) => x.data().name).toString());
+    return {
+        items: recipeDocuments,
+        firstItem: firstRecipeDocument,
+        lastItem: lastRecipeDocument,
+        previousDisabled: true,
+        nextDisabled: nextDisabled,
+    };
+};
+
+const getNextItems = async (
+    currentLastItem: string,
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
+): Promise<PaginationData> => {
+    const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
+        (
+            await recipesCollection
+                .orderBy("orderValue")
+                .startAfter(currentLastItem)
+                .limit(PAGE_LIMIT + 1)
+                .get()
+        ).docs;
+    const nextDisabled = recipeDocuments.length <= PAGE_LIMIT;
+    if (recipeDocuments.length === PAGE_LIMIT + 1) {
+        recipeDocuments.splice(-1);
+    }
+
+    const firstRecipeDocument = recipeDocuments[0].data().orderValue;
+    const lastRecipeDocument =
+        recipeDocuments[recipeDocuments.length - 1].data().orderValue;
+
+    console.log("what is first:", recipeDocuments[0].data().name);
+    console.log(
+        "what is last:",
+        recipeDocuments[recipeDocuments.length - 1].data().name
+    );
+    console.log("items:", recipeDocuments.map((x) => x.data().name).toString());
+    return {
+        items: recipeDocuments,
+        firstItem: firstRecipeDocument,
+        lastItem: lastRecipeDocument,
+        previousDisabled: false,
+        nextDisabled: nextDisabled,
+    };
+};
+
+const getPreviousItems = async (
+    currentFirstItem: string,
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
+): Promise<PaginationData> => {
+    const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
+        (
+            await recipesCollection
+                .orderBy("orderValue")
+                .endBefore(currentFirstItem)
+                .limitToLast(PAGE_LIMIT + 1)
+                .get()
+        ).docs;
+    const previousDisabled = recipeDocuments.length <= PAGE_LIMIT;
+    if (recipeDocuments.length === PAGE_LIMIT + 1) {
+        recipeDocuments.splice(0, 1);
+    }
+
+    const firstRecipeDocument = recipeDocuments[0].data().orderValue;
+    const lastRecipeDocument =
+        recipeDocuments[recipeDocuments.length - 1].data().orderValue;
+
+    console.log("what is first:", recipeDocuments[0].data().name);
+    console.log(
+        "what is last:",
+        recipeDocuments[recipeDocuments.length - 1].data().name
+    );
+
+    console.log("items:", recipeDocuments.map((x) => x.data().name).toString());
+
+    return {
+        items: recipeDocuments,
+        firstItem: firstRecipeDocument,
+        lastItem: lastRecipeDocument,
+        previousDisabled: previousDisabled,
+        nextDisabled: false,
+    };
+};
+
 type Props = {
     searchParams?: { [key: string]: string | undefined };
 };
 async function RecipeListPage({ searchParams }: Props) {
     const user = await getServerSessionUser();
 
-    console.log(searchParams);
-
     const recipesCollection = adminFirestore
         .collection("userContent")
         .doc(user.id)
         .collection("recipes");
 
-    const totalRecipes = (await recipesCollection.count().get()).data().count;
+    let currentPaginationData: PaginationData;
 
-    const recipeDocuments = (
-        await recipesCollection
-            .orderBy("nameLowerCase")
-            .limit(2)
-            // .startAt("a6b3e5f8-f35b-4d14-9b52-6c81eb535a41")
-            .get()
-    ).docs;
+    if (searchParams != null && searchParams.nextPageStartAfter != null) {
+        console.log("next");
+        currentPaginationData = await getNextItems(
+            searchParams.nextPageStartAfter,
+            recipesCollection
+        );
+    } else if (
+        searchParams != null &&
+        searchParams.previousPageEndBefore != null
+    ) {
+        console.log("prev");
+        currentPaginationData = await getPreviousItems(
+            searchParams.previousPageEndBefore,
+            recipesCollection
+        );
+    } else {
+        console.log("initial");
+        currentPaginationData = await getInitialPaginationItems(
+            recipesCollection
+        );
+    }
+
+    const {
+        items: recipeDocuments,
+        firstItem,
+        lastItem,
+        nextDisabled,
+        previousDisabled,
+    } = currentPaginationData;
 
     const recipeList: RecipeListCardProps[] = await Promise.all(
         recipeDocuments.map(async (recipeDocument) => {
@@ -65,7 +202,12 @@ async function RecipeListPage({ searchParams }: Props) {
                             />
                         ))}
                     </div>
-                    <RecipeListPagination firstRecipeId="" lastRecipeId="" />
+                    <RecipeListPagination
+                        firstRecipeId={firstItem}
+                        lastRecipeId={lastItem}
+                        nextDisabled={nextDisabled}
+                        previousDisabled={previousDisabled}
+                    />
                 </>
             )}
             <Link

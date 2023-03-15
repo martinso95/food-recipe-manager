@@ -22,7 +22,7 @@ function RecipeListCard({ recipe }: Props) {
                 fallback={RECIPE_PLACEHOLDER}
                 placeholder={image != null ? "blur" : undefined}
                 blurDataURL={image != null ? image.blurData : undefined}
-                className="mb-2 object-cover rounded-t-lg mx-auto h-1/2 shrink-0"
+                className="mb-2 object-cover rounded-t-lg mx-auto h-1/2"
             />
             <h5
                 title={name}
