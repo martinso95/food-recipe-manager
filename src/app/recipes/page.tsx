@@ -16,6 +16,7 @@ async function RecipeListPage() {
             .collection("userContent")
             .doc(user.id)
             .collection("recipes")
+            .orderBy("nameLowerCase")
             .get()
     ).docs;
 

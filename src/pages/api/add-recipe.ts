@@ -37,6 +37,7 @@ export default async function handler(
 
     const {
         name,
+        nameLowerCase,
         description,
         time,
         servings,
@@ -48,6 +49,8 @@ export default async function handler(
     if (
         name == null ||
         name === "" ||
+        nameLowerCase == null ||
+        nameLowerCase === "" ||
         description == null ||
         description === "" ||
         ingredients == null ||
@@ -90,6 +93,7 @@ export default async function handler(
 
     const newRecipeObject: Recipe = {
         name,
+        nameLowerCase,
         description,
         time,
         servings,

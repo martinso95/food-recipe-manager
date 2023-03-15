@@ -32,6 +32,7 @@ export interface RecipeInstruction {
 // Used as the main type for recipes in the app and in the database.
 export interface Recipe {
     name: string;
+    nameLowerCase: string; // Used for Firestore orderBy, because Firestore has no option to ignore case.
     description: string;
     servings?: number;
     time?: string;
@@ -55,6 +56,7 @@ export interface RecipeListCard extends Omit<Recipe, "image"> {
 export interface RecipeRequestBody {
     recipeId?: string;
     name: string;
+    nameLowerCase: string; // Used for Firestore orderBy, because Firestore has no option to ignore case.
     description: string;
     servings?: number;
     time?: string;

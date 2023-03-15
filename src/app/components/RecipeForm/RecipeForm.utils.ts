@@ -92,6 +92,7 @@ export const addNewRecipe = async (
 
     const requestBody: RecipeRequestBody = {
         name,
+        nameLowerCase: name.toLowerCase(),
         description,
         time,
         servings,
@@ -152,6 +153,7 @@ export const editRecipe = async (
     const requestBody: RecipeRequestBody = {
         recipeId: recipeId,
         name: recipe.name,
+        nameLowerCase: recipe.name.toLowerCase(),
         description: recipe.description,
         time: recipe.time,
         servings: recipe.servings,

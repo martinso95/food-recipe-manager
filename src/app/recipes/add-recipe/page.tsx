@@ -4,6 +4,7 @@ import AddRecipeForm from "./AddRecipeForm";
 
 const INITIAL_RECIPE: Recipe = {
     name: "",
+    nameLowerCase: "",
     description: "",
     ingredients: [],
     instructions: [{ id: randomUUID(), description: "" }],
