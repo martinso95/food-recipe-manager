@@ -65,18 +65,18 @@ async function RecipeListPage() {
                                             ? image.blurData
                                             : undefined
                                     }
-                                    className="mb-2 object-cover rounded-t-lg mx-auto h-1/2"
+                                    className="mb-2 object-cover rounded-t-lg mx-auto h-1/2 shrink-0"
                                 />
                                 <h5
                                     title={name}
-                                    className="mb-2 mx-5 text-xl font-bold text-white line-clamp-2"
+                                    className="mb-2 mx-5 text-xl font-bold text-white line-clamp-2 shrink-0"
                                 >
                                     {name}
                                 </h5>
-                                <p className="mb-2 mx-5 font-normal text-gray-400 line-clamp-4">
+                                <p className="mb-2 mx-5 font-normal text-gray-400 line-clamp-4 shrink-0">
                                     {description}
                                 </p>
-                                <p className="mb-2 mx-5 font-bold text-sm text-gray-300 line-clamp-1">
+                                <p className="mb-4 mt-auto mx-5 font-bold text-sm text-gray-300 line-clamp-1 shrink-0">
                                     {time}
                                 </p>
                             </Link>
