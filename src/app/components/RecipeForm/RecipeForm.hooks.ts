@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 import {
     Recipe,
     RecipeFormErrors,
@@ -19,7 +20,7 @@ export const useRecipeFormImage = (initialImage?: string) => {
         const imageFile = e.target.files?.[0];
         if (imageFile) {
             if (imageFile.size > MAX_IMAGE_SIZE) {
-                alert("Image too large. Max size 5MB.");
+                toast.error("Image too large. Max size 5MB.");
                 return;
             }
             setImagePreview(URL.createObjectURL(imageFile));

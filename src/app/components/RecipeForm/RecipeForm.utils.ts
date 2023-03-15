@@ -66,7 +66,7 @@ export const isIngredientValid = (ingredient: RecipeIngredient) => {
     ) {
         return {
             isValid: false,
-            message: "Ingredient unit is needed if amount is specified",
+            message: "Ingredient unit is needed if amount is specified.",
         };
     }
 
@@ -86,7 +86,7 @@ export const isIngredientValid = (ingredient: RecipeIngredient) => {
 export const addNewRecipe = async (
     recipe: Recipe,
     imageFile: File | undefined
-): Promise<string> => {
+): Promise<{ recipeId: string | null; message: string }> => {
     const { name, description, time, servings, ingredients, instructions } =
         recipe;
 
@@ -107,7 +107,10 @@ export const addNewRecipe = async (
                 type: imageFile.type,
             };
         } catch (error) {
-            return Promise.reject("Could not process image.");
+            return Promise.reject({
+                recipeId: null,
+                message: "Could not process image.",
+            });
         }
     }
 
@@ -120,15 +123,19 @@ export const addNewRecipe = async (
     });
 
     if (response.ok) {
-        const recipeId: string = await response
-            .json()
-            .then((result) => result.recipeId)
-            .catch(() => {
-                return Promise.reject("Could not get new recipe.");
-            });
-        return Promise.resolve(recipeId);
+        return await response.json().then((result) =>
+            Promise.resolve({
+                recipeId: result.recipeId as string,
+                message: result.message as string,
+            })
+        );
     } else {
-        return Promise.reject("Could not add recipe.");
+        return await response.json().then((result) =>
+            Promise.reject({
+                recipeId: null,
+                message: result.message as string,
+            })
+        );
     }
 };
 
@@ -137,10 +144,11 @@ export const editRecipe = async (
     recipe: Recipe,
     newImageFile: File | undefined,
     preview: string | undefined
-) => {
+): Promise<string> => {
     if (recipeId == null) {
         return Promise.reject("Recipe id is missing.");
     }
+
     const requestBody: RecipeRequestBody = {
         recipeId: recipeId,
         name: recipe.name,
@@ -175,16 +183,20 @@ export const editRecipe = async (
     });
 
     if (response.ok) {
-        return Promise.resolve();
+        return await response
+            .json()
+            .then((result) => Promise.resolve(result.message as string));
     } else {
-        return Promise.reject("Could not edit recipe.");
+        return await response
+            .json()
+            .then((result) => Promise.reject(result.message as string));
     }
 };
 
 export const deleteRecipe = async (
     recipeId: string | undefined,
     image: RecipeImage | undefined
-) => {
+): Promise<string> => {
     if (recipeId == null) {
         return Promise.reject("Recipe id is missing.");
     }
@@ -202,8 +214,12 @@ export const deleteRecipe = async (
     });
 
     if (response.ok) {
-        return Promise.resolve();
+        return await response
+            .json()
+            .then((result) => Promise.resolve(result.message as string));
     } else {
-        return Promise.reject("Could not delete recipe.");
+        return await response
+            .json()
+            .then((result) => Promise.reject(result.message as string));
     }
 };

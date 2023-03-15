@@ -1,7 +1,11 @@
 "use client";
 
-import { Recipe } from "@/types/typings";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
+import { Recipe } from "@/types/typings";
+import { RECIPES } from "@/utils/routes";
 import {
     deleteRecipe,
     editRecipe,
@@ -9,15 +13,12 @@ import {
     isRecipeValid,
     sanitizeRecipe,
 } from "@/app/components/RecipeForm/RecipeForm.utils";
-import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
 import {
     useRecipeForm,
     useRecipeFormImage,
 } from "@/app/components/RecipeForm/RecipeForm.hooks";
-import { CheckIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
 import Spinner from "@/app/components/Spinner";
-import { RECIPES } from "@/utils/routes";
 
 type Props = {
     recipeId: string;
@@ -48,19 +49,19 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
 
         if (!isRecipeValid(recipeToEdit)) {
             setFormErrors(getFormErrors(recipeToEdit));
-            alert("Recipe fields invalid.");
+            toast.error("Recipe fields invalid.");
             return;
         }
         setSaveIsLoading(true);
 
         editRecipe(recipeId, recipeToEdit, imageFile, imagePreview)
-            .then(() => {
-                router.replace(`${RECIPES}/${recipeId}`);
-                router.refresh();
+            .then((result) => {
+                router.push(`${RECIPES}/${recipeId}`);
+                toast.success(result);
             })
             .catch((error) => {
                 setSaveIsLoading(false);
-                alert(error);
+                toast.error(error);
             });
     };
 
@@ -68,12 +69,13 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
         setDeleteIsLoading(true);
 
         deleteRecipe(recipeId, originalRecipe.image)
-            .then(() => {
+            .then((result) => {
                 router.replace(RECIPES);
+                toast.success(result);
             })
             .catch((error) => {
                 setDeleteIsLoading(false);
-                alert(error);
+                toast.error(error);
             });
     };
 

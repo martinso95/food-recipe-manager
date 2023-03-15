@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
+import { toast } from "react-toastify";
 import Spinner from "./components/Spinner";
 
 function SignOutComponent() {
@@ -16,7 +17,7 @@ function SignOutComponent() {
         } catch (error) {
             setSignOutLoading(false);
             alert("Sign Out error");
-            console.warn("Error:", error);
+            toast.error("Could not sign out.");
         }
     };
     return (

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 import {
     useRecipeForm,
     useRecipeFormImage,
@@ -44,18 +45,19 @@ function AddRecipeForm({ initialRecipe }: Props) {
 
         if (!isRecipeValid(recipeToAdd)) {
             setFormErrors(getFormErrors(recipeToAdd));
-            alert("Recipe fields invalid.");
+            toast.error("Recipe fields invalid.");
             return;
         }
         setSaveIsLoading(true);
 
         addNewRecipe(recipeToAdd, imageFile)
-            .then((recipeId) => {
-                router.push(`${RECIPES}/${recipeId}`);
+            .then((result) => {
+                router.push(`${RECIPES}/${result.recipeId}`);
+                toast.success(result.message);
             })
-            .catch((error) => {
+            .catch((result) => {
                 setSaveIsLoading(false);
-                alert(error);
+                toast.error(result.message);
             });
     };
 

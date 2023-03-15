@@ -4,6 +4,7 @@ import { getServerSession } from "@/utils/NextAuthSession.utils";
 import Providers from "./Providers";
 import PublicNavBar from "./components/PublicNavBar";
 import UserNavBar from "./components/UserNavBar";
+import ToastContainer from "./ToastContainer";
 
 export default async function RootLayout({
     children,
@@ -22,6 +23,7 @@ export default async function RootLayout({
                     <PublicNavBar />
                 )}
                 <Providers session={session}>{children}</Providers>
+                <ToastContainer />
             </body>
         </html>
     );

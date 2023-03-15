@@ -8,20 +8,20 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method !== "POST") {
-        res.status(405).json({ body: "Method not allowed." });
+        res.status(405).json({ message: "Method not allowed." });
         return;
     }
     const session = await getSession({ req });
 
     if (session == null || session.user.id == null) {
-        res.status(403).json({ body: "Not authorized." });
+        res.status(403).json({ message: "Not authorized." });
         return;
     }
 
     const { recipeId, image }: RecipeRequestDeleteBody = req.body;
 
     if (recipeId == null || recipeId === "") {
-        res.status(400).json({ body: "Bad request" });
+        res.status(400).json({ message: "Recipe not found." });
         return;
     }
 
@@ -30,7 +30,7 @@ export default async function handler(
         const oldFile = adminStorageBucket.file(image.name);
         await oldFile.delete().catch(() => {
             res.status(400).json({
-                body: "Server error: Could not delete old image.",
+                message: "Could not delete image.",
             });
             return;
         });
@@ -44,9 +44,9 @@ export default async function handler(
             .doc(recipeId)
             .delete();
     } catch (error) {
-        res.status(400).json({ body: `Server error: ${error}` });
+        res.status(400).json({ message: "Could not delete the recipe." });
         return;
     }
 
-    res.status(200).send("Recipe deleted from the databse.");
+    res.status(200).json({ message: "Recipe deleted." });
 }

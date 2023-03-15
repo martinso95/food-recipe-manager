@@ -24,13 +24,13 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method !== "POST") {
-        res.status(405).json({ body: "Method not allowed." });
+        res.status(405).json({ message: "Method not allowed." });
         return;
     }
     const session = await getSession({ req });
 
     if (session == null || session.user.id == null) {
-        res.status(403).json({ body: "Not authorized." });
+        res.status(403).json({ message: "Not authorized." });
         return;
     }
 
@@ -59,18 +59,18 @@ export default async function handler(
         instructions == null ||
         instructions.length === 0
     ) {
-        res.status(400).json({ body: "Bad request" });
+        res.status(400).json({ message: "Fields incorrect." });
         return;
     }
 
     if (newImage != null && !newImage.type.startsWith("image/")) {
-        res.status(400).json({ body: "Bad request: Only images allowed." });
+        res.status(400).json({ message: "Only images allowed." });
         return;
     }
 
     const bodySize = req.headers["content-length"];
     if (Number(bodySize) > MAX_BODY_SIZE) {
-        res.status(400).json({ body: "Bad request: Body too large." });
+        res.status(400).json({ message: "Body too large." });
         return;
     }
 
@@ -79,7 +79,7 @@ export default async function handler(
         const oldFile = adminStorageBucket.file(oldImage.name);
         await oldFile.delete().catch(() => {
             res.status(400).json({
-                body: "Server error: Could not delete old image.",
+                message: "Could not delete old image.",
             });
             return;
         });
@@ -130,7 +130,9 @@ export default async function handler(
             .doc(recipeId)
             .set(newRecipeObject);
     } catch (error) {
-        res.status(400).json({ body: `Server error: ${error}` });
+        res.status(400).json({
+            message: "Could not save the recipe.",
+        });
         return;
     }
 
@@ -147,9 +149,11 @@ export default async function handler(
                 },
             })
             .catch(() => {
-                console.error("Image could not be saved.");
+                res.status(200).json({
+                    message: "Recipe saved, but could not save the image.",
+                });
             });
     }
 
-    res.status(200).send("Recipe added to the databse.");
+    res.status(200).json({ message: "Recipe saved." });
 }

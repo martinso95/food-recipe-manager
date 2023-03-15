@@ -1,7 +1,8 @@
 "use client";
 
-import { getProviders, signIn } from "next-auth/react";
 import { useState } from "react";
+import { getProviders, signIn } from "next-auth/react";
+import { toast } from "react-toastify";
 import Spinner from "./components/Spinner";
 
 type Props = {
@@ -18,8 +19,7 @@ function SignInComponent({ providers }: Props) {
             });
         } catch (error) {
             setSignInLoading(false);
-            alert("Sign In error");
-            console.warn("Error:", error);
+            toast.error("Could not sign in.");
         }
     };
 
