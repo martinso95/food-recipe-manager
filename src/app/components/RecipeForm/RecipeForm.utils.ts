@@ -87,12 +87,20 @@ export const addNewRecipe = async (
     recipe: Recipe,
     imageFile: File | undefined
 ): Promise<{ recipeId: string | null; message: string }> => {
-    const { name, description, time, servings, ingredients, instructions } =
-        recipe;
+    const {
+        recipeId,
+        name,
+        description,
+        time,
+        servings,
+        ingredients,
+        instructions,
+    } = recipe;
 
     const requestBody: RecipeRequestBody = {
+        recipeId,
         name,
-        nameLowerCase: name.toLowerCase(),
+        orderValue: name.toLowerCase() + recipeId,
         description,
         time,
         servings,
@@ -141,25 +149,35 @@ export const addNewRecipe = async (
 };
 
 export const editRecipe = async (
-    recipeId: string | undefined,
     recipe: Recipe,
     newImageFile: File | undefined,
     preview: string | undefined
 ): Promise<string> => {
+    const {
+        recipeId,
+        name,
+        description,
+        time,
+        servings,
+        ingredients,
+        instructions,
+        image,
+    } = recipe;
+
     if (recipeId == null) {
         return Promise.reject("Recipe id is missing.");
     }
 
     const requestBody: RecipeRequestBody = {
         recipeId: recipeId,
-        name: recipe.name,
-        nameLowerCase: recipe.name.toLowerCase(),
-        description: recipe.description,
-        time: recipe.time,
-        servings: recipe.servings,
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
-        oldImage: recipe.image,
+        name: name,
+        orderValue: name.toLowerCase() + recipeId,
+        description: description,
+        time: time,
+        servings: servings,
+        ingredients: ingredients,
+        instructions: instructions,
+        oldImage: image,
     };
 
     if (newImageFile != null) {

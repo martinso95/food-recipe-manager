@@ -36,8 +36,9 @@ export default async function handler(
     }
 
     const {
+        recipeId,
         name,
-        nameLowerCase,
+        orderValue,
         description,
         time,
         servings,
@@ -49,8 +50,8 @@ export default async function handler(
     if (
         name == null ||
         name === "" ||
-        nameLowerCase == null ||
-        nameLowerCase === "" ||
+        orderValue == null ||
+        orderValue === "" ||
         description == null ||
         description === "" ||
         ingredients == null ||
@@ -73,7 +74,6 @@ export default async function handler(
         return;
     }
 
-    const recipeId = randomUUID();
     const imageId = randomUUID();
 
     const imageName =
@@ -92,8 +92,9 @@ export default async function handler(
             : "";
 
     const newRecipeObject: Recipe = {
+        recipeId,
         name,
-        nameLowerCase,
+        orderValue,
         description,
         time,
         servings,

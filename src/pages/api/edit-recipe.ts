@@ -37,7 +37,7 @@ export default async function handler(
     const {
         recipeId,
         name,
-        nameLowerCase,
+        orderValue,
         description,
         time,
         servings,
@@ -53,8 +53,8 @@ export default async function handler(
         recipeId === "" ||
         name == null ||
         name === "" ||
-        nameLowerCase == null ||
-        nameLowerCase === "" ||
+        orderValue == null ||
+        orderValue === "" ||
         description == null ||
         description === "" ||
         ingredients == null ||
@@ -116,8 +116,9 @@ export default async function handler(
             : oldImage;
 
     const newRecipeObject: Recipe = {
+        recipeId: recipeId,
         name: name,
-        nameLowerCase,
+        orderValue: orderValue,
         description: description,
         time: time,
         servings: servings,

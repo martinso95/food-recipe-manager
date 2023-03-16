@@ -54,7 +54,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
         }
         setSaveIsLoading(true);
 
-        editRecipe(recipeId, recipeToEdit, imageFile, imagePreview)
+        editRecipe(recipeToEdit, imageFile, imagePreview)
             .then((result) => {
                 router.push(`${RECIPES}/${recipeId}`);
                 toast.success(result);

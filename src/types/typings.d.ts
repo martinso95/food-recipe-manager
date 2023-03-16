@@ -31,8 +31,9 @@ export interface RecipeInstruction {
 
 // Used as the main type for recipes in the app and in the database.
 export interface Recipe {
+    recipeId: string;
     name: string;
-    nameLowerCase: string; // Used for Firestore orderBy, because Firestore has no option to ignore case.
+    orderValue: string; // Used for Firestore name ordering and pagination. Consists of name in lower case plus recipe id.
     description: string;
     servings?: number;
     time?: string;
@@ -41,22 +42,18 @@ export interface Recipe {
     image?: RecipeImage;
 }
 
-// Used for rendering recipes in a list card form.
-// Additions:
-// blur data url image. Improves image viewing experience.
-// recipe id. For easier rendering of the list.
-export interface RecipeListCard extends Omit<Recipe, "image"> {
+// Used for rendering recipes in a list card form. This specifically enables blur image loading.
+export interface RecipeListCardProps extends Omit<Recipe, "image"> {
     image?: RecipeImage & {
         blurData?: string;
     };
-    recipeId?: string;
 }
 
-// Used for passing recipe through API, for adding/editing recipe. It specifically can contain id and image data.
+// Used for passing recipe through API, for adding/editing recipe. Specifically for handling old and new images.
 export interface RecipeRequestBody {
-    recipeId?: string;
+    recipeId: string;
     name: string;
-    nameLowerCase: string; // Used for Firestore orderBy, because Firestore has no option to ignore case.
+    orderValue: string; // Used for Firestore name ordering and pagination. Consists of name in lower case plus recipe id.
     description: string;
     servings?: number;
     time?: string;

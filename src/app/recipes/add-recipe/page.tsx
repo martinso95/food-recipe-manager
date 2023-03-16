@@ -3,8 +3,9 @@ import { Recipe } from "@/types/typings";
 import AddRecipeForm from "./AddRecipeForm";
 
 const INITIAL_RECIPE: Recipe = {
+    recipeId: randomUUID(),
     name: "",
-    nameLowerCase: "",
+    orderValue: "",
     description: "",
     ingredients: [],
     instructions: [{ id: randomUUID(), description: "" }],
