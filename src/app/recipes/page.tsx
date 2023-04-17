@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
-import { getPlaiceholder } from "plaiceholder";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { ADD_RECIPE } from "@/utils/routes";
 import RecipesEmptyState from "./RecipesEmptyState";
-import { Recipe, RecipeListCardProps } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 import RecipeListCard from "./RecipeListCard";
 import RecipeListPagination from "./RecipeListPagination";
 import {
@@ -33,22 +32,8 @@ async function RecipeListPage({ searchParams }: Props) {
         previousDisabled,
     } = await getPaginationData(searchParams, recipesCollection);
 
-    const recipeList: RecipeListCardProps[] = await Promise.all(
-        recipeDocuments.map(async (recipeDocument) => {
-            const recipe: Recipe = recipeDocument.data() as Recipe;
-            const recipeListCard: RecipeListCardProps = {
-                ...recipe,
-            };
-            if (recipe.image != null) {
-                const { img, base64 } = await getPlaiceholder(recipe.image.url);
-                recipeListCard.image = {
-                    ...recipe.image,
-                    url: img.src,
-                    blurData: base64,
-                };
-            }
-            return recipeListCard;
-        })
+    const recipeList: Recipe[] = recipeDocuments.map(
+        (recipeDocument) => recipeDocument.data() as Recipe
     );
 
     return (

@@ -15,6 +15,7 @@ export interface RecipeImage {
     id: string;
     url: string;
     name: string;
+    blurImageData: string;
 }
 
 export interface RecipeIngredient {
@@ -40,13 +41,6 @@ export interface Recipe {
     ingredients: RecipeIngredient[];
     instructions: RecipeInstruction[];
     image?: RecipeImage;
-}
-
-// Used for rendering recipes in a list card form. This specifically enables blur image loading.
-export interface RecipeListCardProps extends Omit<Recipe, "image"> {
-    image?: RecipeImage & {
-        blurData?: string;
-    };
 }
 
 // Used for passing recipe through API, for adding/editing recipe. Specifically for handling old and new images.

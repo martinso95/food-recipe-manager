@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { randomUUID } from "crypto";
 import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
+import { getPlaiceholder } from "plaiceholder";
 import { Recipe, RecipeImage, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
@@ -106,12 +107,18 @@ export default async function handler(
               )
             : "";
 
+    const blurImageData =
+        newImage != null
+            ? (await getPlaiceholder(toBufferImage(newImage.data))).base64
+            : undefined;
+
     const newImageObject: RecipeImage | undefined =
         newImage != null
             ? {
                   id: newImageId,
                   url: newImageUrl,
                   name: newImageName,
+                  blurImageData: blurImageData!,
               }
             : oldImage;
 

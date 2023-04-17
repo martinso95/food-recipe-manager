@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { RECIPES } from "@/utils/routes";
-import { RecipeListCardProps } from "@/types/typings";
+import { Recipe } from "@/types/typings";
 import ImageWithFallback from "../components/ImageWithFallback";
 
 type Props = {
-    recipe: RecipeListCardProps;
+    recipe: Recipe;
 };
 function RecipeListCard({ recipe }: Props) {
     const { recipeId, image, name, description, time } = recipe;
@@ -21,7 +21,7 @@ function RecipeListCard({ recipe }: Props) {
                 height={600}
                 fallback={RECIPE_PLACEHOLDER}
                 placeholder={image != null ? "blur" : undefined}
-                blurDataURL={image != null ? image.blurData : undefined}
+                blurDataURL={image != null ? image.blurImageData : undefined}
                 className="mb-2 object-cover rounded-t-lg mx-auto h-1/2"
             />
             <h5
