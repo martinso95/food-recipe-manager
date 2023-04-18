@@ -21,6 +21,14 @@ export type PaginationData = {
     nextDisabled: boolean;
 };
 
+const emptyPaginationData = {
+    items: [],
+    firstItem: "",
+    lastItem: "",
+    previousDisabled: true,
+    nextDisabled: true,
+};
+
 export const getInitialPaginationData = async (
     recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
 ): Promise<PaginationData> => {
@@ -31,6 +39,10 @@ export const getInitialPaginationData = async (
                 .limit(PAGE_LIMIT + 1) // Intentionally fetch one more than the page limit, to find out if there are more items in next or previous.
                 .get()
         ).docs;
+
+    if (recipeDocuments.length === 0) {
+        return emptyPaginationData;
+    }
 
     // If we were able to fetch more than the page limit, then we can go to next or previos.
     // Otherwise, disable the next or previous buttons.
@@ -66,6 +78,10 @@ export const getNextPaginationData = async (
                 .get()
         ).docs;
 
+    if (recipeDocuments.length === 0) {
+        return emptyPaginationData;
+    }
+
     // If we were able to fetch more than the page limit, then we can go to next or previos.
     // Otherwise, disable the next or previous buttons.
     const nextDisabled = recipeDocuments.length <= PAGE_LIMIT;
@@ -99,6 +115,10 @@ export const getPreviousPaginationData = async (
                 .limitToLast(PAGE_LIMIT + 1) // Intentionally fetch one more than the page limit, to find out if there are more items in next or previous.
                 .get()
         ).docs;
+
+    if (recipeDocuments.length === 0) {
+        return emptyPaginationData;
+    }
 
     // If we were able to fetch more than the page limit, then we can go to next or previos.
     // Otherwise, disable the next or previous buttons.
