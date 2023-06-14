@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { randomUUID } from "crypto";
-import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
 import { getPlaiceholder } from "plaiceholder";
+import { adminFirestore, adminStorageBucket } from "@/firebase/firebaseAdmin";
 import { Recipe, RecipeRequestBody } from "@/types/typings";
 import {
     FIREBASE_STORAGE_RECIPE_IMAGES_FOLDER,
@@ -11,29 +11,16 @@ import {
     MAX_BODY_SIZE,
     toBufferImage,
 } from "@/utils/Utils";
+import { getServerSession } from "@/utils/NextAuthSession.utils";
 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: "10485760", // MAX_BODY_SIZE, ~10MB
-        },
-    },
-};
-
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    if (req.method !== "POST") {
-        res.status(405).json({ message: "Method not allowed." });
-        return;
-    }
-
-    const session = await getSession({ req });
+export async function POST(request: Request) {
+    const session = await getServerSession();
 
     if (session == null || session.user.id == null) {
-        res.status(403).json({ message: "Not authorized." });
-        return;
+        return NextResponse.json(
+            { message: "Not authorized." },
+            { status: 403 }
+        );
     }
 
     const {
@@ -46,7 +33,15 @@ export default async function handler(
         ingredients,
         instructions,
         newImage: image,
-    }: RecipeRequestBody = req.body;
+    }: RecipeRequestBody = await request
+        .json()
+        .then((data) => data)
+        .catch(() => {
+            return NextResponse.json(
+                { message: "Failed to parse JSON request content." },
+                { status: 400 }
+            );
+        });
 
     if (
         name == null ||
@@ -60,19 +55,25 @@ export default async function handler(
         instructions == null ||
         instructions.length === 0
     ) {
-        res.status(400).json({ message: "Fields incorrect." });
-        return;
+        return NextResponse.json(
+            { message: "Fields incorrect." },
+            { status: 400 }
+        );
     }
 
     if (image != null && !image.type.startsWith("image/")) {
-        res.status(400).json({ message: "Only images allowed." });
-        return;
+        return NextResponse.json(
+            { message: "Only images allowed." },
+            { status: 400 }
+        );
     }
 
-    const bodySize = req.headers["content-length"];
+    const bodySize = headers().get("content-length");
     if (Number(bodySize) > MAX_BODY_SIZE) {
-        res.status(400).json({ message: "Body too large." });
-        return;
+        return NextResponse.json(
+            { message: "Body too large." },
+            { status: 400 }
+        );
     }
 
     const imageId = randomUUID();
@@ -125,10 +126,10 @@ export default async function handler(
             .doc(recipeId)
             .set(newRecipeObject);
     } catch (error) {
-        res.status(400).json({
-            message: "Could not save the recipe.",
-        });
-        return;
+        return NextResponse.json(
+            { message: "Could not save the recipe." },
+            { status: 400 }
+        );
     }
 
     if (image != null && image.data != null && image.type != null) {
@@ -144,15 +145,21 @@ export default async function handler(
                 },
             })
             .catch(() => {
-                res.status(200).json({
-                    recipeId: recipeId,
-                    message: "Recipe saved, but could not save the image.",
-                });
+                return NextResponse.json(
+                    {
+                        recipeId: recipeId,
+                        message: "Recipe saved, but could not save the image.",
+                    },
+                    { status: 200 }
+                );
             });
     }
 
-    res.status(200).json({
-        recipeId: recipeId,
-        message: "Recipe saved.",
-    });
+    return NextResponse.json(
+        {
+            recipeId: recipeId,
+            message: "Recipe saved.",
+        },
+        { status: 200 }
+    );
 }
