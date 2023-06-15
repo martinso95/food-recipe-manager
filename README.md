@@ -1,6 +1,6 @@
 # Food Recipe Manager
 
-![App logo](/public/android-chrome-192x192.png?raw=true)
+![App logo](/public/repo-logo.png?raw=true)
 
 Food Recipe Manager is a simple website for storing and viewing your food recipes online. The website is built to provide a good user experience on both mobile and desktop. It is currently available [Here!](https://food-recipe-manager.vercel.app)
 
@@ -43,6 +43,8 @@ The website is currently only for private use. Even if it is deployed on the web
 -   Firebase Storage (Image storage)
 
 -   Vercel (Deployment and hosting)
+
+-   Plaiceholder (Image placeholder while loading full image)
 
 ## Do you want to setup a copy of this project?
 
