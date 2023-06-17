@@ -44,6 +44,8 @@ export async function POST(request: Request) {
         });
 
     if (
+        recipeId == null ||
+        recipeId === "" ||
         name == null ||
         name === "" ||
         orderValue == null ||

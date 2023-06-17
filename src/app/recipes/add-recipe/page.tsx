@@ -3,7 +3,7 @@ import { Recipe } from "@/types/typings";
 import AddRecipeForm from "./AddRecipeForm";
 
 const INITIAL_RECIPE: Recipe = {
-    recipeId: randomUUID(),
+    recipeId: "",
     name: "",
     orderValue: "",
     description: "",

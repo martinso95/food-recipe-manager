@@ -87,15 +87,10 @@ export const addNewRecipe = async (
     recipe: Recipe,
     imageFile: File | undefined
 ): Promise<{ recipeId: string | null; message: string }> => {
-    const {
-        recipeId,
-        name,
-        description,
-        time,
-        servings,
-        ingredients,
-        instructions,
-    } = recipe;
+    const { name, description, time, servings, ingredients, instructions } =
+        recipe;
+
+    const recipeId = crypto.randomUUID();
 
     const requestBody: RecipeRequestBody = {
         recipeId,
