@@ -39,7 +39,9 @@ export const getListData = async (
     let query = recipesCollection.orderBy("orderValue");
 
     if (searchValue) {
-        query = query.startAt(searchValue).endAt(searchValue + "~");
+        query = query
+            .startAt(searchValue.toLowerCase())
+            .endAt(searchValue.toLowerCase() + "~");
     }
 
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
@@ -82,7 +84,9 @@ export const getNextListData = async (
     let query = recipesCollection.orderBy("orderValue");
 
     if (searchValue) {
-        query = query.startAt(searchValue).endAt(searchValue + "~");
+        query = query
+            .startAt(searchValue.toLowerCase())
+            .endAt(searchValue.toLowerCase() + "~");
     }
 
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
@@ -126,7 +130,9 @@ export const getPreviousListData = async (
     let query = recipesCollection.orderBy("orderValue");
 
     if (searchValue) {
-        query = query.startAt(searchValue).endAt(searchValue + "~");
+        query = query
+            .startAt(searchValue.toLowerCase())
+            .endAt(searchValue.toLowerCase() + "~");
     }
 
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
