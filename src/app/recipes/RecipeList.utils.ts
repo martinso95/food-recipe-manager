@@ -1,19 +1,22 @@
 /**
- * This is fully utilizing Firebase firestore pagination strategy.
+ * Firebase firestore querying utils.
+ * - Basic prefix search
+ *
+ * - Next/previous pagination
  * This pagination is limited to only being able to go to next or previous. And we start at page 1.
  * Firestore does not provide a good solution for a numbered pagination.
  * It is possible to do it, but it would cost a lot of reads. So we lose on cost and performance.
  * Firestore reads will be expensive if you have to read thousands of items on every pagination.
  */
 
-const PAGE_LIMIT = 20;
-
-export type PaginationPageSearchParams = Record<
-    "nextPageStartAfter" | "previousPageEndBefore",
+export type RecipeListPageSearchParams = Record<
+    "nextPageStartAfter" | "previousPageEndBefore" | "searchValue",
     string
 >;
 
-export type PaginationData = {
+const PAGE_LIMIT = 20;
+
+export type ListData = {
     items: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[];
     firstItem: string;
     lastItem: string;
@@ -21,7 +24,7 @@ export type PaginationData = {
     nextDisabled: boolean;
 };
 
-const emptyPaginationData = {
+const emptyListData = {
     items: [],
     firstItem: "",
     lastItem: "",
@@ -29,19 +32,25 @@ const emptyPaginationData = {
     nextDisabled: true,
 };
 
-export const getInitialPaginationData = async (
-    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
-): Promise<PaginationData> => {
+export const getListData = async (
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>,
+    searchValue?: string
+): Promise<ListData> => {
+    let query = recipesCollection.orderBy("orderValue");
+
+    if (searchValue) {
+        query = query.startAt(searchValue).endAt(searchValue + "~");
+    }
+
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
         (
-            await recipesCollection
-                .orderBy("orderValue")
+            await query
                 .limit(PAGE_LIMIT + 1) // Intentionally fetch one more than the page limit, to find out if there are more items in next or previous.
                 .get()
         ).docs;
 
     if (recipeDocuments.length === 0) {
-        return emptyPaginationData;
+        return emptyListData;
     }
 
     // If we were able to fetch more than the page limit, then we can go to next or previos.
@@ -65,21 +74,27 @@ export const getInitialPaginationData = async (
     };
 };
 
-export const getNextPaginationData = async (
+export const getNextListData = async (
     currentLastItem: string,
-    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
-): Promise<PaginationData> => {
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>,
+    searchValue?: string
+): Promise<ListData> => {
+    let query = recipesCollection.orderBy("orderValue");
+
+    if (searchValue) {
+        query = query.startAt(searchValue).endAt(searchValue + "~");
+    }
+
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
         (
-            await recipesCollection
-                .orderBy("orderValue")
+            await query
                 .startAfter(currentLastItem)
                 .limit(PAGE_LIMIT + 1) // Intentionally fetch one more than the page limit, to find out if there are more items in next or previous.
                 .get()
         ).docs;
 
     if (recipeDocuments.length === 0) {
-        return emptyPaginationData;
+        return emptyListData;
     }
 
     // If we were able to fetch more than the page limit, then we can go to next or previos.
@@ -103,21 +118,27 @@ export const getNextPaginationData = async (
     };
 };
 
-export const getPreviousPaginationData = async (
+export const getPreviousListData = async (
     currentFirstItem: string,
-    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
-): Promise<PaginationData> => {
+    recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>,
+    searchValue?: string
+): Promise<ListData> => {
+    let query = recipesCollection.orderBy("orderValue");
+
+    if (searchValue) {
+        query = query.startAt(searchValue).endAt(searchValue + "~");
+    }
+
     const recipeDocuments: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>[] =
         (
-            await recipesCollection
-                .orderBy("orderValue")
+            await query
                 .endBefore(currentFirstItem)
                 .limitToLast(PAGE_LIMIT + 1) // Intentionally fetch one more than the page limit, to find out if there are more items in next or previous.
                 .get()
         ).docs;
 
     if (recipeDocuments.length === 0) {
-        return emptyPaginationData;
+        return emptyListData;
     }
 
     // If we were able to fetch more than the page limit, then we can go to next or previos.
@@ -141,22 +162,24 @@ export const getPreviousPaginationData = async (
     };
 };
 
-export const getPaginationData = async (
-    searchParams: PaginationPageSearchParams | undefined,
+export const getRecipeListData = async (
+    searchParams: RecipeListPageSearchParams | undefined,
     recipesCollection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
-): Promise<PaginationData> => {
+): Promise<ListData> => {
     if (searchParams != null && searchParams.nextPageStartAfter != null) {
-        return await getNextPaginationData(
+        return await getNextListData(
             searchParams.nextPageStartAfter,
-            recipesCollection
+            recipesCollection,
+            searchParams.searchValue
         );
     }
     if (searchParams != null && searchParams.previousPageEndBefore != null) {
-        return await getPreviousPaginationData(
+        return await getPreviousListData(
             searchParams.previousPageEndBefore,
-            recipesCollection
+            recipesCollection,
+            searchParams.searchValue
         );
     }
 
-    return await getInitialPaginationData(recipesCollection);
+    return await getListData(recipesCollection, searchParams?.searchValue);
 };

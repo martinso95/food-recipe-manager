@@ -1,14 +1,17 @@
-import { RECIPES } from "@/utils/routes";
 import Link from "next/link";
+import { RECIPES } from "@/utils/routes";
 
 type Props = {
+    currentSearchValue: string | undefined;
     firstRecipeId: string;
     lastRecipeId: string;
     nextDisabled: boolean;
     previousDisabled: boolean;
     className?: string;
 };
+
 function RecipeListPagination({
+    currentSearchValue,
     firstRecipeId,
     lastRecipeId,
     nextDisabled,
@@ -20,8 +23,12 @@ function RecipeListPagination({
             <Link
                 href={{
                     pathname: `${RECIPES}`,
-
-                    query: { previousPageEndBefore: firstRecipeId },
+                    query: {
+                        ...(currentSearchValue && {
+                            searchValue: currentSearchValue,
+                        }),
+                        previousPageEndBefore: firstRecipeId,
+                    },
                 }}
                 className={`inline-flex items-center px-4 py-2 text-sm font-medium border rounded-lg bg-gray-800 border-gray-700 hover:bg-gray-700 ${
                     previousDisabled
@@ -34,8 +41,12 @@ function RecipeListPagination({
             <Link
                 href={{
                     pathname: `${RECIPES}`,
-
-                    query: { nextPageStartAfter: lastRecipeId },
+                    query: {
+                        ...(currentSearchValue && {
+                            searchValue: currentSearchValue,
+                        }),
+                        nextPageStartAfter: lastRecipeId,
+                    },
                 }}
                 className={`inline-flex items-center px-4 py-2 ml-3 text-sm border rounded-lg bg-gray-800 border-gray-700 hover:bg-gray-700 ${
                     nextDisabled

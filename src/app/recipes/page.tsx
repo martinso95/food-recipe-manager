@@ -5,15 +5,17 @@ import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { ADD_RECIPE } from "@/utils/routes";
 import RecipesEmptyState from "./RecipesEmptyState";
 import { Recipe } from "@/types/typings";
+import {
+    RecipeListPageSearchParams,
+    getRecipeListData,
+} from "./RecipeList.utils";
 import RecipeListCard from "./RecipeListCard";
 import RecipeListPagination from "./RecipeListPagination";
-import {
-    getPaginationData,
-    PaginationPageSearchParams,
-} from "./RecipeListPagination.utils";
+import Search from "../components/Search";
+import RecipesNotFound from "./RecipesNotFound";
 
 type Props = {
-    searchParams?: PaginationPageSearchParams;
+    searchParams?: RecipeListPageSearchParams;
 };
 
 async function RecipeListPage({ searchParams }: Props) {
@@ -30,7 +32,7 @@ async function RecipeListPage({ searchParams }: Props) {
         lastItem,
         nextDisabled,
         previousDisabled,
-    } = await getPaginationData(searchParams, recipesCollection);
+    } = await getRecipeListData(searchParams, recipesCollection);
 
     const recipeList: Recipe[] = recipeDocuments.map(
         (recipeDocument) => recipeDocument.data() as Recipe
@@ -38,24 +40,33 @@ async function RecipeListPage({ searchParams }: Props) {
 
     return (
         <main className="page flex flex-col justify-center items-center space-y-6">
-            {recipeDocuments.length === 0 ? (
+            {recipeDocuments.length === 0 &&
+            searchParams?.searchValue == null ? (
                 <RecipesEmptyState />
             ) : (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">
-                        {recipeList.map((recipe) => (
-                            <RecipeListCard
-                                key={recipe.recipeId}
-                                recipe={recipe}
+                    <Search initialValue={searchParams?.searchValue} />
+                    {recipeDocuments.length > 0 ? (
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">
+                                {recipeList.map((recipe) => (
+                                    <RecipeListCard
+                                        key={recipe.recipeId}
+                                        recipe={recipe}
+                                    />
+                                ))}
+                            </div>
+                            <RecipeListPagination
+                                currentSearchValue={searchParams?.searchValue}
+                                firstRecipeId={firstItem}
+                                lastRecipeId={lastItem}
+                                nextDisabled={nextDisabled}
+                                previousDisabled={previousDisabled}
                             />
-                        ))}
-                    </div>
-                    <RecipeListPagination
-                        firstRecipeId={firstItem}
-                        lastRecipeId={lastItem}
-                        nextDisabled={nextDisabled}
-                        previousDisabled={previousDisabled}
-                    />
+                        </>
+                    ) : (
+                        <RecipesNotFound />
+                    )}
                 </>
             )}
             <Link
