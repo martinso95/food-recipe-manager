@@ -34,20 +34,22 @@ export const removeEmptyInstructions = (instructions: RecipeInstruction[]) =>
     instructions.filter((instruction) => instruction.description !== "");
 
 export const isRecipeValid = (recipe: Recipe) => {
-    const { name, description, ingredients, instructions } = recipe;
+    const { name, description, proteins, ingredients, instructions } = recipe;
     return (
         name !== "" &&
         description !== "" &&
+        proteins.length > 0 &&
         ingredients.length > 0 &&
         instructions.length > 0
     );
 };
 
 export const getFormErrors = (recipe: Recipe): RecipeFormErrors => {
-    const { name, description, ingredients, instructions } = recipe;
+    const { name, description, proteins, ingredients, instructions } = recipe;
     return {
         name: name === "",
         description: description === "",
+        protein: proteins.length === 0,
         ingredients: ingredients.length === 0,
         instructions: instructions.length === 0,
     };
@@ -87,8 +89,15 @@ export const addNewRecipe = async (
     recipe: Recipe,
     imageFile: File | undefined
 ): Promise<{ recipeId: string | null; message: string }> => {
-    const { name, description, time, servings, ingredients, instructions } =
-        recipe;
+    const {
+        name,
+        description,
+        proteins,
+        time,
+        servings,
+        ingredients,
+        instructions,
+    } = recipe;
 
     const recipeId = crypto.randomUUID();
 
@@ -97,6 +106,7 @@ export const addNewRecipe = async (
         name,
         orderValue: name.toLowerCase() + recipeId,
         description,
+        proteins,
         time,
         servings,
         ingredients,
@@ -152,6 +162,7 @@ export const editRecipe = async (
         recipeId,
         name,
         description,
+        proteins,
         time,
         servings,
         ingredients,
@@ -168,6 +179,7 @@ export const editRecipe = async (
         name: name,
         orderValue: name.toLowerCase() + recipeId,
         description: description,
+        proteins: proteins,
         time: time,
         servings: servings,
         ingredients: ingredients,

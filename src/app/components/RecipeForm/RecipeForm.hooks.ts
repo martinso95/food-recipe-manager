@@ -7,6 +7,7 @@ import {
     RecipeFormErrors,
     RecipeIngredient,
     RecipeInstruction,
+    RecipeProtein,
 } from "@/types/typings";
 import { MAX_IMAGE_SIZE } from "@/utils/Utils";
 
@@ -48,6 +49,7 @@ export const useRecipeForm = (initialRecipe: Recipe) => {
     const [formErrors, setFormErrors] = useState<RecipeFormErrors>({
         name: false,
         description: false,
+        protein: false,
         ingredients: false,
         instructions: false,
     });
@@ -56,6 +58,22 @@ export const useRecipeForm = (initialRecipe: Recipe) => {
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setRecipe((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+
+    const handleSelectProtein = (protein: RecipeProtein) => {
+        if (recipe.proteins.includes(protein)) {
+            setRecipe((prev) => ({
+                ...prev,
+                proteins: prev.proteins.filter(
+                    (currentProtein) => currentProtein !== protein
+                ),
+            }));
+        } else {
+            setRecipe((prev) => ({
+                ...prev,
+                proteins: [...prev.proteins, protein],
+            }));
+        }
     };
 
     const handleAddIngredient = (ingredient: RecipeIngredient) => {
@@ -86,6 +104,7 @@ export const useRecipeForm = (initialRecipe: Recipe) => {
         formErrors,
         setFormErrors,
         handleInputChange,
+        handleSelectProtein,
         handleAddIngredient,
         handleRemoveIngredient,
         handleInstructionsChange,

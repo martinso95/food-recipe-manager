@@ -1,15 +1,17 @@
 "use client";
 
+import { useRef } from "react";
+import { PhotoIcon } from "@heroicons/react/24/outline";
 import {
     Recipe,
     RecipeFormErrors,
     RecipeIngredient,
     RecipeInstruction,
+    RecipeProtein,
 } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
-import { PhotoIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
 import ImageWithFallback from "../ImageWithFallback";
+import ProteinsEditor from "./ProteinsEditor";
 import IngredientsEditor from "./IngredientsEditor";
 import InstructionsEditor from "./InstructionsEditor";
 
@@ -19,6 +21,7 @@ type Props = {
     handleInputChange: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
+    handleSelectProtein: (protein: RecipeProtein) => void;
     handleAddIngredient: (ingredient: RecipeIngredient) => void;
     handleRemoveIngredient: (ingredientId: string) => void;
     handleInstructionsChange: (instructions: RecipeInstruction[]) => void;
@@ -31,6 +34,7 @@ function RecipeFormInputs({
     recipe,
     formErrors,
     handleInputChange,
+    handleSelectProtein,
     handleAddIngredient,
     handleRemoveIngredient,
     handleInstructionsChange,
@@ -139,6 +143,11 @@ function RecipeFormInputs({
                     <div className="h-5 w-full" />
                 )}
             </div>
+            <ProteinsEditor
+                proteins={recipe.proteins}
+                onSelectProtein={handleSelectProtein}
+                hasFormError={formErrors["protein"] === true}
+            />
             <div>
                 <label htmlFor="time" className="label mb-1">
                     Time

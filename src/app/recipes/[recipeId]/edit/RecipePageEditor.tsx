@@ -34,6 +34,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
         formErrors,
         setFormErrors,
         handleInputChange,
+        handleSelectProtein,
         handleAddIngredient,
         handleRemoveIngredient,
         handleInstructionsChange,
@@ -85,6 +86,7 @@ function RecipePageEditor({ recipeId, recipe: originalRecipe }: Props) {
                 recipe={recipe}
                 formErrors={formErrors}
                 handleInputChange={handleInputChange}
+                handleSelectProtein={handleSelectProtein}
                 handleAddIngredient={handleAddIngredient}
                 handleRemoveIngredient={handleRemoveIngredient}
                 handleInstructionsChange={handleInstructionsChange}

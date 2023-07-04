@@ -20,6 +20,7 @@ The website is currently only for private use. Even if it is deployed on the web
     -   Image
     -   Name
     -   Description
+    -   Proteins
     -   Time
     -   Servings
     -   Ingredients

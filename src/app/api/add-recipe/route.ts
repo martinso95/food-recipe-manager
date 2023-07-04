@@ -28,6 +28,7 @@ export async function POST(request: Request) {
         name,
         orderValue,
         description,
+        proteins,
         time,
         servings,
         ingredients,
@@ -52,6 +53,8 @@ export async function POST(request: Request) {
         orderValue === "" ||
         description == null ||
         description === "" ||
+        proteins == null ||
+        proteins.length === 0 ||
         ingredients == null ||
         ingredients.length === 0 ||
         instructions == null ||
@@ -105,6 +108,7 @@ export async function POST(request: Request) {
         name,
         orderValue,
         description,
+        proteins,
         time,
         servings,
         ingredients,

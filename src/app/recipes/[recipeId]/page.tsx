@@ -61,6 +61,12 @@ async function RecipePage({ params: { recipeId } }: Props) {
                 </div>
             )}
             <h2 className="text-base font-normal text-white">{description}</h2>
+            <div>
+                <p className="label">Proteins</p>
+                <p className="text-base font-light text-white">
+                    {recipe.proteins.join(", ")}
+                </p>
+            </div>
             {servings != null && (
                 <div>
                     <p className="label">Servings</p>

@@ -7,6 +7,7 @@ const INITIAL_RECIPE: Recipe = {
     name: "",
     orderValue: "",
     description: "",
+    proteins: [],
     ingredients: [],
     instructions: [{ id: randomUUID(), description: "" }],
 };

@@ -3,6 +3,7 @@ import { DefaultUser } from "next-auth";
 export interface RecipeFormErrors {
     name: boolean;
     description: boolean;
+    protein: boolean;
     ingredients: boolean;
     instructions: boolean;
 }
@@ -16,6 +17,16 @@ export interface RecipeImage {
     url: string;
     name: string;
     blurImageData: string;
+}
+
+export enum RecipeProtein {
+    BEEF = "Beef",
+    CHICKEN = "Chicken",
+    FISH = "Fish",
+    LAMB = "Lamb",
+    PORK = "Pork",
+    SEAFOOD = "Seafood",
+    VEGETARIAN = "Vegetarian",
 }
 
 export interface RecipeIngredient {
@@ -36,6 +47,7 @@ export interface Recipe {
     name: string;
     orderValue: string; // Used for Firestore name ordering and pagination. Consists of name in lower case plus recipe id.
     description: string;
+    proteins: RecipeProtein[];
     servings?: number;
     time?: string;
     ingredients: RecipeIngredient[];
@@ -49,6 +61,7 @@ export interface RecipeRequestBody {
     name: string;
     orderValue: string; // Used for Firestore name ordering and pagination. Consists of name in lower case plus recipe id.
     description: string;
+    proteins: RecipeProtein[];
     servings?: number;
     time?: string;
     ingredients: RecipeIngredient[];
