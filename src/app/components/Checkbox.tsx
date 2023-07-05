@@ -5,23 +5,22 @@ import React from "react";
 type Props = {
     label: string;
     checked: boolean;
-    onChange: () => void;
+    onChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
 function Checkbox({ label, checked, onChange }: Props) {
     return (
-        <div className="flex items-center p-2">
+        <div
+            onClick={onChange}
+            className="flex flex-1 items-center p-2 cursor-pointer"
+        >
             <input
-                id={`${label}-checkbox`}
                 type="checkbox"
                 checked={checked}
-                onChange={onChange}
-                className="w-4 h-4 text-blue-600 rounded cursor-pointer focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
+                onChange={(event) => event.stopPropagation()}
+                className="w-4 h-4 cursor-pointer text-blue-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
             />
-            <label
-                htmlFor={`${label}-checkbox`}
-                className="ml-2 text-sm font-medium text-gray-300 cursor-pointer"
-            >
+            <label className="ml-2 cursor-pointer text-sm font-medium text-gray-300">
                 {label}
             </label>
         </div>
