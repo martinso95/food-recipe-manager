@@ -69,11 +69,31 @@ function DropDownMenu({ label, children }: Props) {
             }
         };
 
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!(event.target instanceof HTMLElement)) return;
+
+            if (
+                dropdownButtonRef.current &&
+                dropdownButtonRef.current.contains(event.target)
+            ) {
+                return;
+            }
+
+            if (
+                dropdownContentRef.current &&
+                !dropdownContentRef.current.contains(event.target)
+            ) {
+                setIsDropdownOpen(false);
+            }
+        };
+
         handleResize();
         window.addEventListener("resize", handleResize);
 
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
             window.removeEventListener("resize", handleResize);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
