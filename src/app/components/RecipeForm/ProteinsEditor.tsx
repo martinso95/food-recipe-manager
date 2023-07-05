@@ -17,41 +17,14 @@ function ProteinsEditor({ proteins, onSelectProtein, hasFormError }: Props) {
                 <span className="ml-1 text-red-500">*</span>
             </p>
             <div className="flex flex-wrap space-x-2">
-                <Checkbox
-                    label={RecipeProtein.BEEF}
-                    checked={proteins.includes(RecipeProtein.BEEF)}
-                    onChange={() => onSelectProtein(RecipeProtein.BEEF)}
-                />
-                <Checkbox
-                    label={RecipeProtein.CHICKEN}
-                    checked={proteins.includes(RecipeProtein.CHICKEN)}
-                    onChange={() => onSelectProtein(RecipeProtein.CHICKEN)}
-                />
-                <Checkbox
-                    label={RecipeProtein.FISH}
-                    checked={proteins.includes(RecipeProtein.FISH)}
-                    onChange={() => onSelectProtein(RecipeProtein.FISH)}
-                />
-                <Checkbox
-                    label={RecipeProtein.LAMB}
-                    checked={proteins.includes(RecipeProtein.LAMB)}
-                    onChange={() => onSelectProtein(RecipeProtein.LAMB)}
-                />
-                <Checkbox
-                    label={RecipeProtein.PORK}
-                    checked={proteins.includes(RecipeProtein.PORK)}
-                    onChange={() => onSelectProtein(RecipeProtein.PORK)}
-                />
-                <Checkbox
-                    label={RecipeProtein.SEAFOOD}
-                    checked={proteins.includes(RecipeProtein.SEAFOOD)}
-                    onChange={() => onSelectProtein(RecipeProtein.SEAFOOD)}
-                />
-                <Checkbox
-                    label={RecipeProtein.VEGETARIAN}
-                    checked={proteins.includes(RecipeProtein.VEGETARIAN)}
-                    onChange={() => onSelectProtein(RecipeProtein.VEGETARIAN)}
-                />
+                {Object.values(RecipeProtein).map((recipeProtein) => (
+                    <Checkbox
+                        key={recipeProtein}
+                        label={recipeProtein}
+                        checked={proteins.includes(recipeProtein)}
+                        onChange={() => onSelectProtein(recipeProtein)}
+                    />
+                ))}
             </div>
             {hasFormError ? (
                 <p className="text-sm text-red-500 font-semibold">

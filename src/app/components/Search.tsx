@@ -27,10 +27,7 @@ function Search({ initialValue }: Props) {
             onSubmit={handleOnSearch}
             className="mr-auto w-full md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]"
         >
-            <label
-                htmlFor="search-input"
-                className="mb-2 text-sm font-medium text-white sr-only"
-            >
+            <label htmlFor="search-input" className="sr-only">
                 Search
             </label>
             <div className="relative">
@@ -61,7 +58,7 @@ function Search({ initialValue }: Props) {
                 />
                 <button
                     type="submit"
-                    className="text-white absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                    className="button absolute right-2.5 mt-auto mb-auto top-0 bottom-0 h-10"
                 >
                     Search
                 </button>
