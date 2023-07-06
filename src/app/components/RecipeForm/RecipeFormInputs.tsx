@@ -51,7 +51,7 @@ function RecipeFormInputs({
     };
 
     return (
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col space-y-2">
             <div className="flex flex-col items-center mx-auto w-full md:w-[95%] lg:w-[80%] xl:w-[70%] 2xl:w-[60%] h-[35vh] md:h-[45vh] lg:h-[55vh]">
                 <input
                     ref={imageInputRef}
@@ -73,13 +73,6 @@ function RecipeFormInputs({
                                 className="object-cover rounded-lg"
                             />
                         </div>
-                        <button
-                            type="button"
-                            onClick={handleRemoveImage}
-                            className="button mt-4"
-                        >
-                            Remove image
-                        </button>
                     </>
                 ) : (
                     <>
@@ -87,14 +80,26 @@ function RecipeFormInputs({
                             onClick={handleImageClick}
                             className="w-full h-full cursor-pointer text-gray-200"
                         />
-                        <button
-                            type="button"
-                            onClick={handleImageClick}
-                            className="button mt-4"
-                        >
-                            Add image
-                        </button>
                     </>
+                )}
+            </div>
+            <div className="mx-auto">
+                {imagePreview != null ? (
+                    <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="primary-button"
+                    >
+                        Remove image
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={handleImageClick}
+                        className="primary-button"
+                    >
+                        Add image
+                    </button>
                 )}
             </div>
             <div>

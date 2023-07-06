@@ -19,7 +19,7 @@ async function Home() {
                     <div className="flex flex-col space-y-4 border rounded-lg w-full sm:w-80 p-4 bg-gray-700 border-gray-600">
                         <Link
                             href={RECIPES}
-                            className="button text-xl leading-8 font-bold flex justify-center w-full"
+                            className="primary-button text-xl leading-8 font-bold flex justify-center w-full"
                         >
                             Go to My recipes
                         </Link>

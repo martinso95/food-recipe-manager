@@ -11,12 +11,12 @@ type Props = {
 
 function ProteinsEditor({ proteins, onSelectProtein, hasFormError }: Props) {
     return (
-        <div className={"flex flex-col"}>
+        <div className="flex flex-col">
             <p className="label mb-1">
                 Proteins
                 <span className="ml-1 text-red-500">*</span>
             </p>
-            <div className="flex flex-wrap space-x-2">
+            <div className="flex flex-wrap gap-2">
                 {Object.values(RecipeProtein).map((recipeProtein) => (
                     <Checkbox
                         key={recipeProtein}

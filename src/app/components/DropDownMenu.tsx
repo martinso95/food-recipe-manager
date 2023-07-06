@@ -118,7 +118,7 @@ function DropDownMenu({ label, children }: Props) {
                 ref={dropdownButtonRef}
                 type="button"
                 onClick={() => setIsDropdownOpen((open) => !open)}
-                className="button inline-flex items-center min-w-[10rem] justify-between"
+                className="primary-button inline-flex items-center min-w-[10rem] justify-between"
             >
                 <span className="flex flex-1 text-center justify-center">
                     {label}
@@ -144,7 +144,7 @@ function DropDownMenu({ label, children }: Props) {
                 ref={dropdownContentRef}
                 className={`absolute ${
                     !isDropdownOpen ? "hidden" : ""
-                } z-50 min-w-[10rem] rounded-lg shadow bg-gray-700 ${getOrientationCss(
+                } z-50 min-w-[10rem] overflow-hidden rounded-lg shadow bg-gray-700 ${getOrientationCss(
                     dropdownPosition
                 )}`}
             >

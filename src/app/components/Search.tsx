@@ -58,7 +58,7 @@ function Search({ initialValue }: Props) {
                 />
                 <button
                     type="submit"
-                    className="button absolute right-2.5 mt-auto mb-auto top-0 bottom-0 h-10"
+                    className="primary-button absolute right-2.5 mt-auto mb-auto top-0 bottom-0 h-10"
                 >
                     Search
                 </button>

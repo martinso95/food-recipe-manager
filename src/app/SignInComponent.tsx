@@ -31,7 +31,7 @@ function SignInComponent({ providers }: Props) {
                     key={provider.name}
                     disabled={signInLoading}
                     onClick={() => handleSignIn(provider.id)}
-                    className="button text-xl leading-8 font-bold disabled:cursor-not-allowed flex justify-center"
+                    className="primary-button text-xl leading-8 font-bold disabled:cursor-not-allowed flex justify-center"
                 >
                     {signInLoading ? (
                         <Spinner width="8" height="8" />

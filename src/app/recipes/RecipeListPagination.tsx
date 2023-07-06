@@ -16,7 +16,7 @@ function RecipeListPagination({
     lastRecipeId,
     nextDisabled,
     previousDisabled,
-    className,
+    className = "",
 }: Props) {
     return (
         <nav aria-label="Recipe list pagination" className={className}>

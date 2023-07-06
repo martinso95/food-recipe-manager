@@ -73,7 +73,7 @@ function InstructionsEditor({
             <button
                 type="button"
                 onClick={handleAddNewInstruction}
-                className="button mt-2"
+                className="primary-button mt-2"
             >
                 Add instructions
             </button>

@@ -4,10 +4,13 @@ import Link from "next/link";
 function RecipesNotFound() {
     return (
         <div className="flex flex-col space-y-6 items-center mt-10 sm:mt-20">
-            <h2 className="pageTitle text-center">
+            <h2 className="page-title text-center">
                 Could not find the recipe you searched for
             </h2>
-            <Link href={RECIPES} className="button w-fit font-bold text-xl">
+            <Link
+                href={RECIPES}
+                className="primary-button w-fit font-bold text-xl"
+            >
                 Clear search
             </Link>
         </div>

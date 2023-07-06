@@ -6,13 +6,14 @@ type Props = {
     label: string;
     checked: boolean;
     onChange: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    className?: string;
 };
 
-function Checkbox({ label, checked, onChange }: Props) {
+function Checkbox({ label, checked, onChange, className = "" }: Props) {
     return (
         <div
             onClick={onChange}
-            className="flex flex-1 items-center p-2 cursor-pointer"
+            className={`flex items-center p-2 cursor-pointer ${className}`}
         >
             <input
                 type="checkbox"

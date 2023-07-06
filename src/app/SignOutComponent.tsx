@@ -24,7 +24,7 @@ function SignOutComponent() {
         <button
             disabled={signOutLoading}
             onClick={handleSignOut}
-            className="button text-xl leading-8 font-bold disabled:cursor-not-allowed flex justify-center w-full"
+            className="primary-button text-xl leading-8 font-bold disabled:cursor-not-allowed flex justify-center w-full"
         >
             {signOutLoading ? <Spinner width="8" height="8" /> : "Sign Out"}
         </button>

@@ -9,7 +9,13 @@ type Props = Omit<ImageProps, "src"> & {
     className?: string;
 };
 
-function ImageWithFallback({ src, alt, fallback, className, ...rest }: Props) {
+function ImageWithFallback({
+    src,
+    alt,
+    fallback,
+    className = "",
+    ...rest
+}: Props) {
     const [error, setError] = useState(false);
 
     return (
