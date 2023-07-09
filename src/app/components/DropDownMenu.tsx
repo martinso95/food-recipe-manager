@@ -6,12 +6,13 @@ type Orientation = "bottomLeft" | "bottomRight" | "topLeft" | "topRight";
 
 type Props = {
     label: string;
+    isOpen: boolean;
     children: ReactNode;
+    setIsOpen: (isOpen: boolean) => void;
 };
-function DropDownMenu({ label, children }: Props) {
+function DropDownMenu({ label, isOpen, setIsOpen, children }: Props) {
     const dropdownButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownContentRef = useRef<HTMLDivElement>(null);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [dropdownPosition, setDropdownPosition] =
         useState<Orientation>("bottomLeft");
 
@@ -83,7 +84,7 @@ function DropDownMenu({ label, children }: Props) {
                 dropdownContentRef.current &&
                 !dropdownContentRef.current.contains(event.target)
             ) {
-                setIsDropdownOpen(false);
+                setIsOpen(false);
             }
         };
 
@@ -117,7 +118,7 @@ function DropDownMenu({ label, children }: Props) {
             <button
                 ref={dropdownButtonRef}
                 type="button"
-                onClick={() => setIsDropdownOpen((open) => !open)}
+                onClick={() => setIsOpen(!isOpen)}
                 className="primary-button inline-flex items-center min-w-[10rem] justify-between"
             >
                 <span className="flex flex-1 text-center justify-center">
@@ -143,7 +144,7 @@ function DropDownMenu({ label, children }: Props) {
             <div
                 ref={dropdownContentRef}
                 className={`absolute ${
-                    !isDropdownOpen ? "hidden" : ""
+                    !isOpen ? "hidden" : ""
                 } z-40 min-w-[10rem] overflow-hidden rounded-lg shadow bg-gray-700 ${getOrientationCss(
                     dropdownPosition
                 )}`}
