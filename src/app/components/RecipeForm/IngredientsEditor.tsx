@@ -101,9 +101,9 @@ function IngredientsEditor({
                 <button
                     type="button"
                     onClick={handleAddIngredient}
-                    className="primary-icon-button row-span-2 self-end col-span-2"
+                    className="primary-icon-button row-span-2 self-end col-span-2 max-w-max"
                 >
-                    <PlusIcon className="h-6 w-6" />
+                    <PlusIcon className="h-6 w-6 shrink-0" />
                 </button>
             </div>
             <ul className="mt-2 space-y-2">
@@ -125,9 +125,9 @@ function IngredientsEditor({
                             <button
                                 type="button"
                                 onClick={() => onRemoveIngredient(id)}
-                                className="primary-icon-button col-span-2"
+                                className="primary-icon-button col-span-2 max-w-max"
                             >
-                                <TrashIcon className="h-6 w-6" />
+                                <TrashIcon className="h-6 w-6 shrink-0" />
                             </button>
                         </li>
                     )

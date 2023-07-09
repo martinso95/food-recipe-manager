@@ -144,7 +144,7 @@ function DropDownMenu({ label, children }: Props) {
                 ref={dropdownContentRef}
                 className={`absolute ${
                     !isDropdownOpen ? "hidden" : ""
-                } z-50 min-w-[10rem] overflow-hidden rounded-lg shadow bg-gray-700 ${getOrientationCss(
+                } z-40 min-w-[10rem] overflow-hidden rounded-lg shadow bg-gray-700 ${getOrientationCss(
                     dropdownPosition
                 )}`}
             >
