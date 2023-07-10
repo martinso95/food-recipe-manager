@@ -96,7 +96,7 @@ function DropDownMenu({ label, isOpen, setIsOpen, children }: Props) {
             window.removeEventListener("resize", handleResize);
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [setIsOpen]);
 
     const getOrientationCss = (dropdownPosition: Orientation) => {
         switch (dropdownPosition) {
