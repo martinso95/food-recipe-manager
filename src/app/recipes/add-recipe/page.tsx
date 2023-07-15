@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Recipe } from "@/types/typings";
-import AddRecipeForm from "./AddRecipeForm";
+import AddRecipeForm from "./components/AddRecipeForm";
 
 const INITIAL_RECIPE: Recipe = {
     recipeId: "",

@@ -3,9 +3,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { getServerSession } from "@/utils/NextAuthSession.utils";
 import Providers from "./Providers";
-import PublicNavBar from "./components/PublicNavBar";
-import UserNavBar from "./components/UserNavBar";
-import ToastContainer from "./ToastContainer";
+import PublicNavBar from "@/components/NavBar/PublicNavBar";
+import UserNavBar from "@/components/NavBar/UserNavBar";
+import ToastContainer from "@/components/ToastContainer";
 
 export const metadata: Metadata = {
     title: "Food Recipe Manager",

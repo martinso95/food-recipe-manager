@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
+import { Recipe } from "@/types/typings";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { ADD_RECIPE } from "@/utils/routes";
-import RecipesEmptyState from "./RecipesEmptyState";
-import { Recipe } from "@/types/typings";
 import {
     RecipeListPageSearchParams,
     getRecipeListData,
 } from "./RecipeList.utils";
-import RecipeListCard from "./RecipeListCard";
-import RecipeListPagination from "./RecipeListPagination";
-import Search from "../components/Search";
-import RecipesNotFound from "./RecipesNotFound";
+import RecipesEmptyState from "./components/RecipesEmptyState";
+import RecipeListCard from "./components/RecipeListCard";
+import RecipeListPagination from "./components/RecipeListPagination";
+import RecipeListSearch from "./components/RecipeListSearch";
+import RecipesNotFound from "./components/RecipesNotFound";
 
 type Props = {
     searchParams?: RecipeListPageSearchParams;
@@ -45,7 +45,11 @@ async function RecipeListPage({ searchParams }: Props) {
                 <RecipesEmptyState />
             ) : (
                 <>
-                    <Search initialValue={searchParams?.searchValue} />
+                    <div className="flex flex-wrap w-full items-center gap-2 justify-between">
+                        <RecipeListSearch
+                            initialValue={searchParams?.searchValue}
+                        />
+                    </div>
                     {recipeDocuments.length > 0 ? (
                         <>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">

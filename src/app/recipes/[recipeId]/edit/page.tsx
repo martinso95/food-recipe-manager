@@ -2,14 +2,11 @@ import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { notFound } from "next/navigation";
 import { Recipe } from "@/types/typings";
 import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
-import RecipePageEditor from "./RecipePageEditor";
+import RecipePageEditor from "./components/RecipePageEditor";
 
-type Props = {
-    params: { recipeId: string };
-};
-
-async function EditRecipePage({ params: { recipeId } }: Props) {
+const getRecipe = async (recipeId: string) => {
     const user = await getServerSessionUser();
+
     const recipe: Recipe = (
         await adminFirestore
             .collection("userContent")
@@ -18,6 +15,16 @@ async function EditRecipePage({ params: { recipeId } }: Props) {
             .doc(recipeId)
             .get()
     ).data() as Recipe;
+
+    return recipe;
+};
+
+type Props = {
+    params: { recipeId: string };
+};
+
+async function EditRecipePage({ params: { recipeId } }: Props) {
+    const recipe = await getRecipe(recipeId);
 
     if (recipe == null) {
         notFound();

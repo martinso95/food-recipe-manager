@@ -1,5 +1,5 @@
-import { RECIPES } from "@/utils/routes";
 import Link from "next/link";
+import { RECIPES } from "@/utils/routes";
 
 function RecipesNotFound() {
     return (

@@ -12,13 +12,13 @@ import {
     getFormErrors,
     isRecipeValid,
     sanitizeRecipe,
-} from "@/app/components/RecipeForm/RecipeForm.utils";
+} from "@/components/RecipeForm/RecipeForm.utils";
 import {
     useRecipeForm,
     useRecipeFormImage,
-} from "@/app/components/RecipeForm/RecipeForm.hooks";
-import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
-import Spinner from "@/app/components/Spinner";
+} from "@/components/RecipeForm/RecipeForm.hooks";
+import RecipeFormInputs from "@/components/RecipeForm/RecipeFormInputs";
+import Spinner from "@/components/Spinner";
 
 type Props = {
     recipeId: string;

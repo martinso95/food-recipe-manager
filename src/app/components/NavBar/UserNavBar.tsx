@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 import { Dropdown, Navbar } from "flowbite-react";
 import { User } from "@/types/typings";
 import { APP_LOGO, AVATAR_PLACEHOLDER } from "@/utils/Utils";
-import ImageWithFallback from "./ImageWithFallback";
 import { RECIPES } from "@/utils/routes";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 type Props = {
     user: User;
@@ -70,6 +70,18 @@ function UserNavBar({ user }: Props) {
                 <Navbar.Link href={RECIPES} active={pathname === RECIPES}>
                     Recipes
                 </Navbar.Link>
+                <button
+                    onClick={() =>
+                        fetch("/api/update-recipes-tool", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
+                    }
+                >
+                    Update
+                </button>
             </Navbar.Collapse>
         </Navbar>
     );

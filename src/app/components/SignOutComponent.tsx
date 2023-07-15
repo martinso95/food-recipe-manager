@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { toast } from "react-toastify";
-import Spinner from "./components/Spinner";
+import Spinner from "@/components/Spinner";
 
 function SignOutComponent() {
     const [signOutLoading, setSignOutLoading] = useState(false);

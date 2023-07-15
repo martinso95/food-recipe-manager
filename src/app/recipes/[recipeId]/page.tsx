@@ -2,20 +2,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { adminFirestore } from "@/firebase/firebaseAdmin";
 import { ClockIcon, PencilIcon } from "@heroicons/react/24/outline";
-import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { Recipe } from "@/types/typings";
-import ImageWithFallback from "@/app/components/ImageWithFallback";
+import { getServerSessionUser } from "@/utils/NextAuthSession.utils";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { RECIPES } from "@/utils/routes";
-import IngredientsViewer from "./IngredientsViewer";
-import InstructionsViewer from "./InstructionsViewer";
+import ImageWithFallback from "@/components/ImageWithFallback";
+import IngredientsViewer from "./components/IngredientsViewer";
+import InstructionsViewer from "./components/InstructionsViewer";
 
-type Props = {
-    params: { recipeId: string };
-};
-
-async function RecipePage({ params: { recipeId } }: Props) {
+const getRecipe = async (recipeId: string) => {
     const user = await getServerSessionUser();
+
     const recipe: Recipe = (
         await adminFirestore
             .collection("userContent")
@@ -24,6 +21,16 @@ async function RecipePage({ params: { recipeId } }: Props) {
             .doc(recipeId)
             .get()
     ).data() as Recipe;
+
+    return recipe;
+};
+
+type Props = {
+    params: { recipeId: string };
+};
+
+async function RecipePage({ params: { recipeId } }: Props) {
+    const recipe = await getRecipe(recipeId);
 
     if (recipe == null) {
         notFound();

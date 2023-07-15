@@ -7,6 +7,7 @@ import { sortIngredientsAlphabetically } from "@/utils/Utils";
 type Props = {
     ingredients: RecipeIngredient[];
 };
+
 function IngredientsViewer({ ingredients }: Props) {
     const [multiplier, setMultiplier] = useState(1);
 

@@ -1,4 +1,4 @@
-import RecipePageSkeleton from "@/app/components/Skeletons/RecipePageSkeleton";
+import RecipePageSkeleton from "@/components/Skeletons/RecipePageSkeleton";
 
 export default function AddReipePageLoading() {
     return (

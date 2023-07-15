@@ -3,6 +3,7 @@ import { RecipeInstruction } from "@/types/typings";
 type Props = {
     instructions: RecipeInstruction[];
 };
+
 function InstructionsViewer({ instructions }: Props) {
     return (
         <ol className="space-y-6">

@@ -1,4 +1,4 @@
-import RecipeListCardSkeleton from "../components/Skeletons/RecipeListCardSkeleton";
+import RecipeListCardSkeleton from "@/components/Skeletons/RecipeListCardSkeleton";
 
 export default function RecipeListLoading() {
     return (

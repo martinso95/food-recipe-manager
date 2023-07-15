@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { getProviders, signIn } from "next-auth/react";
 import { toast } from "react-toastify";
-import Spinner from "./components/Spinner";
+import Spinner from "@/components/Spinner";
 
 type Props = {
     providers: Awaited<ReturnType<typeof getProviders>>;

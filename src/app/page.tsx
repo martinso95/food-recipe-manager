@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getProviders } from "next-auth/react";
-import SignInComponent from "./SignInComponent";
 import { getServerSession } from "@/utils/NextAuthSession.utils";
-import SignOutComponent from "./SignOutComponent";
 import { RECIPES } from "@/utils/routes";
+import SignInComponent from "@/components/SignInComponent";
+import SignOutComponent from "@/components/SignOutComponent";
 
 async function Home() {
     const session = await getServerSession();

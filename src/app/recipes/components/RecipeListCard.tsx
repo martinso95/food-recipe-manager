@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { Recipe } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
 import { RECIPES } from "@/utils/routes";
-import { Recipe } from "@/types/typings";
-import ImageWithFallback from "../components/ImageWithFallback";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 type Props = {
     recipe: Recipe;
 };
+
 function RecipeListCard({ recipe }: Props) {
     const { recipeId, image, name, description, time } = recipe;
     return (

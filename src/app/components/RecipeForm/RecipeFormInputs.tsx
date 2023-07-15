@@ -10,7 +10,7 @@ import {
     RecipeProtein,
 } from "@/types/typings";
 import { RECIPE_PLACEHOLDER } from "@/utils/Utils";
-import ImageWithFallback from "../ImageWithFallback";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import ProteinsEditor from "./ProteinsEditor";
 import IngredientsEditor from "./IngredientsEditor";
 import InstructionsEditor from "./InstructionsEditor";

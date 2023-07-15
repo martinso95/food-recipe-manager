@@ -1,13 +1,14 @@
 "use client";
 
-import { RECIPES } from "@/utils/routes";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { RECIPES } from "@/utils/routes";
 
 type Props = {
     initialValue?: string;
 };
-function Search({ initialValue }: Props) {
+
+function RecipeListSearch({ initialValue }: Props) {
     const [searchValue, setSearchValue] = useState(initialValue || "");
     const router = useRouter();
 
@@ -23,10 +24,7 @@ function Search({ initialValue }: Props) {
     }, [initialValue]);
 
     return (
-        <form
-            onSubmit={handleOnSearch}
-            className="mr-auto w-full md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]"
-        >
+        <form onSubmit={handleOnSearch} className="min-w-[20rem]">
             <label htmlFor="search-input" className="sr-only">
                 Search
             </label>
@@ -67,4 +65,4 @@ function Search({ initialValue }: Props) {
     );
 }
 
-export default Search;
+export default RecipeListSearch;

@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import { Recipe } from "@/types/typings";
+import { RECIPES } from "@/utils/routes";
+import Spinner from "@/components/Spinner";
 import {
     useRecipeForm,
     useRecipeFormImage,
-} from "@/app/components/RecipeForm/RecipeForm.hooks";
-import RecipeFormInputs from "@/app/components/RecipeForm/RecipeFormInputs";
+} from "@/components/RecipeForm/RecipeForm.hooks";
 import {
     addNewRecipe,
     getFormErrors,
     isRecipeValid,
     sanitizeRecipe,
-} from "@/app/components/RecipeForm/RecipeForm.utils";
-import { RECIPES } from "@/utils/routes";
-import Spinner from "@/app/components/Spinner";
+} from "@/components/RecipeForm/RecipeForm.utils";
+import RecipeFormInputs from "@/components/RecipeForm/RecipeFormInputs";
 
 type Props = {
     initialRecipe: Recipe;

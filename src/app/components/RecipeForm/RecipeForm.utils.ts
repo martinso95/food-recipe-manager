@@ -128,13 +128,16 @@ export const addNewRecipe = async (
         }
     }
 
-    const response = await fetch("/api/add-recipe", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/add-recipe`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        }
+    );
 
     if (response.ok) {
         return await response.json().then((result) =>
@@ -201,13 +204,16 @@ export const editRecipe = async (
         requestBody.removeImage = true;
     }
 
-    const response = await fetch("/api/edit-recipe", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/edit-recipe`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        }
+    );
 
     if (response.ok) {
         return await response
@@ -232,13 +238,16 @@ export const deleteRecipe = async (
         image,
     };
 
-    const response = await fetch("/api/delete-recipe", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/delete-recipe`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        }
+    );
 
     if (response.ok) {
         return await response
