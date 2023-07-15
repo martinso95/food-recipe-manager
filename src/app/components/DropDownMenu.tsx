@@ -1,11 +1,17 @@
 "use client";
 
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, {
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 type Orientation = "bottomLeft" | "bottomRight" | "topLeft" | "topRight";
 
 type Props = {
-    label: string;
+    label: string | ReactElement;
     isOpen: boolean;
     children: ReactNode;
     setIsOpen: (isOpen: boolean) => void;
