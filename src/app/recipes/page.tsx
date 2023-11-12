@@ -40,8 +40,7 @@ async function RecipeListPage({ searchParams }: Props) {
 
     return (
         <main className="page flex flex-col justify-center items-center space-y-6">
-            {recipeDocuments.length === 0 &&
-            searchParams?.searchValue == null ? (
+            {recipeList.length === 0 && searchParams?.searchValue == null ? (
                 <RecipesEmptyState />
             ) : (
                 <>
@@ -50,7 +49,7 @@ async function RecipeListPage({ searchParams }: Props) {
                             initialValue={searchParams?.searchValue}
                         />
                     </div>
-                    {recipeDocuments.length > 0 ? (
+                    {recipeList.length > 0 ? (
                         <>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[1fr]">
                                 {recipeList.map((recipe) => (

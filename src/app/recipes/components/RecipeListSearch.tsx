@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { RECIPES } from "@/utils/routes";
 
 type Props = {
@@ -14,9 +15,7 @@ function RecipeListSearch({ initialValue }: Props) {
 
     const handleOnSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (searchValue !== "") {
-            router.push(`${RECIPES}?searchValue=${searchValue}`);
-        }
+        router.push(`${RECIPES}?searchValue=${searchValue}`);
     };
 
     useEffect(() => {
@@ -52,14 +51,22 @@ function RecipeListSearch({ initialValue }: Props) {
                     placeholder="Search recipes"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    className="block w-full p-4 pl-10 text-sm border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                    className="input block p-4 pl-10"
                 />
-                <button
-                    type="submit"
-                    className="primary-button absolute right-2.5 mt-auto mb-auto top-0 bottom-0 h-10"
-                >
-                    Search
-                </button>
+                <div className="flex space-x-1 absolute right-2.5 mt-auto mb-auto top-0 bottom-0 h-10">
+                    {searchValue !== "" ? (
+                        <button
+                            type="button"
+                            onClick={() => setSearchValue("")}
+                            className="tertiary-icon-button"
+                        >
+                            <XMarkIcon className="h-8 w-8 text-white" />
+                        </button>
+                    ) : null}
+                    <button type="submit" className="primary-button">
+                        Search
+                    </button>
+                </div>
             </div>
         </form>
     );
